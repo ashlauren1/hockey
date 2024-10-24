@@ -13,6 +13,11 @@ $(document).ready(function() {
         // Filter data for the player
         originalData = historicData.filter(item => item.PlayerID === playerID);
 
+        // Convert date strings to Date objects
+        originalData.forEach(item => {
+            item.Date = formatDate(item.Date);
+        });
+
         // Initialize opponent filter
         initializeOpponentFilter(originalData);
 
@@ -31,8 +36,14 @@ $(document).ready(function() {
             updateChart();
         });
 
+        // Adjust slider range based on selected stat
+        $('#stat-select').on('change', function() {
+            adjustSliderRange($(this).val());
+            updateChart();
+        });
+
         // Trigger initial chart update
-        $('#line-slider').trigger('input');
+        $('#stat-select').trigger('change');
     });
 });
 
@@ -43,6 +54,7 @@ function loadCSV(filePath) {
             download: true,
             header: true,
             skipEmptyLines: true,
+            dynamicTyping: true,
             complete: function(results) {
                 resolve(results.data);
             },
@@ -57,6 +69,9 @@ function initializeOpponentFilter(data) {
     const opponentsSet = new Set(data.map(item => item.Opp));
     const opponents = Array.from(opponentsSet).sort();
     const opponentFilter = $('#opponent-filter');
+
+    opponentFilter.empty(); // Clear existing options
+    opponentFilter.append(`<option value="">All Opponents</option>`);
 
     opponents.forEach(opp => {
         opponentFilter.append(`<option value="${opp}">${opp}</option>`);
@@ -125,10 +140,10 @@ function updateChart() {
 
     // Apply Home/Away filter
     if (!homeFilter) {
-        filteredData = filteredData.filter(item => item.Is_Home !== '1');
+        filteredData = filteredData.filter(item => item.Is_Home !== 1);
     }
     if (!awayFilter) {
-        filteredData = filteredData.filter(item => item.Is_Home !== '0');
+        filteredData = filteredData.filter(item => item.Is_Home !== 0);
     }
 
     // Apply Opponent filter
@@ -172,4 +187,33 @@ function updateChart() {
     chartInstance.options.plugins.annotation.annotations.line.label.content = `Line: ${lineValue}`;
 
     chartInstance.update();
+}
+
+function adjustSliderRange(stat) {
+    let maxRange;
+    switch (stat) {
+        case 'G':
+        case 'A':
+        case 'PTS':
+            maxRange = 5;
+            break;
+        case 'SOG':
+            maxRange = 15;
+            break;
+        case 'HIT':
+        case 'BLK':
+            maxRange = 10;
+            break;
+        default:
+            maxRange = 10;
+    }
+    $('#line-slider').attr('max', maxRange);
+    $('#line-slider').val(lineValue);
+    $('#line-value-display').text(lineValue);
+}
+
+// Helper function to format date to YYYY-MM-DD
+function formatDate(dateStr) {
+    const [month, day, year] = dateStr.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }

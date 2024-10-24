@@ -33,6 +33,7 @@ function loadCSV(filePath) {
             download: true,
             header: true,
             skipEmptyLines: true,
+            dynamicTyping: true, // Automatically typecast data
             complete: function(results) {
                 resolve(results.data);
             },
@@ -45,6 +46,11 @@ function loadCSV(filePath) {
 
 // Function to process and merge data
 function processData(scheduleData, projectedStatsData, probabilityData, historicData) {
+    // Convert dates to YYYY-MM-DD format for consistency
+    scheduleData.forEach(item => {
+        item.Date = formatDate(item.Date);
+    });
+
     // Merge projectedStatsData and probabilityData on GameID and PlayerID
     let mergedData = projectedStatsData.map(proj => {
         // Find matching probability entry
@@ -70,7 +76,7 @@ function processData(scheduleData, projectedStatsData, probabilityData, historic
 
     // Calculate historical percentages
     mergedData = mergedData.map(entry => {
-        let percentages = calculateHistoricalPercentages(historicData, entry.PlayerID, entry.Team, entry.Opp);
+        let percentages = calculateHistoricalPercentages(historicData, entry.PlayerID);
         return { ...entry, ...percentages };
     });
 
@@ -78,7 +84,7 @@ function processData(scheduleData, projectedStatsData, probabilityData, historic
 }
 
 // Function to calculate historical percentages
-function calculateHistoricalPercentages(historicData, playerID, team, opponent) {
+function calculateHistoricalPercentages(historicData, playerID) {
     // Filter data for the player
     const playerData = historicData.filter(item => item.PlayerID === playerID);
 
@@ -102,7 +108,7 @@ function calculateHistoricalPercentages(historicData, playerID, team, opponent) 
 
         stats.forEach(stat => {
             const overLine = games.filter(game => parseFloat(game[stat]) > 0.5).length;
-            percentages[`${period}_${stat}`] = ((overLine / games.length) * 100).toFixed(1) || '0.0';
+            percentages[`${period}_${stat}`] = games.length > 0 ? ((overLine / games.length) * 100).toFixed(1) : '0.0';
         });
     });
 
@@ -110,6 +116,11 @@ function calculateHistoricalPercentages(historicData, playerID, team, opponent) 
 }
 
 function initializeFilters(data) {
+    // Initialize Date Range Filter
+    $('#date-range').on('change', function() {
+        filterTable();
+    });
+
     // Initialize Game Filters
     const gamesSet = new Set();
     data.forEach(item => {
@@ -118,6 +129,7 @@ function initializeFilters(data) {
     });
     const games = Array.from(gamesSet).sort();
     const gameFiltersDiv = $('#game-filters');
+    gameFiltersDiv.empty(); // Clear existing filters
     games.forEach(game => {
         const checkbox = `
             <input type="checkbox" class="game-filter" value="${game}" checked>
@@ -150,11 +162,6 @@ function initializeFilters(data) {
             });
         }
     });
-
-    // Event handler for date filters
-    $('#start-date, #end-date').on('change', function() {
-        filterTable();
-    });
 }
 
 function initializeTable(data) {
@@ -183,7 +190,8 @@ function initializeTable(data) {
             data: `0.5+ ${stat}`,
             title: `Over 0.5 ${stat}`,
             render: function(data) {
-                return `${(parseFloat(data) * 100).toFixed(1)}%`;
+                const value = parseFloat(data);
+                return isNaN(value) ? 'N/A' : `${(value * 100).toFixed(1)}%`;
             }
         };
         columns.push(probCol);
@@ -206,7 +214,12 @@ function initializeTable(data) {
             statColumns[stat] = [];
         }
         const lastIndex = columns.length - 1;
-        statColumns[stat].push(lastIndex - 5, lastIndex - 4, lastIndex - 3, lastIndex - 2, lastIndex - 1);
+        // Indices for probability and historical percentage columns
+        const indices = [columns.length - periods.length - 1];
+        for (let i = periods.length; i > 0; i--) {
+            indices.push(lastIndex - (i - 1));
+        }
+        statColumns[stat] = indices;
     });
 
     // Initialize DataTable
@@ -220,17 +233,19 @@ function initializeTable(data) {
         ],
         scrollX: true // Enable horizontal scrolling if needed
     });
+
+    // Apply initial filters
+    filterTable();
 }
 
 function filterTable() {
+    // Get selected date range
+    const dateRange = $('#date-range').val();
+
     // Get selected games
     const selectedGames = $('.game-filter:checked').map(function() {
         return this.value.split(' ')[0]; // Extract GameID
     }).get();
-
-    // Get date range
-    const startDate = $('#start-date').val();
-    const endDate = $('#end-date').val();
 
     // Clear previous filters
     $.fn.dataTable.ext.search = [];
@@ -238,30 +253,45 @@ function filterTable() {
     // Apply filters
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
         const gameID = data[1]; // GameID is in column index 1
-        const date = data[2];   // Date is in column index 2
-        const dateObj = new Date(date);
+        const dateStr = data[2];   // Date is in column index 2
+        const dateObj = new Date(dateStr);
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to midnight
+
+        let showRow = true;
+
+        // Date range filter
+        if (dateRange === 'today') {
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            if (dateObj < today || dateObj > tomorrow) {
+                showRow = false;
+            }
+        } else if (dateRange === 'this-week') {
+            const weekStart = new Date(today);
+            const weekEnd = new Date(today);
+            weekEnd.setDate(today.getDate() + 7);
+
+            if (dateObj < today || dateObj > weekEnd) {
+                showRow = false;
+            }
+        }
 
         // Game filter
         if (selectedGames.length > 0 && !selectedGames.includes(gameID)) {
-            return false;
+            showRow = false;
         }
 
-        // Date filter
-        if (startDate) {
-            const startDateObj = new Date(startDate);
-            if (dateObj < startDateObj) {
-                return false;
-            }
-        }
-        if (endDate) {
-            const endDateObj = new Date(endDate);
-            if (dateObj > endDateObj) {
-                return false;
-            }
-        }
-
-        return true;
+        return showRow;
     });
 
     dataTable.draw();
+}
+
+// Helper function to format date to YYYY-MM-DD
+function formatDate(dateStr) {
+    const [month, day, year] = dateStr.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }

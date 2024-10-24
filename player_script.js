@@ -1,5 +1,6 @@
 let originalData = [];
 let chartInstance;
+let lineValue = 0.5; // Default line value
 
 $(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -22,6 +23,16 @@ $(document).ready(function() {
         $('#stat-select, #home-filter, #away-filter, #opponent-filter, #period-filter').on('change', function() {
             updateChart();
         });
+
+        // Event handler for line slider
+        $('#line-slider').on('input', function() {
+            lineValue = parseFloat($(this).val());
+            $('#line-value-display').text(lineValue);
+            updateChart();
+        });
+
+        // Trigger initial chart update
+        $('#line-slider').trigger('input');
     });
 });
 
@@ -61,7 +72,9 @@ function initializeChart() {
             datasets: [{
                 label: $('#stat-select').val(),
                 data: [],
-                backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                backgroundColor: [],
+                borderColor: 'rgba(0, 0, 0, 1)',
+                borderWidth: 1
             }]
         },
         options: {
@@ -70,10 +83,32 @@ function initializeChart() {
                     title: { display: true, text: 'Date' }
                 },
                 y: {
-                    title: { display: true, text: 'Value' }
+                    title: { display: true, text: 'Value' },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                annotation: {
+                    annotations: {
+                        line: {
+                            type: 'line',
+                            yMin: lineValue,
+                            yMax: lineValue,
+                            borderColor: 'white',
+                            borderWidth: 2,
+                            label: {
+                                enabled: true,
+                                content: `Line: ${lineValue}`,
+                                position: 'start',
+                                backgroundColor: 'rgba(0,0,0,0.7)',
+                                color: 'white'
+                            }
+                        }
+                    }
                 }
             }
-        }
+        },
+        plugins: [Chart.registry.getPlugin('annotation')]
     });
 
     updateChart();
@@ -115,8 +150,26 @@ function updateChart() {
     const labels = filteredData.map(item => item.Date);
     const data = filteredData.map(item => parseFloat(item[stat]));
 
+    // Determine bar colors based on lineValue
+    const backgroundColors = data.map(value => {
+        if (value > lineValue) {
+            return 'rgba(0, 255, 0, 0.7)'; // Green
+        } else if (value < lineValue) {
+            return 'rgba(255, 0, 0, 0.7)'; // Red
+        } else {
+            return 'rgba(255, 255, 0, 0.7)'; // Yellow
+        }
+    });
+
     chartInstance.data.labels = labels;
     chartInstance.data.datasets[0].label = stat;
     chartInstance.data.datasets[0].data = data;
+    chartInstance.data.datasets[0].backgroundColor = backgroundColors;
+
+    // Update the horizontal line
+    chartInstance.options.plugins.annotation.annotations.line.yMin = lineValue;
+    chartInstance.options.plugins.annotation.annotations.line.yMax = lineValue;
+    chartInstance.options.plugins.annotation.annotations.line.label.content = `Line: ${lineValue}`;
+
     chartInstance.update();
 }

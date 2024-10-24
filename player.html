@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Stats</title>
+    <!-- Include CSS and JS libraries -->
+    <!-- Chart.js CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #filters {
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        #filters h3 {
+            margin-top: 10px;
+        }
+
+        #filters label {
+            margin-right: 10px;
+        }
+
+        #chart-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="player-name"></h1>
+    <!-- Filters -->
+    <div id="filters">
+        <!-- Stat Selector -->
+        <div class="filter-group">
+            <label for="stat-select">Select Stat:</label>
+            <select id="stat-select">
+                <option value="G">Goals</option>
+                <option value="A">Assists</option>
+                <option value="PTS">Points</option>
+                <option value="SOG">Shots on Goal</option>
+                <option value="HIT">Hits</option>
+                <option value="BLK">Blocks</option>
+            </select>
+        </div>
+
+        <!-- Home/Away Filters -->
+        <div class="filter-group">
+            <input type="checkbox" id="home-filter" checked>
+            <label for="home-filter">Home Games</label>
+            <input type="checkbox" id="away-filter" checked>
+            <label for="away-filter">Away Games</label>
+        </div>
+
+        <!-- Opponent Filter -->
+        <div class="filter-group">
+            <label for="opponent-filter">Opponent:</label>
+            <select id="opponent-filter">
+                <option value="">All Opponents</option>
+                <!-- Dynamically populated -->
+            </select>
+        </div>
+
+        <!-- Period Filters -->
+        <div class="filter-group">
+            <label for="period-filter">Select Period:</label>
+            <select id="period-filter">
+                <option value="AllTime">All Time</option>
+                <option value="Season">2024-25 Season</option>
+                <option value="L5">Last 5 Games</option>
+                <option value="L10">Last 10 Games</option>
+                <option value="L20">Last 20 Games</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Chart Canvas -->
+    <div id="chart-container">
+        <canvas id="player-chart"></canvas>
+    </div>
+
+    <!-- Include JS libraries -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- PapaParse -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <!-- Custom Script -->
+    <script src="player_script.js"></script>
+</body>
+</html>

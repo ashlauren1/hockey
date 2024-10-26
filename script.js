@@ -1,5 +1,5 @@
 let sortDirection = {};
-const gradientColumns = [11, 12, 13, 14, 15, 16, 17, 18, 19]; // Define gradient columns
+const gradientColumns = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; // Define gradient columns
 
 // Function to detect if a column is numeric
 function isNumericColumn(columnIndex, rows) {
@@ -125,8 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
         rows.forEach(row => {
             games.add(row.cells[0].innerText);
             players.add(row.cells[2].innerText);
-            teams.add(row.cells[4].innerText);
-            types.add(row.cells[9].innerText);
+            teams.add(row.cells[3].innerText);
+            types.add(row.cells[8].innerText);
         });
 
         populateDropdown(gameFilter, games);
@@ -159,9 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
         rows.forEach(row => {
             const gameText = row.cells[0].innerText;
             const playerText = row.cells[2].innerText;
-            const teamText = row.cells[4].innerText;
-            const typeText = row.cells[9].innerText;
-            const statText = row.cells[8].innerText;
+            const teamText = row.cells[3].innerText;
+            const typeText = row.cells[8].innerText;
+            const statText = row.cells[7].innerText;
 
             const gameMatch = !gameValue || gameText === gameValue;
             const playerMatch = !playerValue || playerText === playerValue;

@@ -49,6 +49,53 @@ function filterTable() {
 }
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("data-table");
+  const headers = table.querySelectorAll("th");
+  
+  headers.forEach((header, index) => {
+    header.addEventListener("click", function () {
+      sortTableByColumn(table, index);
+    });
+  });
+
+  let sortOrder = {}; // Track sort order for each column
+
+  function sortTableByColumn(table, columnIndex) {
+    const rowsArray = Array.from(table.querySelectorAll("tbody tr"));
+    const isAscending = sortOrder[columnIndex] === "asc";
+    
+    // Determine sort type based on content
+    const isNumericColumn = columnIndex > 7; // Assuming numeric columns start after column index 7
+    
+    rowsArray.sort((rowA, rowB) => {
+      const cellA = rowA.cells[columnIndex].innerText.trim();
+      const cellB = rowB.cells[columnIndex].innerText.trim();
+      
+      let comparison;
+
+      if (isNumericColumn) {
+        // Parse to float for numeric sorting, defaulting to 0 if NaN
+        comparison = (parseFloat(cellA) || 0) - (parseFloat(cellB) || 0);
+      } else {
+        // Alphabetical sorting for text columns
+        comparison = cellA.localeCompare(cellB);
+      }
+
+      return isAscending ? comparison : -comparison;
+    });
+
+    // Toggle sort order and update table display
+    sortOrder[columnIndex] = isAscending ? "desc" : "asc";
+    const tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
+    rowsArray.forEach(row => tbody.appendChild(row));
+  }
+});
+</script>
+
+
         <!-- Stat Filters -->
         <div id="stat-filters" class="filter-group">
             <h3>Filter by Stat:</h3>

@@ -49,52 +49,6 @@ function filterTable() {
 }
 </script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const table = document.getElementById("data-table");
-  const headers = table.querySelectorAll("th");
-  
-  headers.forEach((header, index) => {
-    header.addEventListener("click", function () {
-      sortTableByColumn(table, index);
-    });
-  });
-
-  let sortOrder = {}; // Track sort order for each column
-
-  function sortTableByColumn(table, columnIndex) {
-    const rowsArray = Array.from(table.querySelectorAll("tbody tr"));
-    const isAscending = sortOrder[columnIndex] === "asc";
-    
-    // Determine sort type based on content
-    const isNumericColumn = columnIndex > 7; // Assuming numeric columns start after column index 7
-    
-    rowsArray.sort((rowA, rowB) => {
-      const cellA = rowA.cells[columnIndex].innerText.trim();
-      const cellB = rowB.cells[columnIndex].innerText.trim();
-      
-      let comparison;
-
-      if (isNumericColumn) {
-        // Parse to float for numeric sorting, defaulting to 0 if NaN
-        comparison = (parseFloat(cellA) || 0) - (parseFloat(cellB) || 0);
-      } else {
-        // Alphabetical sorting for text columns
-        comparison = cellA.localeCompare(cellB);
-      }
-
-      return isAscending ? comparison : -comparison;
-    });
-
-    // Toggle sort order and update table display
-    sortOrder[columnIndex] = isAscending ? "desc" : "asc";
-    const tbody = table.querySelector("tbody");
-    tbody.innerHTML = "";
-    rowsArray.forEach(row => tbody.appendChild(row));
-  }
-});
-</script>
-
 
         <!-- Stat Filters -->
         <div id="stat-filters" class="filter-group">
@@ -7138,6 +7092,136 @@ document.addEventListener("DOMContentLoaded", function () {
 <tr><td>VAN vs. PIT</td><td>10/26/2024</td><td>KRIS LETANG</td><td>PIT</td><td>@</td><td>VAN</td><td>4.5</td><td>HIT</td><td></td><td>3.00</td><td>-1.5</td><td>27.17%</td><td>0.00%</td><td>4.88%</td><td>9.09%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td><td>33.33%</td></tr>
 </tbody>
 </table>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("data-table");
+  const headers = table.querySelectorAll("th");
+  
+  headers.forEach((header, index) => {
+    header.addEventListener("click", function () {
+      sortTableByColumn(table, index);
+    });
+  });
+
+  let sortOrder = {}; // Track sort order for each column
+
+  function sortTableByColumn(table, columnIndex) {
+    const rowsArray = Array.from(table.querySelectorAll("tbody tr"));
+    const isAscending = sortOrder[columnIndex] === "asc";
+    
+    // Determine sort type based on content
+    const isNumericColumn = columnIndex > 7; // Assuming numeric columns start after column index 7
+    
+    rowsArray.sort((rowA, rowB) => {
+      const cellA = rowA.cells[columnIndex].innerText.trim();
+      const cellB = rowB.cells[columnIndex].innerText.trim();
+      
+      let comparison;
+
+      if (isNumericColumn) {
+        // Parse to float for numeric sorting, defaulting to 0 if NaN
+        comparison = (parseFloat(cellA) || 0) - (parseFloat(cellB) || 0);
+      } else {
+        // Alphabetical sorting for text columns
+        comparison = cellA.localeCompare(cellB);
+      }
+
+      return isAscending ? comparison : -comparison;
+    });
+
+    // Toggle sort order and update table display
+    sortOrder[columnIndex] = isAscending ? "desc" : "asc";
+    const tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
+    rowsArray.forEach(row => tbody.appendChild(row));
+  }
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("data-table");
+  const headers = table.querySelectorAll("th");
+
+  // Specify indices for columns with gradient colors
+  const gradientColumns = [11, 12, 13, 14, 15, 16, 17, 18, 19]; // Adjust based on your table structure
+
+  headers.forEach((header, index) => {
+    header.addEventListener("click", function () {
+      sortTableByColumn(table, index);
+      applyGradientColors(table, gradientColumns); // Apply gradients after sorting
+    });
+  });
+
+  let sortOrder = {}; // Track sort order for each column
+
+  function sortTableByColumn(table, columnIndex) {
+    const rowsArray = Array.from(table.querySelectorAll("tbody tr"));
+    const isAscending = sortOrder[columnIndex] === "asc";
+    const isNumericColumn = columnIndex > 7;
+
+    rowsArray.sort((rowA, rowB) => {
+      const cellA = rowA.cells[columnIndex].innerText.trim();
+      const cellB = rowB.cells[columnIndex].innerText.trim();
+      
+      let comparison;
+      if (isNumericColumn) {
+        comparison = (parseFloat(cellA) || 0) - (parseFloat(cellB) || 0);
+      } else {
+        comparison = cellA.localeCompare(cellB);
+      }
+
+      return isAscending ? comparison : -comparison;
+    });
+
+    sortOrder[columnIndex] = isAscending ? "desc" : "asc";
+    const tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
+    rowsArray.forEach(row => tbody.appendChild(row));
+  }
+
+  // Function to apply gradient colors based on value
+  function applyGradientColors(table, columns) {
+    columns.forEach(columnIndex => {
+      let values = Array.from(table.querySelectorAll(`tbody tr`))
+                        .map(row => parseFloat(row.cells[columnIndex].innerText.trim()) || 0);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+
+      table.querySelectorAll(`tbody tr`).forEach(row => {
+        const cell = row.cells[columnIndex];
+        const value = parseFloat(cell.innerText.trim()) || 0;
+        
+        const percentage = (value - min) / (max - min);
+        cell.style.backgroundColor = getGradientColor(percentage);
+      });
+    });
+  }
+
+  // Function to calculate Excel-like gradient color
+  function getGradientColor(percentage) {
+    let red, green;
+
+    if (percentage < 0.5) {
+      // Transition from dark red to white
+      red = 255;
+      green = Math.floor(255 * (2 * percentage));
+    } else {
+      // Transition from white to dark green
+      red = Math.floor(255 * (2 * (1 - percentage)));
+      green = 255;
+    }
+
+    return `rgb(${red}, ${green}, 0)`; // Adjusted for Excel-like green-white-red gradient
+  }
+
+  // Initial gradient color application
+  applyGradientColors(table, gradientColumns);
+});
+</script>
+
 
 </body>
 </html>

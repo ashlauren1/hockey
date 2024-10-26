@@ -1,55 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Projections and Probabilities</title>
-	<script src="jquery.tablesorter.min.js"</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projections and Probabilities</title>
+  	<script src="jquery.tablesorter.min.js"</script>
 	<script src="bootstrap.bundle.min.js"</script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="bootstrap.min.css">
+  <style>
+    /* Basic styling for table */
+    #data-table th {
+      cursor: pointer;
+    }
+    #data-table th, #data-table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-
-<script>
-    // Initialize DataTable
-    dataTable = $('#data-table').DataTable({
-        data: data,
-        columns: columns,
-        order: [[12, 'desc']], // Default sorting by first stat probability
-        scrollX: true // Enable horizontal scrolling if needed
-    });
-
-    // Apply initial filters
-    filterTable();
-}
-
-function filterTable() {
-    // Get selected date range
-    const dateRange = $('#date-range').val();
-
-    // Get selected games
-    const selectedGames = $('.game-filter:checked').map(function() {
-        return this.value.split(' ')[0]; // Extract GameID
-    }).get();
-
-    // Clear previous filters
-    $.fn.dataTable.ext.search = [];
-
-        // Game filter
-        if (selectedGames.length > 0 && !selectedGames.includes(gameID)) {
-            showRow = false;
-        }
-
-        return showRow;
-    });
-
-    dataTable.draw();
-}
-</script>
-
-
         <!-- Stat Filters -->
         <div id="stat-filters" class="filter-group">
             <h3>Filter by Stat:</h3>
@@ -75,7 +48,7 @@ function filterTable() {
         </div>
     </div>
 
-<table id="data-table" class="display">
+  <table id="data-table" class="display">
 <thead><tr><th>Game</th><th>Date</th><th>Player</th><th>Team</th><th></th><th>Opp</th><th>Line</th><th>Stat</th><th>Type</th><th>Projected</th><th>Difference</th><th>Probability</th><th>2024-25</th><th>2023-24</th><th>2022-Present</th><th>L30</th><th>L20</th><th>L10</th><th>L5</th><th>H2H</th></tr></thead>
 <tbody>
 <tr><td>BOS vs. TOR</td><td>10/26/2024</td><td>PARKER WOTHERSPOON</td><td>BOS</td><td>vs</td><td>TOR</td><td>0.5</td><td>HIT</td><td></td><td>2.50</td><td>2</td><td>95.39%</td><td>0.00%</td><td>85.37%</td><td>75.93%</td><td>87.10%</td><td>90.48%</td><td>81.82%</td><td>83.33%</td><td>100.00%</td></tr>
@@ -7093,80 +7066,34 @@ function filterTable() {
 </tbody>
 </table>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const table = document.getElementById("data-table");
-  const headers = table.querySelectorAll("th");
-  
-  headers.forEach((header, index) => {
-    header.addEventListener("click", function () {
-      sortTableByColumn(table, index);
-    });
-  });
-
-  let sortOrder = {}; // Track sort order for each column
-
-  function sortTableByColumn(table, columnIndex) {
-    const rowsArray = Array.from(table.querySelectorAll("tbody tr"));
-    const isAscending = sortOrder[columnIndex] === "asc";
-    
-    // Determine sort type based on content
-    const isNumericColumn = columnIndex > 7; // Assuming numeric columns start after column index 7
-    
-    rowsArray.sort((rowA, rowB) => {
-      const cellA = rowA.cells[columnIndex].innerText.trim();
-      const cellB = rowB.cells[columnIndex].innerText.trim();
-      
-      let comparison;
-
-      if (isNumericColumn) {
-        // Parse to float for numeric sorting, defaulting to 0 if NaN
-        comparison = (parseFloat(cellA) || 0) - (parseFloat(cellB) || 0);
-      } else {
-        // Alphabetical sorting for text columns
-        comparison = cellA.localeCompare(cellB);
-      }
-
-      return isAscending ? comparison : -comparison;
-    });
-
-    // Toggle sort order and update table display
-    sortOrder[columnIndex] = isAscending ? "desc" : "asc";
-    const tbody = table.querySelector("tbody");
-    tbody.innerHTML = "";
-    rowsArray.forEach(row => tbody.appendChild(row));
-  }
-});
-</script>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const table = document.getElementById("data-table");
   const headers = table.querySelectorAll("th");
 
-  // Specify indices for columns with gradient colors
-  const gradientColumns = [11, 12, 13, 14, 15, 16, 17, 18, 19]; // Adjust based on your table structure
+  // Columns to apply gradient formatting
+  const gradientColumns = [11, 12, 13, 14, 15, 16, 17, 18, 19]; 
 
   headers.forEach((header, index) => {
     header.addEventListener("click", function () {
       sortTableByColumn(table, index);
-      applyGradientColors(table, gradientColumns); // Apply gradients after sorting
+      applyGradientColors(table, gradientColumns);
     });
   });
 
-  let sortOrder = {}; // Track sort order for each column
+  let sortOrder = {}; 
 
   function sortTableByColumn(table, columnIndex) {
     const rowsArray = Array.from(table.querySelectorAll("tbody tr"));
     const isAscending = sortOrder[columnIndex] === "asc";
-    const isNumericColumn = columnIndex > 7;
+    const isNumericColumn = gradientColumns.includes(columnIndex); 
 
     rowsArray.sort((rowA, rowB) => {
       const cellA = rowA.cells[columnIndex].innerText.trim();
       const cellB = rowB.cells[columnIndex].innerText.trim();
-      
       let comparison;
+
       if (isNumericColumn) {
         comparison = (parseFloat(cellA) || 0) - (parseFloat(cellB) || 0);
       } else {
@@ -7182,11 +7109,10 @@ document.addEventListener("DOMContentLoaded", function () {
     rowsArray.forEach(row => tbody.appendChild(row));
   }
 
-  // Function to apply gradient colors based on value
   function applyGradientColors(table, columns) {
     columns.forEach(columnIndex => {
-      let values = Array.from(table.querySelectorAll(`tbody tr`))
-                        .map(row => parseFloat(row.cells[columnIndex].innerText.trim()) || 0);
+      const values = Array.from(table.querySelectorAll(`tbody tr`))
+                          .map(row => parseFloat(row.cells[columnIndex].innerText.trim()) || 0);
       const min = Math.min(...values);
       const max = Math.max(...values);
 
@@ -7200,28 +7126,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Function to calculate Excel-like gradient color
   function getGradientColor(percentage) {
     let red, green;
 
     if (percentage < 0.5) {
-      // Transition from dark red to white
-      red = 255;
-      green = Math.floor(255 * (2 * percentage));
-    } else {
-      // Transition from white to dark green
-      red = Math.floor(255 * (2 * (1 - percentage)));
+      red = Math.floor(205 * (1 - 2 * percentage)); 
       green = 255;
+    } else {
+      red = 255;
+      green = Math.floor(205 * (2 * (1 - percentage)));
     }
 
-    return `rgb(${red}, ${green}, 0)`; // Adjusted for Excel-like green-white-red gradient
+    return `rgb(${red}, ${green}, ${green * 0.7})`; 
   }
 
-  // Initial gradient color application
   applyGradientColors(table, gradientColumns);
 });
 </script>
-
 
 </body>
 </html>

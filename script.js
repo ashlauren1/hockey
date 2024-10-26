@@ -113,6 +113,10 @@ document.addEventListener("DOMContentLoaded", function () {
         dropdown.addEventListener("change", filterTable);
     });
 
+    // Apply gradient colors on page load
+    const table = document.getElementById("data-table");
+    applyGradientColors(table, gradientColumns);
+
     // Function to populate dropdowns with unique values
     function populateDropdowns() {
         const rows = document.querySelectorAll("#data-table tbody tr");
@@ -175,14 +179,68 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Reset filters function
 function resetFilters() {
-    // Clear all filter values
-    gameFilter.value = "";
-    playerFilter.value = "";
-    teamFilter.value = "";
-    typeFilter.value = "";
-    statFilter.selectedIndex = -1;
+    document.getElementById("game-filter").value = "";
+    document.getElementById("player-filter").value = "";
+    document.getElementById("team-filter").value = "";
+    document.getElementById("type-filter").value = "";
+    document.getElementById("stat-filter").value = "";
 
-    // Show all rows
+    // Trigger filtering to reset the table
     filterTable();
+}
+
+// Function to apply gradient colors
+function applyGradientColors(table, columns) {
+    columns.forEach(columnIndex => {
+        const values = Array.from(table.querySelectorAll(`tbody tr`))
+                            .map(row => parseFloat(row.cells[columnIndex].innerText.trim()) || 0);
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+
+        table.querySelectorAll(`tbody tr`).forEach(row => {
+            const cell = row.cells[columnIndex];
+            const value = parseFloat(cell.innerText.trim()) || 0;
+
+            // Calculate percentage within the range for the color gradient
+            const percentage = (value - min) / (max - min);
+            cell.style.backgroundColor = getGradientColor(percentage);
+            cell.classList.remove("no-gradient"); // Ensure gradient cells don’t have the hover effect
+        });
+    });
+
+    // Mark cells in non-gradient columns as `.no-gradient` for hover effect
+    table.querySelectorAll("tbody tr").forEach(row => {
+        row.querySelectorAll("td").forEach((cell, columnIndex) => {
+            if (!columns.includes(columnIndex)) {
+                cell.classList.add("no-gradient");
+            }
+        });
+    });
+}
+
+// Function to calculate HSL gradient color from dark red to dark green via white
+function getGradientColor(percentage) {
+    if (percentage < 0.5) {
+        // Transition from red to white
+        const redHue = 0, redSaturation = 100, redLightness = 45;
+        const whiteHue = 0, whiteSaturation = 0, whiteLightness = 100;
+        
+        const hue = redHue + (whiteHue - redHue) * (percentage * 2);
+        const saturation = redSaturation + (whiteSaturation - redSaturation) * (percentage * 2);
+        const lightness = redLightness + (whiteLightness - redLightness) * (percentage * 2);
+
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    } else {
+        // Transition from white to green
+        const greenHue = 145, greenSaturation = 90, greenLightness = 45;
+        const whiteHue = 0, whiteSaturation = 0, whiteLightness = 100;
+        
+        const hue = whiteHue + (greenHue - whiteHue) * ((percentage - 0.5) * 2);
+        const saturation = whiteSaturation + (greenSaturation - whiteSaturation) * ((percentage - 0.5) * 2);
+        const lightness = whiteLightness + (greenLightness - whiteLightness) * ((percentage - 0.5) * 2);
+
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
 }

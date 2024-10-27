@@ -51,19 +51,25 @@ function sortTable(table, columnIndex) {
     rows.forEach(row => table.querySelector("tbody").appendChild(row));
 }
 
-// Add dropdown filters under each header
+// Add dropdown filters under each header and a Clear Filters button
 function addFilters(table) {
     const headers = table.querySelectorAll("thead th");
     const filterRow = document.createElement("tr");
+    filterRow.setAttribute("id", "filter-row");
 
+    // Add a filter dropdown under each header
     headers.forEach((header, index) => {
         const filterCell = document.createElement("td");
         const filterSelect = document.createElement("select");
 
+        filterSelect.classList.add("filter-select");
+
+        // Add "All" option as default
         filterSelect.innerHTML = '<option value="">All</option>';
         const values = Array.from(new Set(Array.from(table.querySelectorAll(`tbody tr td:nth-child(${index + 1})`))
             .map(cell => cell.textContent.trim()))).sort();
 
+        // Add options to the filter dropdown
         values.forEach(value => {
             const option = document.createElement("option");
             option.value = value;
@@ -71,12 +77,23 @@ function addFilters(table) {
             filterSelect.appendChild(option);
         });
 
+        // Add event listener to apply filter on change
         filterSelect.addEventListener("change", () => filterTable(table));
         filterCell.appendChild(filterSelect);
         filterRow.appendChild(filterCell);
     });
 
+    // Add the filter row to the table header
     table.querySelector("thead").appendChild(filterRow);
+
+    // Create the "Clear Filters" button
+    const clearButton = document.getElementById("clear-filters-btn");
+    clearButton.addEventListener("click", () => {
+        // Clear all filter dropdown selections
+        document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+        // Show all rows by applying an empty filter
+        filterTable(table);
+    });
 }
 
 // Filter rows based on dropdown selections
@@ -91,38 +108,80 @@ function filterTable(table) {
     });
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    const tableRows = document.querySelectorAll("table tbody tr");
+    const tableRows = document.querySelectorAll("#data-table tbody tr");
+    const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
 
-    // Add click event to each row
+    let isDragging = false;
+    let selectedRows = new Set(); // Track selected rows
+
+    // Allow multi-row selection by clicking and dragging
     tableRows.forEach(row => {
-        row.addEventListener("click", function () {
-            // Remove 'active-row' from any previously selected row
-            document.querySelectorAll("tr.active-row").forEach(activeRow => {
-                activeRow.classList.remove("active-row");
-            });
+        row.addEventListener("mousedown", function () {
+            isDragging = true;
+            toggleRowSelection(row);
+        });
 
-            // Add 'active-row' to the clicked row
-            row.classList.add("active-row");
+        row.addEventListener("mouseenter", function () {
+            if (isDragging) {
+                toggleRowSelection(row);
+            }
+        });
+
+        row.addEventListener("mouseup", function () {
+            isDragging = false;
         });
     });
 
-    // Remove 'active-row' when clicking outside the table
-    document.addEventListener("click", function (event) {
-        if (!event.target.closest("table")) {
-            document.querySelectorAll("tr.active-row").forEach(activeRow => {
-                activeRow.classList.remove("active-row");
+    // Prevent text selection while dragging
+    document.addEventListener("mouseup", function () {
+        isDragging = false;
+    });
+
+    // Toggle row selection by adding/removing the selected-row class
+    function toggleRowSelection(row) {
+        if (selectedRows.has(row)) {
+            row.classList.remove("selected-row");
+            selectedRows.delete(row);
+        } else {
+            row.classList.add("selected-row");
+            selectedRows.add(row);
+        }
+    }
+
+    // Handle "Show Selected Only" / "Show All" button functionality
+    toggleSelectionBtn.addEventListener("click", function () {
+        if (toggleSelectionBtn.textContent === "Show Selected Only") {
+            // Show only selected rows
+            tableRows.forEach(row => {
+                if (!selectedRows.has(row)) {
+                    row.style.display = "none";
+                }
             });
+            toggleSelectionBtn.textContent = "Show All";
+        } else {
+            // Show all rows
+            tableRows.forEach(row => (row.style.display = ""));
+            toggleSelectionBtn.textContent = "Show Selected Only";
         }
     });
 });
+
+
+
 </script>
+
 
 </head>
 
 <body>
 <h1 style='color:black;font-family:"Times New Roman";font-size:14.0pt;
 font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
+<div class="button-container">
+    <button id="toggle-selection-btn">Show Selected Only</button>
+    <button id="clear-filters-btn">Clear Filters</button>
+</div>
 
 <div id="data-table-container">
 <table id="data-table">
@@ -200,7 +259,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#A6D9B5">2.06</td>
 <td style="background:#63BE7B">96.2%</td>
 <td style="background:#DEF0E5">50.0%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>5/5</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -220,10 +279,10 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#D5EDDD">0.95</td>
 <td style="background:#6AC181">94.1%</td>
 <td style="background:#63BE7B">100.0%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
-<td style="background:#63BE7B">100%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#74C58A">80%</td>
 <td style="background:#82CB96">80.0%</td>
 <td style="background:#BDE3C9">66.2%</td>
@@ -280,7 +339,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#ADDCBB">1.89</td>
 <td style="background:#67C07F">95.0%</td>
 <td style="background:#B5E0C2">66.7%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -300,7 +359,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#E1F1E7">0.68</td>
 <td style="background:#6EC384">93.0%</td>
 <td style="background:#82CB96">87.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#7DC991">90%</td>
@@ -342,7 +401,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#A1D7B0">75.0%</td>
 <td style="background:#FCFCFF">50%</td>
 <td>2/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#B0DDBD">70%</td>
 <td style="background:#97D3A8">70%</td>
 <td style="background:#97D3A8">73.3%</td>
@@ -460,7 +519,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#D6EDDE">0.94</td>
 <td style="background:#6DC384">93.0%</td>
 <td style="background:#9AD5AA">77.8%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>6/6</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#B0DDBD">70%</td>
@@ -502,7 +561,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#B5E0C2">66.7%</td>
 <td style="background:#CAE8D4">67%</td>
 <td>2/3</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#B0DDBD">70%</td>
 <td style="background:#A7DAB6">65%</td>
 <td style="background:#A1D7B0">70.0%</td>
@@ -560,7 +619,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#97D4A8">2.39</td>
 <td style="background:#67C07E">95.1%</td>
 <td style="background:#D3ECDB">54.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -580,7 +639,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#7CC891">3.03</td>
 <td style="background:#67C07E">95.2%</td>
 <td style="background:#CCE9D6">57.1%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>3/3</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -620,7 +679,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#AFDDBD">1.83</td>
 <td style="background:#69C180">94.5%</td>
 <td style="background:#EFF7F4">42.9%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -742,7 +801,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#63BE7B">100.0%</td>
 <td style="background:#FCFCFF">50%</td>
 <td>2/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#86CC99">75%</td>
 <td style="background:#ABDBB9">66.7%</td>
@@ -760,7 +819,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#6EC384">3.36</td>
 <td style="background:#6DC384">93.0%</td>
 <td style="background:#90D1A2">81.8%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>2/2</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#96D3A7">80%</td>
@@ -800,7 +859,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#BEE3C9">1.50</td>
 <td style="background:#71C488">91.7%</td>
 <td style="background:#DEF0E5">50.0%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -980,7 +1039,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#A9DBB8">1.97</td>
 <td style="background:#6DC384">93.0%</td>
 <td style="background:#A1D7B0">75.0%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#B0DDBD">70%</td>
@@ -1300,7 +1359,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#C7E7D2">1.27</td>
 <td style="background:#71C487">91.8%</td>
 <td style="background:#BFE4CB">62.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -1360,7 +1419,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#E6F4EC">0.55</td>
 <td style="background:#6AC181">94.0%</td>
 <td style="background:#BFE4CB">62.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#CAE8D4">60%</td>
@@ -1382,7 +1441,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#BFE4CB">62.5%</td>
 <td>--</td>
 <td>0/0</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#B8E1C5">60%</td>
 <td style="background:#BFE4CB">60.0%</td>
@@ -1480,7 +1539,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#C7E7D1">1.28</td>
 <td style="background:#72C588">91.4%</td>
 <td style="background:#EFF7F4">42.9%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -1700,7 +1759,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#95D3A6">2.45</td>
 <td style="background:#79C78E">89.3%</td>
 <td style="background:#A9DBB8">71.4%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#E3F2EA">50%</td>
@@ -1960,7 +2019,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#96D3A7">2.43</td>
 <td style="background:#78C78D">89.7%</td>
 <td style="background:#FBEBEE">33.3%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>2/2</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#E3F2EA">50%</td>
@@ -2042,7 +2101,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#BFE4CB">62.5%</td>
 <td style="background:#FAB2B5">25%</td>
 <td>1/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#B0DDBD">70%</td>
 <td style="background:#DBEFE2">50%</td>
 <td style="background:#D4ECDC">53.3%</td>
@@ -2122,7 +2181,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#A9DBB8">71.4%</td>
 <td style="background:#FACBCD">33%</td>
 <td>1/3</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#B8E1C5">60%</td>
 <td style="background:#D4ECDC">53.3%</td>
@@ -2260,7 +2319,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#D8EEE0">0.88</td>
 <td style="background:#70C386">92.3%</td>
 <td style="background:#FBF7FA">36.4%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>2/2</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -2400,7 +2459,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#ECF6F2">0.41</td>
 <td style="background:#7BC890">88.7%</td>
 <td style="background:#FCFCFF">37.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -2520,7 +2579,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#99D4A9">2.36</td>
 <td style="background:#7BC88F">88.8%</td>
 <td style="background:#A6DAB5">72.7%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>2/2</td>
 <td style="background:#96D3A7">80%</td>
 <td style="background:#B0DDBD">70%</td>
@@ -2582,7 +2641,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#BFE4CB">62.5%</td>
 <td>--</td>
 <td>0/0</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#E3F2EA">50%</td>
 <td style="background:#DBEFE2">50%</td>
 <td style="background:#DEF0E5">50.0%</td>
@@ -2620,7 +2679,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#D0EBD9">1.06</td>
 <td style="background:#73C589">91.1%</td>
 <td style="background:#FCFCFF">37.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>5/5</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#FAD7D9">30%</td>
@@ -2642,7 +2701,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#A9DBB8">71.4%</td>
 <td style="background:#FAB2B5">25%</td>
 <td>1/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#EBF6F1">45%</td>
 <td style="background:#E8F4EE">46.7%</td>
@@ -2662,7 +2721,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#A9DBB8">71.4%</td>
 <td style="background:#FAB2B5">25%</td>
 <td>1/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#EBF6F1">45%</td>
 <td style="background:#E8F4EE">46.7%</td>
@@ -2700,7 +2759,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#E0F1E7">0.69</td>
 <td style="background:#79C78E">89.4%</td>
 <td style="background:#EBF6F1">44.4%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>6/6</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -2842,7 +2901,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#86CD9A">85.7%</td>
 <td style="background:#FAB2B5">25%</td>
 <td>1/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#E8F4EE">46.7%</td>
@@ -2962,7 +3021,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#82CB96">87.5%</td>
 <td style="background:#F8696B">0%</td>
 <td>0/5</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#B0DDBD">70%</td>
 <td style="background:#EBF6F1">45%</td>
 <td style="background:#E8F4EE">46.7%</td>
@@ -3560,7 +3619,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#EFF7F3">0.36</td>
 <td style="background:#86CD9A">85.0%</td>
 <td style="background:#CCE9D6">57.1%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#E3F2EA">50%</td>
@@ -3642,7 +3701,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#86CD9A">85.7%</td>
 <td style="background:#B0DDBD">75%</td>
 <td>3/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#B0DDBD">70%</td>
 <td style="background:#DBEFE2">50%</td>
 <td style="background:#FCFCFF">40.0%</td>
@@ -3662,7 +3721,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#86CD9A">85.7%</td>
 <td style="background:#B0DDBD">75%</td>
 <td>3/4</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td style="background:#B0DDBD">70%</td>
 <td style="background:#DBEFE2">50%</td>
 <td style="background:#FCFCFF">40.0%</td>
@@ -3780,7 +3839,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#E1F1E8">0.67</td>
 <td style="background:#7EC992">87.8%</td>
 <td style="background:#F9A1A3">14.3%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>3/3</td>
 <td style="background:#F8696B">0%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -3940,7 +3999,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#BEE3C9">1.49</td>
 <td style="background:#74C58A">90.8%</td>
 <td style="background:#DEF0E5">50.0%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#CAE8D4">60%</td>
 <td style="background:#E3F2EA">50%</td>
@@ -4060,7 +4119,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#D2EBDB">1.02</td>
 <td style="background:#79C78E">89.3%</td>
 <td style="background:#FACBCD">25.0%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#FAB2B5">20%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -4080,7 +4139,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#D4ECDD">0.97</td>
 <td style="background:#7FCA94">87.2%</td>
 <td style="background:#F99A9C">12.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#FAB2B5">20%</td>
 <td style="background:#FAB2B5">20%</td>
@@ -4160,7 +4219,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#E2F2E9">0.64</td>
 <td style="background:#81CB95">86.6%</td>
 <td style="background:#F9A1A3">14.3%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>3/3</td>
 <td style="background:#F8696B">0%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -4480,7 +4539,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#ECF6F1">0.43</td>
 <td style="background:#7BC890">88.7%</td>
 <td style="background:#FCFCFF">37.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -4940,7 +4999,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#EEF6F3">0.38</td>
 <td style="background:#81CB95">86.7%</td>
 <td style="background:#FCFCFF">37.5%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#FCFCFF">40%</td>
@@ -5080,7 +5139,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#C0E4CB">1.45</td>
 <td style="background:#84CC97">85.9%</td>
 <td style="background:#FBD9DB">28.6%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>4/4</td>
 <td style="background:#FAB2B5">20%</td>
 <td style="background:#FAB2B5">20%</td>
@@ -5740,7 +5799,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#F2F8F6">0.28</td>
 <td style="background:#89CE9B">84.3%</td>
 <td style="background:#F9A1A3">14.3%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#FAB2B5">20%</td>
 <td style="background:#F98D90">10%</td>
@@ -6540,7 +6599,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#F0F7F4">0.33</td>
 <td style="background:#8DCF9F">82.9%</td>
 <td style="background:#FBD9DB">28.6%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>1/1</td>
 <td style="background:#FCFCFF">40%</td>
 <td style="background:#FAD7D9">30%</td>
@@ -6940,7 +6999,7 @@ font-weight:800;font-style:normal'>Today's Probabilities and Projections</h1>
 <td style="background:#C3E5CE">1.36</td>
 <td style="background:#86CC99">85.3%</td>
 <td style="background:#F88C8E">9.1%</td>
-<td style="background:#63BE7B">100%</td>
+<td style="background:#63BE7B">99.99%</td>
 <td>2/2</td>
 <td style="background:#FAB2B5">20%</td>
 <td style="background:#F98D90">10%</td>

@@ -1,9 +1,9 @@
 import pandas as pd
 
 # File paths
-metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\skaters2022_25.csv"
-upcoming_games_path = r"C:\Users\ashle\Documents\Projects\hockey\upcoming_games_skater.csv"
-output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\skaterprobability.csv"
+metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\skaters2022_25.csv"
+upcoming_games_path = r"C:\Users\ashle\Documents\Projects\hockey\data\games_thisWeek.csv"
+output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\futureGameProbability.csv"
 
 # Load historical data and upcoming games data
 metrics_data = pd.read_csv(
@@ -22,7 +22,7 @@ metrics_data = pd.read_csv(
         'BLK': float,
         'TOI': float
     },
-    low_memory=False  # Reads file in one go, which can prevent type inference issues in large files
+    low_memory=False
 )
 
 upcoming_games_data = pd.read_csv(
@@ -39,12 +39,13 @@ upcoming_games_data = pd.read_csv(
 
 # Define stat lines and weights
 lines = {
-    'G': [0.5, 1.5],
-    'A': [0.5, 1.5, 2.5],
-    'PTS': [0.5, 1.5, 2.5, 3.5],
+    'G': [0.5],
+    'A': [0.5, 1.5],
+    'PTS': [0.5, 1.5, 2.5],
     'SOG': [1.5, 2.5, 3.5, 4.5, 5.5],
-    'BLK': [0.5, 1.5, 2.5, 3.5, 4.5, 5.5],
-    'HIT': [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]
+    'BLK': [0.5, 1.5, 2.5, 3.5, 4.5],
+    'HIT': [0.5, 1.5, 2.5, 3.5, 4.5, 5.5],
+    'TOI': [16, 16.25, 16.5, 16.75, 17, 17.25, 17.5, 17.75, 18, 18.25, 18.5, 18.75, 19, 19.25, 19.5, 19.75, 20, 20.25, 20.5, 20.75, 21, 21.25, 21.5, 21.75, 22, 22.25, 22.5, 22.75, 23, 23.25, 23.5, 23.75, 24, 24.25, 24.5]
 }
 weights = {
     "opponent": 0.80,
@@ -75,14 +76,14 @@ def calculate_weighted_probabilities(player_data, lines, upcoming_game):
                 weights["home_away"] * home_away_prob
             )
             
-            # Store result
-            results.append(weighted_prob)
+            # Store result as (stat, line, probability)
+            results.append((stat, line, weighted_prob))
     
     return results
 
 # Prepare final results list with columns
 final_results = []
-columns = ['GameID', 'Team', 'Is_Home', 'Opp', 'PlayerID'] + [f"{line}{stat}" for stat, stat_lines in lines.items() for line in stat_lines]
+columns = ['GameID', 'Team', 'Is_Home', 'Opp', 'PlayerID', 'Stat', 'Line', 'Probability']
 
 # Iterate over each upcoming game and calculate probabilities
 for _, upcoming_game in upcoming_games_data.iterrows():
@@ -99,9 +100,10 @@ for _, upcoming_game in upcoming_games_data.iterrows():
         # Calculate probabilities for this player's upcoming game
         probabilities = calculate_weighted_probabilities(player_data, lines, upcoming_game)
         
-        # Compile row of results
-        result_row = [game_id, player_team, is_home, opponent, player_id] + probabilities
-        final_results.append(result_row)
+        # Compile each probability result as a row in final_results
+        for stat, line, probability in probabilities:
+            result_row = [game_id, player_team, is_home, opponent, player_id, stat, line, probability]
+            final_results.append(result_row)
 
 # Convert results to a DataFrame
 probability_df = pd.DataFrame(final_results, columns=columns)

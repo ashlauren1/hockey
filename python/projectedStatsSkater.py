@@ -2,9 +2,9 @@ import pandas as pd
 from tqdm import tqdm  # Progress bar (optional)
 
 # Paths to CSV files
-historical_data_path = r'C:\Users\ashle\Documents\Projects\hockey\skaters2022_25.csv'
-upcoming_games_path = r'C:\Users\ashle\Documents\Projects\hockey\upcoming_games_skater.csv'
-output_file_path = r'C:\Users\ashle\Documents\Projects\hockey\projected_stats_skaters.csv'
+historical_data_path = r'C:\Users\ashle\Documents\Projects\hockey\data\skaters2022_25.csv'
+upcoming_games_path = r'C:\Users\ashle\Documents\Projects\hockey\data\upcoming_games_skater.csv'
+output_file_path = r'C:\Users\ashle\Documents\Projects\hockey\projectedStats.csv'
 
 # Read the historical data and upcoming games data
 historical_df = pd.read_csv(historical_data_path)

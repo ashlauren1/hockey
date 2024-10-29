@@ -19,34 +19,19 @@ def fetch_webpage(url):
 
 # Define the game IDs, home teams, and away teams
 games_info = {
-    "202410230WSH": ("WSH", "PHI"),
-    "202410240BOS": ("BOS", "DAL"),
-    "202410240TOR": ("TOR", "STL"),
-    "202410240DET": ("DET", "NJD"),
-    "202410240TBL": ("TBL", "MIN"),
-    "202410240NYR": ("NYR", "FLA"),
-    "202410240CGY": ("CGY", "CAR"),
-    "202410240UTA": ("UTA", "COL"),
-    "202410240SEA": ("SEA", "WPG"),
+    "202410270COL": ("COL", "OTT"),
+    "202410270DET": ("DET", "EDM"),
+    "202410270NJD": ("NJD", "ANA"),
+    "202410270PHI": ("PHI", "MTL"),
+    "202410280BUF": ("BUF", "FLA"),
+    "202410280TBL": ("TBL", "NSH"),
+    "202410280VEG": ("VEG", "CGY"),
+    "202410280WPG": ("WPG", "TOR"),
+    "202410280UTA": ("UTA", "SJS"),
     "202410240LAK": ("LAK", "SJS"),
-    "202410250VEG": ("VEG", "OTT"),
-    "202410250NJD": ("NJD", "NYI"),
-    "202410250CHI": ("CHI", "NSH"),
-    "202410250EDM": ("EDM", "PIT"),
-    "202410260BUF": ("BUF", "DET"),
-    "202410260PHI": ("PHI", "MIN"),
-    "202410260LAK": ("LAK", "UTA"),
-    "202410260BOS": ("BOS", "TOR"),
-    "202410260MTL": ("MTL", "STL"),
-    "202410260TBL": ("TBL", "WSH"),
-    "202410260NYR": ("NYR", "ANA"),
-    "202410260CGY": ("CGY", "WPG"),
-    "202410260NYI": ("NYI", "FLA"),
-    "202410260NSH": ("NSH", "CBJ"),
-    "202410260DAL": ("DAL", "CHI"),
-    "202410260VAN": ("VAN", "PIT"),
-    "202410260VEG": ("VEG", "SJS"),
-    "202410260SEA": ("SEA", "CAR")
+    "202410280CBJ": ("CBJ", "EDM"),
+    "202410280COL": ("COL", "CHI"),
+    "202410280VAN": ("VAN", "CAR")
 }
 
 # File paths for the CSV outputs
@@ -73,8 +58,11 @@ for game_id, (home_team, away_team) in games_info.items():
             table_selector = f"#{team}_skaters"
             table = soup.select_one(table_selector)
             if table:
-                # Read table into DataFrame
+                # Read table into DataFrame, excluding footer rows if present
                 df = pd.read_html(StringIO(str(table)))[0]
+
+                # Keep only rows within tbody (skip footer by limiting rows if needed)
+                df = df.iloc[:table.select("tbody tr").__len__()]
 
                 # Insert metadata columns
                 df.insert(0, "Game ID", game_id)
@@ -92,8 +80,11 @@ for game_id, (home_team, away_team) in games_info.items():
             table_selector = f"#{team}_adv_ALLAll"
             table = soup.select_one(table_selector)
             if table:
-                # Read table into DataFrame
+                # Read table into DataFrame, excluding footer rows if present
                 df = pd.read_html(StringIO(str(table)))[0]
+
+                # Keep only rows within tbody
+                df = df.iloc[:table.select("tbody tr").__len__()]
 
                 # Insert metadata columns
                 df.insert(0, "Game ID", game_id)
@@ -114,14 +105,14 @@ for game_id, (home_team, away_team) in games_info.items():
     except Exception as e:
         print(f"Error processing data for game ID {game_id}: {e}")
 
-# Save all collected data to CSV files
+# Save all collected data to CSV files by appending
 if skaters_data:
-    pd.concat(skaters_data, ignore_index=True).to_csv(file_paths['skaters'], index=False, encoding='utf-8')
-    print(f"Skaters data successfully saved to {file_paths['skaters']}")
+    pd.concat(skaters_data, ignore_index=True).to_csv(file_paths['skaters'], index=False, encoding='utf-8', mode='a', header=not os.path.exists(file_paths['skaters']))
+    print(f"Skaters data successfully appended to {file_paths['skaters']}")
 
 if adv_skaters_data:
-    pd.concat(adv_skaters_data, ignore_index=True).to_csv(file_paths['adv_skaters'], index=False, encoding='utf-8')
-    print(f"Advanced skaters data successfully saved to {file_paths['adv_skaters']}")
+    pd.concat(adv_skaters_data, ignore_index=True).to_csv(file_paths['adv_skaters'], index=False, encoding='utf-8', mode='a', header=not os.path.exists(file_paths['adv_skaters']))
+    print(f"Advanced skaters data successfully appended to {file_paths['adv_skaters']}")
 
 if not any([skaters_data, adv_skaters_data]):
     print("No data collected.")

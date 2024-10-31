@@ -1,0 +1,812 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Gamelog for SPENCER STASTNEY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("gamelog-table");
+        const headerRow = table.querySelector("thead tr:first-child");
+        const filterRow = document.querySelector("#filter-row");
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
+        const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+        const clearAllButton = document.getElementById("clear-all-btn");
+        const clearButton = document.getElementById("clear-filters-btn");
+        let showSelectedOnly = false;
+        let isDragging = false;
+
+        // Add filters and sorting
+        addFilters(table);
+        addSortToHeaders(table);
+
+        // "Clear Filters" button functionality
+        clearButton.addEventListener("click", () => {
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            filterTable();
+        });
+
+        // "Clear All" functionality
+        clearAllButton.addEventListener("click", () => {
+            document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
+            rows.forEach(row => {
+                row.classList.remove("selected-row");
+                row.style.display = "";
+            });
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            toggleSelectionBtn.textContent = "Show Selected Only";
+            showSelectedOnly = false;
+            filterTable();
+        });
+
+        rows.forEach(row => {
+            row.addEventListener("mousedown", function () {
+                isDragging = true;
+                toggleRowSelection(row);
+            });
+            row.addEventListener("mouseenter", function () {
+                if (isDragging) toggleRowSelection(row);
+            });
+            row.addEventListener("mouseup", () => isDragging = false);
+        });
+
+        document.addEventListener("mouseup", () => isDragging = false);
+
+        function toggleRowSelection(row) {
+            row.classList.toggle("selected-row");
+        }
+
+        toggleSelectionBtn.addEventListener("click", () => {
+            showSelectedOnly = !showSelectedOnly;
+            if (showSelectedOnly) {
+                rows.forEach(row => {
+                    row.style.display = row.classList.contains("selected-row") ? "" : "none";
+                });
+                toggleSelectionBtn.textContent = "Show All";
+            } else {
+                rows.forEach(row => (row.style.display = ""));
+                toggleSelectionBtn.textContent = "Show Selected Only";
+            }
+        });
+
+        function addFilters(table) {
+            const headerRow = table.querySelector("thead tr:first-child");
+            const filterRow = document.querySelector("#filter-row");
+
+            Array.from(headerRow.cells).forEach((header, index) => {
+                const filterCell = document.createElement("td");
+                const filterSelect = document.createElement("select");
+                filterSelect.classList.add("filter-select");
+
+                filterSelect.innerHTML = '<option value="">All</option>';
+                const values = Array.from(new Set(
+                    Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                    .map(cell => cell.textContent.trim())
+                )).sort();
+
+                values.forEach(value => {
+                    const option = document.createElement("option");
+                    option.value = value;
+                    option.textContent = value;
+                    filterSelect.appendChild(option);
+                });
+
+                filterSelect.addEventListener("change", filterTable);
+                filterCell.appendChild(filterSelect);
+                filterRow.appendChild(filterCell);
+            });
+        }
+
+        function filterTable() {
+            const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
+            rows.forEach(row => {
+                const cells = Array.from(row.cells);
+                const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+                row.style.display = matchesFilter ? "" : "none";
+            });
+        }
+
+        function addSortToHeaders(table) {
+            const headers = table.querySelectorAll("thead th");
+            headers.forEach((header, index) => {
+                header.style.cursor = "pointer";
+                header.addEventListener("click", function () {
+                    sortTable(table, index);
+                });
+            });
+        }
+
+        function sortTable(table, columnIndex) {
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
+            const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+            table.dataset.sortDirection = direction;
+
+            rows.sort((a, b) => {
+                const cellA = a.cells[columnIndex].textContent.trim();
+                const cellB = b.cells[columnIndex].textContent.trim();
+
+                const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+                const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+
+                return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+            });
+
+            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+        }
+    });
+    </script>
+    </head>
+    <body>
+    <div class="topnav">
+        <a href="/">Projections</a>
+        <a href="/players/">Players</a>
+        <a href="/games/">Scores</a>
+        <a href="/teams/">Teams</a>
+    </div>    
+    <div class="header">
+    <h1>GAMELOG FOR SPENCER STASTNEY</h1>
+    </div>
+    <div class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+    </div>
+    <div id="gamelog-container">
+        <table id="gamelog-table">
+        <colgroup>
+        <col style="width:70px">
+        <col style="width:94px">
+        <col span="17" style="width:48px"
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Date</th>
+                    <th>Team</th>
+                    <th></th>
+                    <th>Opp</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                    <th>EVG</th>
+                    <th>PPG</th>
+                    <th>SHG</th>
+                    <th>EVA</th>
+                    <th>PPA</th>
+                    <th>SHA</th>
+                </tr>
+            <tr id="filter-row">
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404150PIT.html" target="_blank">4/15/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/PIT.html" target="_blank">PIT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>13.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404130NSH.html" target="_blank">4/13/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CBJ.html" target="_blank">CBJ</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.93</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404120CHI.html" target="_blank">4/12/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.92</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404090NSH.html" target="_blank">4/9/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>2</td>
+                <td>14.58</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404070NJD.html" target="_blank">4/7/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>15.00</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404060NYI.html" target="_blank">4/6/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>13.18</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404040NSH.html" target="_blank">4/4/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>12.82</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404020NSH.html" target="_blank">4/2/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>15.17</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403300COL.html" target="_blank">3/30/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>19.88</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403280ARI.html" target="_blank">3/28/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>19.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403130WPG.html" target="_blank">3/13/2024</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>13.45</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312070NSH.html" target="_blank">12/7/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>18.33</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312050CHI.html" target="_blank">12/5/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>16.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312030BUF.html" target="_blank">12/3/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>17.48</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312020NSH.html" target="_blank">12/2/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>15.00</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311260NSH.html" target="_blank">11/26/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>11.65</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311240STL.html" target="_blank">11/24/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>16.03</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311220NSH.html" target="_blank">11/22/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>16.40</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311200NSH.html" target="_blank">11/20/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>16.60</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311180NSH.html" target="_blank">11/18/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+                <td>15.87</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304140NSH.html" target="_blank">4/14/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>18.82</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304130NSH.html" target="_blank">4/13/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>18.25</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304100CGY.html" target="_blank">4/10/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>16.05</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304080WPG.html" target="_blank">4/8/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>18.63</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304060NSH.html" target="_blank">4/6/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>19.42</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304040NSH.html" target="_blank">4/4/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                <td>17.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304030DAL.html" target="_blank">4/3/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>@</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>18.67</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304010NSH.html" target="_blank">4/1/2023</a></td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>vs</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>1</td>
+                <td>13.27</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            </tbody>
+        </table>
+        </div>
+    </body>
+    </html>
+    

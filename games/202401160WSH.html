@@ -1,0 +1,919 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>WSH vs ANA - 01/16/2024</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setupTableInteractions("home-boxscore");
+        setupTableInteractions("away-boxscore");
+
+        function setupTableInteractions(tableId) {
+            const table = document.getElementById(tableId);
+            const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+            const clearAllButton = document.getElementById("clear-all-btn");
+            const clearButton = document.getElementById("clear-filters-btn");
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            let showSelectedOnly = false;
+            let isDragging = false;
+
+            addFilters(table);
+            addSortToHeaders(table);
+
+            clearButton.addEventListener("click", () => {
+                document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+                filterTable(table);
+            });
+
+            clearAllButton.addEventListener("click", () => {
+                rows.forEach(row => row.classList.remove("selected-row"));
+                document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+                toggleSelectionBtn.textContent = "Show Selected Only";
+                showSelectedOnly = false;
+                filterTable(table);
+            });
+
+            rows.forEach(row => {
+                row.addEventListener("mousedown", () => { isDragging = true; toggleRowSelection(row); });
+                row.addEventListener("mouseenter", () => { if (isDragging) toggleRowSelection(row); });
+                row.addEventListener("mouseup", () => { isDragging = false; });
+            });
+
+            document.addEventListener("mouseup", () => { isDragging = false; });
+
+            toggleSelectionBtn.addEventListener("click", () => {
+                showSelectedOnly = !showSelectedOnly;
+                rows.forEach(row => {
+                    row.style.display = showSelectedOnly && !row.classList.contains("selected-row") ? "none" : "";
+                });
+                toggleSelectionBtn.textContent = showSelectedOnly ? "Show All" : "Show Selected Only";
+            });
+
+            function toggleRowSelection(row) { row.classList.toggle("selected-row"); }
+
+            function addFilters(table) {
+                const headerRow = table.querySelector("thead tr");
+                const filterRow = document.createElement("tr");
+                Array.from(headerRow.cells).forEach((header, index) => {
+                    const filterCell = document.createElement("td");
+                    const filterSelect = document.createElement("select");
+                    filterSelect.classList.add("filter-select");
+                    filterSelect.innerHTML = '<option value="">All</option>';
+                        const values = Array.from(new Set(
+                        Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                        .map(cell => cell.textContent.trim())
+                    )).sort();
+                    values.forEach(value => {
+                        const option = document.createElement("option");
+                        option.value = value;
+                        option.textContent = value;
+                        filterSelect.appendChild(option);
+                    });
+                    filterSelect.addEventListener("change", () => filterTable(table));
+                    filterCell.appendChild(filterSelect);
+                    filterRow.appendChild(filterCell);
+                });
+                table.querySelector("thead").appendChild(filterRow);
+            }
+
+            function filterTable(table) {
+                const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
+                rows.forEach(row => {
+                    const cells = Array.from(row.cells);
+                    const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+                    row.style.display = matchesFilter ? "" : "none";
+                });
+            }
+
+            function addSortToHeaders(table) {
+                const headers = table.querySelectorAll("thead th");
+                headers.forEach((header, index) => {
+                    header.style.cursor = "pointer";
+                    header.addEventListener("click", () => sortTable(table, index));
+                });
+            }
+
+            function sortTable(table, columnIndex) {
+                const rows = Array.from(table.querySelectorAll("tbody tr"));
+                const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
+                const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+                table.dataset.sortDirection = direction;
+                rows.sort((a, b) => {
+                    const cellA = a.cells[columnIndex].textContent.trim();
+                    const cellB = b.cells[columnIndex].textContent.trim();
+                    const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+                    const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+                    return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                });
+                rows.forEach(row => table.querySelector("tbody").appendChild(row));
+            }
+        }
+    });
+    </script>
+    </head>
+    <body>
+    <div class="topnav">
+        <a href="/">Projections</a>
+        <a href="/players/">Players</a>
+        <a href="/games/">Scores</a>
+        <a href="/teams/">Teams</a>
+    </div>    
+    <div class="header">
+    <h1>WSH vs ANA - 01/16/2024 Boxscore</h1>
+    </div>
+    <div class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+    </div>
+    <div id="boxscore-container">
+    
+        <table id="home-boxscore">
+        <caption>WSH (Home) Boxscore</caption>
+        <colgroup>
+            <col style="width:136px">
+            <col span="15" style="width:48px">
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Team</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                    <th>EVG</th>
+                    <th>PPG</th>
+                    <th>SHG</th>
+                    <th>EVA</th>
+                    <th>PPA</th>
+                    <th>SHA</th>
+            </thead>
+            <tbody>
+        
+                <tr>
+                    <td style="text-align:left"><a href="/player/alexeal01.html" target="_blank">ALEXANDER ALEXEYEV</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>16.85</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/aubekni01.html" target="_blank">NICOLAS AUBE-KUBEL</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>10.53</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/bearet01.html" target="_blank">ETHAN BEAR</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>16.12</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/carlsjo01.html" target="_blank">JOHN CARLSON</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>4</td>
+                    <td>25.62</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/dowdni01.html" target="_blank">NIC DOWD</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>15.02</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/edmunjo01.html" target="_blank">JOEL EDMUNDSON</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>16.65</td>
+                    <td>5</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/feherma01.html" target="_blank">MARTIN FEHERVARY</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>21.95</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/jenseni02.html" target="_blank">NICK JENSEN</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>21.33</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/kuzneev01.html" target="_blank">EVGENY KUZNETSOV</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>14.52</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/lapiehe01.html" target="_blank">HENDRIX LAPIERRE</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>9.55</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/malenbe01.html" target="_blank">BECK MALENSTYN</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>14.70</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/manthan01.html" target="_blank">ANTHONY MANTHA</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>16.22</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/mcmicco01.html" target="_blank">CONNOR MCMICHAEL</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>17.03</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/oshietj01.html" target="_blank">T.J. OSHIE</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>13.97</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/pacioma01.html" target="_blank">MAX PACIORETTY</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>14.78</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/protaal01.html" target="_blank">ALIAKSEI PROTAS</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>16.28</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/stromdy01.html" target="_blank">DYLAN STROME</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>16.42</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/wilsoto01.html" target="_blank">TOM WILSON</a></td>
+                    <td style="text-align:left"><a href="/team/WSH.html" target="_blank">WSH</a></td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>16.47</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><strong>Total</strong></td>
+                    <td>2</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>28</td>
+                    <td>21</td>
+                    <td>21</td>
+                    <td></td>
+                    <td>9</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>4</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <table id="away-boxscore">
+        <caption>ANA (Away) Boxscore</caption>
+        <colgroup>
+            <col style="width:136px">
+            <col span="15" style="width:48px">
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Team</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                    <th>EVG</th>
+                    <th>PPG</th>
+                    <th>SHG</th>
+                    <th>EVA</th>
+                    <th>PPA</th>
+                    <th>SHA</th>
+            </thead>
+            <tbody>
+        
+                <tr>
+                    <td style="text-align:left"><a href="/player/carlsle01.html" target="_blank">LEO CARLSSON</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>20.52</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/carrisa01.html" target="_blank">SAM CARRICK</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>12.55</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/fowleca01.html" target="_blank">CAM FOWLER</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>29.40</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/groulbe01.html" target="_blank">BENOIT OLIVIER GROULX</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>9.63</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/haggro01.html" target="_blank">ROBERT HAGG</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>13.08</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/henriad01.html" target="_blank">ADAM HENRIQUE</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>15.20</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/johnsro02.html" target="_blank">ROSS JOHNSTON</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>8.83</td>
+                    <td>5</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/killoal01.html" target="_blank">ALEX KILLORN</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>19.87</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/lacomja01.html" target="_blank">JACKSON LACOMBE</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>19.07</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/lindsgu01.html" target="_blank">GUSTAV LINDSTROM</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>15.77</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/lundeis01.html" target="_blank">ISAC LUNDESTROM</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>13.28</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/lyubuil01.html" target="_blank">ILYA LYUBUSHKIN</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>4</td>
+                    <td>21.77</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/mctavma01.html" target="_blank">MASON MCTAVISH</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>13.93</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/silfvja01.html" target="_blank">JAKOB SILFVERBERG</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>15.52</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/stromry01.html" target="_blank">RYAN STROME</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>15.57</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/terrytr01.html" target="_blank">TROY TERRY</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>21.48</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/vaakaur01.html" target="_blank">URHO VAAKANAINEN</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>16.72</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left"><a href="/player/vatrafr01.html" target="_blank">FRANK VATRANO</a></td>
+                    <td style="text-align:left"><a href="/team/ANA.html" target="_blank">ANA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>16.47</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><strong>Total</strong></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>24</td>
+                    <td>23</td>
+                    <td>11</td>
+                    <td></td>
+                    <td>9</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        </div>
+    </body>
+    </html>
+    

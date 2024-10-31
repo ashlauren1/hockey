@@ -3,7 +3,7 @@ from tqdm import tqdm  # Progress bar (optional)
 
 # Paths to CSV files
 historical_data_path = r'C:\Users\ashle\Documents\Projects\hockey\data\skaters2022_25.csv'
-upcoming_games_path = r'C:\Users\ashle\Documents\Projects\hockey\data\upcoming_games_skater.csv'
+upcoming_games_path = r'C:\Users\ashle\Documents\Projects\hockey\data\games_thisWeek.csv'
 output_file_path = r'C:\Users\ashle\Documents\Projects\hockey\projectedStats.csv'
 
 # Read the historical data and upcoming games data

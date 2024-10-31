@@ -1,0 +1,3958 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Gamelog for J.J. MOSER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("gamelog-table");
+        const headerRow = table.querySelector("thead tr:first-child");
+        const filterRow = document.querySelector("#filter-row");
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
+        const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+        const clearAllButton = document.getElementById("clear-all-btn");
+        const clearButton = document.getElementById("clear-filters-btn");
+        let showSelectedOnly = false;
+        let isDragging = false;
+
+        // Add filters and sorting
+        addFilters(table);
+        addSortToHeaders(table);
+
+        // "Clear Filters" button functionality
+        clearButton.addEventListener("click", () => {
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            filterTable();
+        });
+
+        // "Clear All" functionality
+        clearAllButton.addEventListener("click", () => {
+            document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
+            rows.forEach(row => {
+                row.classList.remove("selected-row");
+                row.style.display = "";
+            });
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            toggleSelectionBtn.textContent = "Show Selected Only";
+            showSelectedOnly = false;
+            filterTable();
+        });
+
+        rows.forEach(row => {
+            row.addEventListener("mousedown", function () {
+                isDragging = true;
+                toggleRowSelection(row);
+            });
+            row.addEventListener("mouseenter", function () {
+                if (isDragging) toggleRowSelection(row);
+            });
+            row.addEventListener("mouseup", () => isDragging = false);
+        });
+
+        document.addEventListener("mouseup", () => isDragging = false);
+
+        function toggleRowSelection(row) {
+            row.classList.toggle("selected-row");
+        }
+
+        toggleSelectionBtn.addEventListener("click", () => {
+            showSelectedOnly = !showSelectedOnly;
+            if (showSelectedOnly) {
+                rows.forEach(row => {
+                    row.style.display = row.classList.contains("selected-row") ? "" : "none";
+                });
+                toggleSelectionBtn.textContent = "Show All";
+            } else {
+                rows.forEach(row => (row.style.display = ""));
+                toggleSelectionBtn.textContent = "Show Selected Only";
+            }
+        });
+
+        function addFilters(table) {
+            const headerRow = table.querySelector("thead tr:first-child");
+            const filterRow = document.querySelector("#filter-row");
+
+            Array.from(headerRow.cells).forEach((header, index) => {
+                const filterCell = document.createElement("td");
+                const filterSelect = document.createElement("select");
+                filterSelect.classList.add("filter-select");
+
+                filterSelect.innerHTML = '<option value="">All</option>';
+                const values = Array.from(new Set(
+                    Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                    .map(cell => cell.textContent.trim())
+                )).sort();
+
+                values.forEach(value => {
+                    const option = document.createElement("option");
+                    option.value = value;
+                    option.textContent = value;
+                    filterSelect.appendChild(option);
+                });
+
+                filterSelect.addEventListener("change", filterTable);
+                filterCell.appendChild(filterSelect);
+                filterRow.appendChild(filterCell);
+            });
+        }
+
+        function filterTable() {
+            const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
+            rows.forEach(row => {
+                const cells = Array.from(row.cells);
+                const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+                row.style.display = matchesFilter ? "" : "none";
+            });
+        }
+
+        function addSortToHeaders(table) {
+            const headers = table.querySelectorAll("thead th");
+            headers.forEach((header, index) => {
+                header.style.cursor = "pointer";
+                header.addEventListener("click", function () {
+                    sortTable(table, index);
+                });
+            });
+        }
+
+        function sortTable(table, columnIndex) {
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
+            const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+            table.dataset.sortDirection = direction;
+
+            rows.sort((a, b) => {
+                const cellA = a.cells[columnIndex].textContent.trim();
+                const cellB = b.cells[columnIndex].textContent.trim();
+
+                const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+                const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+
+                return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+            });
+
+            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+        }
+    });
+    </script>
+    </head>
+    <body>
+    <div class="topnav">
+        <a href="/">Projections</a>
+        <a href="/players/">Players</a>
+        <a href="/games/">Scores</a>
+        <a href="/teams/">Teams</a>
+    </div>    
+    <div class="header">
+    <h1>GAMELOG FOR J.J. MOSER</h1>
+    </div>
+    <div class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+    </div>
+    <div id="gamelog-container">
+        <table id="gamelog-table">
+        <colgroup>
+        <col style="width:70px">
+        <col style="width:94px">
+        <col span="17" style="width:48px"
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Date</th>
+                    <th>Team</th>
+                    <th></th>
+                    <th>Opp</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                    <th>EVG</th>
+                    <th>PPG</th>
+                    <th>SHG</th>
+                    <th>EVA</th>
+                    <th>PPA</th>
+                    <th>SHA</th>
+                </tr>
+            <tr id="filter-row">
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410280TBL.html" target="_blank">10/28/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>20.42</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410260TBL.html" target="_blank">10/26/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WSH.html" target="_blank">WSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>22.77</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410240TBL.html" target="_blank">10/24/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>21.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410220NJD.html" target="_blank">10/22/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>@</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>20.87</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410210TOR.html" target="_blank">10/21/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>@</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>21.87</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410190OTT.html" target="_blank">10/19/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>@</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>21.17</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410170TBL.html" target="_blank">10/17/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>3</td>
+                <td>1</td>
+                <td>1</td>
+                <td>20.45</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410150TBL.html" target="_blank">10/15/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>23.55</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2024-25</td>
+                <td style="text-align:left"><a href="/games/202410110CAR.html" target="_blank">10/11/2024</a></td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>@</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>4</td>
+                <td>18.90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404170ARI.html" target="_blank">4/17/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>20.13</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404140CGY.html" target="_blank">4/14/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>17.70</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404120EDM.html" target="_blank">4/12/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>0</td>
+                <td>20.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404100VAN.html" target="_blank">4/10/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>17.70</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404090SEA.html" target="_blank">4/9/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>4</td>
+                <td>19.23</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404070SJS.html" target="_blank">4/7/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>18.87</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404050ARI.html" target="_blank">4/5/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>17.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202404030ARI.html" target="_blank">4/3/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>18.92</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403300ARI.html" target="_blank">3/30/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>22.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403280ARI.html" target="_blank">3/28/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>19.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403260ARI.html" target="_blank">3/26/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CBJ.html" target="_blank">CBJ</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>20.68</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403240ARI.html" target="_blank">3/24/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>4</td>
+                <td>21.40</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403220ARI.html" target="_blank">3/22/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>21.07</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403200DAL.html" target="_blank">3/20/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>19.10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403160ARI.html" target="_blank">3/16/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>18.45</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403140DET.html" target="_blank">3/14/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>19.65</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403120MIN.html" target="_blank">3/12/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>21.25</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403100CHI.html" target="_blank">3/10/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>20.37</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403080ARI.html" target="_blank">3/8/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>21.18</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403070ARI.html" target="_blank">3/7/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td>1</td>
+                <td>22.17</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403050ARI.html" target="_blank">3/5/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>17.32</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403030WSH.html" target="_blank">3/3/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WSH.html" target="_blank">WSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>20.90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202403010OTT.html" target="_blank">3/1/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>5</td>
+                <td>4</td>
+                <td>22.65</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402290TOR.html" target="_blank">2/29/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>23.50</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402270MTL.html" target="_blank">2/27/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>22.72</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402250WPG.html" target="_blank">2/25/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>21.88</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402210ARI.html" target="_blank">2/21/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>24.72</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402190ARI.html" target="_blank">2/19/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>0</td>
+                <td>22.85</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402180COL.html" target="_blank">2/18/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>24.28</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402160ARI.html" target="_blank">2/16/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>18.75</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402140ARI.html" target="_blank">2/14/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>19.98</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402120PHI.html" target="_blank">2/12/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>22.95</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402100NSH.html" target="_blank">2/10/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>5</td>
+                <td>2</td>
+                <td>26.33</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402080ARI.html" target="_blank">2/8/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>23.52</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401270CAR.html" target="_blank">1/27/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>26.05</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401250TBL.html" target="_blank">1/25/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>4</td>
+                <td>2</td>
+                <td>23.20</td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401240FLA.html" target="_blank">1/24/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/FLA.html" target="_blank">FLA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>19.53</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401220ARI.html" target="_blank">1/22/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/PIT.html" target="_blank">PIT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>23.75</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401200ARI.html" target="_blank">1/20/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>23.10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401180VAN.html" target="_blank">1/18/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>23.97</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401160CGY.html" target="_blank">1/16/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>26.08</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401130MIN.html" target="_blank">1/13/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>19.33</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401110ARI.html" target="_blank">1/11/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>1</td>
+                <td>21.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401090ARI.html" target="_blank">1/9/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>23.00</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401070ARI.html" target="_blank">1/7/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>18.02</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401040ARI.html" target="_blank">1/4/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>19.45</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401020ARI.html" target="_blank">1/2/2024</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/FLA.html" target="_blank">FLA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>20.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312230COL.html" target="_blank">12/23/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>7.17</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312210SJS.html" target="_blank">12/21/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>20.60</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312190ARI.html" target="_blank">12/19/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>0</td>
+                <td>2</td>
+                <td>20.73</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312160ARI.html" target="_blank">12/16/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>22.18</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312150ARI.html" target="_blank">12/15/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>25.38</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312120PIT.html" target="_blank">12/12/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/PIT.html" target="_blank">PIT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>3</td>
+                <td>25.82</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312110BUF.html" target="_blank">12/11/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>20.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312090BOS.html" target="_blank">12/9/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>15.82</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312070ARI.html" target="_blank">12/7/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.52</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312040ARI.html" target="_blank">12/4/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WSH.html" target="_blank">WSH</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>18.98</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202312020ARI.html" target="_blank">12/2/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+                <td>20.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311300ARI.html" target="_blank">11/30/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>21.10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311280ARI.html" target="_blank">11/28/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>4</td>
+                <td>23.82</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311250VEG.html" target="_blank">11/25/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>22.85</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311220ARI.html" target="_blank">11/22/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>24.15</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311200ARI.html" target="_blank">11/20/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>4</td>
+                <td>3</td>
+                <td>23.75</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311180WPG.html" target="_blank">11/18/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311160CBJ.html" target="_blank">11/16/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CBJ.html" target="_blank">CBJ</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5</td>
+                <td>23.02</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311140DAL.html" target="_blank">11/14/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>4</td>
+                <td>23.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311110NSH.html" target="_blank">11/11/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>4</td>
+                <td>20.17</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311090STL.html" target="_blank">11/9/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>20.17</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311070ARI.html" target="_blank">11/7/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>20.53</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311040ARI.html" target="_blank">11/4/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>16.67</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311020ARI.html" target="_blank">11/2/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>19.77</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311010ANA.html" target="_blank">11/1/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>18.58</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310300ARI.html" target="_blank">10/30/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>20.00</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310270ARI.html" target="_blank">10/27/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>20.02</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310240LAK.html" target="_blank">10/24/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>16.67</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310210ARI.html" target="_blank">10/21/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>1</td>
+                <td>0</td>
+                <td>16.42</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310190STL.html" target="_blank">10/19/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>17.63</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310170NYI.html" target="_blank">10/17/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>1</td>
+                <td>14.63</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310160NYR.html" target="_blank">10/16/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>14.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310130NJD.html" target="_blank">10/13/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>14.37</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304130ARI.html" target="_blank">4/13/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+                <td>28.07</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304100ARI.html" target="_blank">4/10/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>22.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304080ARI.html" target="_blank">4/8/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>6</td>
+                <td>1</td>
+                <td>2</td>
+                <td>24.40</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304060SEA.html" target="_blank">4/6/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>20.75</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304030SEA.html" target="_blank">4/3/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>21.47</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304010ARI.html" target="_blank">4/1/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>0</td>
+                <td>1</td>
+                <td>20.90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303310ARI.html" target="_blank">3/31/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>21.67</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303270ARI.html" target="_blank">3/27/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>5</td>
+                <td>22.92</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303260ARI.html" target="_blank">3/26/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>4</td>
+                <td>7</td>
+                <td>23.73</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303240COL.html" target="_blank">3/24/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>21.93</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303220EDM.html" target="_blank">3/22/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>27.87</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303210WPG.html" target="_blank">3/21/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>3</td>
+                <td>24.40</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303180ARI.html" target="_blank">3/18/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>4</td>
+                <td>23.47</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303160ARI.html" target="_blank">3/16/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>22.60</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303140ARI.html" target="_blank">3/14/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>24.10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303120ARI.html" target="_blank">3/12/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>2</td>
+                <td>22.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303110COL.html" target="_blank">3/11/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>4</td>
+                <td>22.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303090ARI.html" target="_blank">3/9/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>23.27</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303070ARI.html" target="_blank">3/7/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>22.85</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303050ARI.html" target="_blank">3/5/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>24.73</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303030ARI.html" target="_blank">3/3/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>22.92</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303010DAL.html" target="_blank">3/1/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>22.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302280ARI.html" target="_blank">2/28/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>20.97</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302260ARI.html" target="_blank">2/26/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>17.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302220ARI.html" target="_blank">2/22/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>17.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302190ARI.html" target="_blank">2/19/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CBJ.html" target="_blank">CBJ</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>17.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302180LAK.html" target="_blank">2/18/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>22.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302150ARI.html" target="_blank">2/15/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>4</td>
+                <td>1</td>
+                <td>21.68</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302130NSH.html" target="_blank">2/13/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>19.68</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302110STL.html" target="_blank">2/11/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12.80</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302100CHI.html" target="_blank">2/10/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>17.03</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302060ARI.html" target="_blank">2/6/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>23.92</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301280ANA.html" target="_blank">1/28/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>1</td>
+                <td>22.17</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301260ARI.html" target="_blank">1/26/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/STL.html" target="_blank">STL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>18.27</td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301240ARI.html" target="_blank">1/24/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>19.05</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301220ARI.html" target="_blank">1/22/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>18.85</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301210DAL.html" target="_blank">1/21/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>1</td>
+                <td>18.90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301190ARI.html" target="_blank">1/19/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WSH.html" target="_blank">WSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>18.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301170ARI.html" target="_blank">1/17/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>15.97</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301150WPG.html" target="_blank">1/15/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>17.75</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301140MIN.html" target="_blank">1/14/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>18.55</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301120ARI.html" target="_blank">1/12/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>19.20</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301100ARI.html" target="_blank">1/10/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12.55</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301080ARI.html" target="_blank">1/8/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/PIT.html" target="_blank">PIT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>16.12</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301060CHI.html" target="_blank">1/6/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>14.17</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301050PHI.html" target="_blank">1/5/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>10.92</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301030FLA.html" target="_blank">1/3/2023</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/FLA.html" target="_blank">FLA</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.57</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212310TBL.html" target="_blank">12/31/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>18.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212290ARI.html" target="_blank">12/29/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>20.67</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212270ARI.html" target="_blank">12/27/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>1</td>
+                <td>17.72</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212230ARI.html" target="_blank">12/23/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>19.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212210VEG.html" target="_blank">12/21/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>4</td>
+                <td>2</td>
+                <td>20.53</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212190ARI.html" target="_blank">12/19/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.52</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212170ARI.html" target="_blank">12/17/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+                <td>19.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212160ARI.html" target="_blank">12/16/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>5</td>
+                <td>22.52</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212130SJS.html" target="_blank">12/13/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>16.12</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212110ARI.html" target="_blank">12/11/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>19.35</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212090ARI.html" target="_blank">12/9/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>20.58</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212070EDM.html" target="_blank">12/7/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>19.53</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212050CGY.html" target="_blank">12/5/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>18.63</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212030VAN.html" target="_blank">12/3/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>20.55</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212010LAK.html" target="_blank">12/1/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>3</td>
+                <td>20.88</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211270MIN.html" target="_blank">11/27/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>21.10</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211250DET.html" target="_blank">11/25/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>21.77</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211230CAR.html" target="_blank">11/23/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>7</td>
+                <td>22.97</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211210NSH.html" target="_blank">11/21/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NSH.html" target="_blank">NSH</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>24.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211170VEG.html" target="_blank">11/17/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>1</td>
+                <td>26.45</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211130NYR.html" target="_blank">11/13/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>26.10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211120NJD.html" target="_blank">11/12/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>22.65</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211100NYI.html" target="_blank">11/10/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>2</td>
+                <td>24.93</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211080BUF.html" target="_blank">11/8/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>24.37</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211050WSH.html" target="_blank">11/5/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WSH.html" target="_blank">WSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>2</td>
+                <td>22.28</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211030ARI.html" target="_blank">11/3/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>4</td>
+                <td>20.60</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211010ARI.html" target="_blank">11/1/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/FLA.html" target="_blank">FLA</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5</td>
+                <td>22.35</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210300ARI.html" target="_blank">10/30/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>24.23</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210280ARI.html" target="_blank">10/28/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>23.82</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210250CBJ.html" target="_blank">10/25/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CBJ.html" target="_blank">CBJ</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>23.12</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210220OTT.html" target="_blank">10/22/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>23.97</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210200MTL.html" target="_blank">10/20/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>0</td>
+                <td>2</td>
+                <td>22.50</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210170TOR.html" target="_blank">10/17/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>22.35</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210150BOS.html" target="_blank">10/15/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>27.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210130PIT.html" target="_blank">10/13/2022</a></td>
+                <td><a href="/teams/ARI.html" target="_blank">ARI</a></td>
+                <td>@</td>
+                <td><a href="/teams/PIT.html" target="_blank">PIT</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>23.57</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+        
+            </tbody>
+        </table>
+        </div>
+    </body>
+    </html>
+    

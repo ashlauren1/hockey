@@ -1,0 +1,460 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Gamelog for LOUIS BELPEDIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("gamelog-table");
+        const headerRow = table.querySelector("thead tr:first-child");
+        const filterRow = document.querySelector("#filter-row");
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
+        const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+        const clearAllButton = document.getElementById("clear-all-btn");
+        const clearButton = document.getElementById("clear-filters-btn");
+        let showSelectedOnly = false;
+        let isDragging = false;
+
+        // Add filters and sorting
+        addFilters(table);
+        addSortToHeaders(table);
+
+        // "Clear Filters" button functionality
+        clearButton.addEventListener("click", () => {
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            filterTable();
+        });
+
+        // "Clear All" functionality
+        clearAllButton.addEventListener("click", () => {
+            document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
+            rows.forEach(row => {
+                row.classList.remove("selected-row");
+                row.style.display = "";
+            });
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            toggleSelectionBtn.textContent = "Show Selected Only";
+            showSelectedOnly = false;
+            filterTable();
+        });
+
+        rows.forEach(row => {
+            row.addEventListener("mousedown", function () {
+                isDragging = true;
+                toggleRowSelection(row);
+            });
+            row.addEventListener("mouseenter", function () {
+                if (isDragging) toggleRowSelection(row);
+            });
+            row.addEventListener("mouseup", () => isDragging = false);
+        });
+
+        document.addEventListener("mouseup", () => isDragging = false);
+
+        function toggleRowSelection(row) {
+            row.classList.toggle("selected-row");
+        }
+
+        toggleSelectionBtn.addEventListener("click", () => {
+            showSelectedOnly = !showSelectedOnly;
+            if (showSelectedOnly) {
+                rows.forEach(row => {
+                    row.style.display = row.classList.contains("selected-row") ? "" : "none";
+                });
+                toggleSelectionBtn.textContent = "Show All";
+            } else {
+                rows.forEach(row => (row.style.display = ""));
+                toggleSelectionBtn.textContent = "Show Selected Only";
+            }
+        });
+
+        function addFilters(table) {
+            const headerRow = table.querySelector("thead tr:first-child");
+            const filterRow = document.querySelector("#filter-row");
+
+            Array.from(headerRow.cells).forEach((header, index) => {
+                const filterCell = document.createElement("td");
+                const filterSelect = document.createElement("select");
+                filterSelect.classList.add("filter-select");
+
+                filterSelect.innerHTML = '<option value="">All</option>';
+                const values = Array.from(new Set(
+                    Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                    .map(cell => cell.textContent.trim())
+                )).sort();
+
+                values.forEach(value => {
+                    const option = document.createElement("option");
+                    option.value = value;
+                    option.textContent = value;
+                    filterSelect.appendChild(option);
+                });
+
+                filterSelect.addEventListener("change", filterTable);
+                filterCell.appendChild(filterSelect);
+                filterRow.appendChild(filterCell);
+            });
+        }
+
+        function filterTable() {
+            const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
+            rows.forEach(row => {
+                const cells = Array.from(row.cells);
+                const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+                row.style.display = matchesFilter ? "" : "none";
+            });
+        }
+
+        function addSortToHeaders(table) {
+            const headers = table.querySelectorAll("thead th");
+            headers.forEach((header, index) => {
+                header.style.cursor = "pointer";
+                header.addEventListener("click", function () {
+                    sortTable(table, index);
+                });
+            });
+        }
+
+        function sortTable(table, columnIndex) {
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
+            const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+            table.dataset.sortDirection = direction;
+
+            rows.sort((a, b) => {
+                const cellA = a.cells[columnIndex].textContent.trim();
+                const cellB = b.cells[columnIndex].textContent.trim();
+
+                const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+                const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+
+                return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+            });
+
+            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+        }
+    });
+    </script>
+    </head>
+    <body>
+    <div class="topnav">
+        <a href="/">Projections</a>
+        <a href="/players/">Players</a>
+        <a href="/games/">Scores</a>
+        <a href="/teams/">Teams</a>
+    </div>    
+    <div class="header">
+    <h1>GAMELOG FOR LOUIS BELPEDIO</h1>
+    </div>
+    <div class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+    </div>
+    <div id="gamelog-container">
+        <table id="gamelog-table">
+        <colgroup>
+        <col style="width:70px">
+        <col style="width:94px">
+        <col span="17" style="width:48px"
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Date</th>
+                    <th>Team</th>
+                    <th></th>
+                    <th>Opp</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                    <th>EVG</th>
+                    <th>PPG</th>
+                    <th>SHG</th>
+                    <th>EVA</th>
+                    <th>PPA</th>
+                    <th>SHA</th>
+                </tr>
+            <tr id="filter-row">
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311190PHI.html" target="_blank">11/19/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CBJ.html" target="_blank">CBJ</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>15.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311180PHI.html" target="_blank">11/18/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>12.48</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311150CAR.html" target="_blank">11/15/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>2</td>
+                <td>15.07</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311110LAK.html" target="_blank">11/11/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td>13.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311100ANA.html" target="_blank">11/10/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>10.80</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311070SJS.html" target="_blank">11/7/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>10.05</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311040PHI.html" target="_blank">11/4/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>13.40</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311030BUF.html" target="_blank">11/3/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>4</td>
+                <td>2</td>
+                <td>15.13</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202311010PHI.html" target="_blank">11/1/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>3</td>
+                <td>1</td>
+                <td>12.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310300PHI.html" target="_blank">10/30/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310280PHI.html" target="_blank">10/28/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>11.35</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202310260PHI.html" target="_blank">10/26/2023</a></td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>15.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            </tbody>
+        </table>
+        </div>
+    </body>
+    </html>
+    

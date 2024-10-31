@@ -18,20 +18,14 @@ def fetch_webpage(url):
     return response.text
 
 # Define the game IDs, home teams, and away teams
-games_info = {
-    "202410270COL": ("COL", "OTT"),
-    "202410270DET": ("DET", "EDM"),
-    "202410270NJD": ("NJD", "ANA"),
-    "202410270PHI": ("PHI", "MTL"),
-    "202410280BUF": ("BUF", "FLA"),
-    "202410280TBL": ("TBL", "NSH"),
-    "202410280VEG": ("VEG", "CGY"),
-    "202410280WPG": ("WPG", "TOR"),
-    "202410280UTA": ("UTA", "SJS"),
-    "202410240LAK": ("LAK", "SJS"),
-    "202410280CBJ": ("CBJ", "EDM"),
-    "202410280COL": ("COL", "CHI"),
-    "202410280VAN": ("VAN", "CAR")
+games_info = { 
+    "202410290BOS": ("BOS", "PHI"),
+    "202410290MTL": ("MTL", "SEA"),
+    "202410290OTT": ("OTT", "STL"),
+    "202410290WSH": ("WSH", "NYR"),
+    "202410290NYI": ("NYI", "ANA"),
+    "202410290PIT": ("PIT", "MIN"),
+    "202410290SJS": ("SJS", "LAK")
 }
 
 # File paths for the CSV outputs

@@ -1,7 +1,7 @@
 import pandas as pd
 
 # File paths
-input_file_path = r"C:\Users\ashle\Documents\Projects\hockey\historic.csv"
+input_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\historic.csv"
 output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\overRatio.csv"
 
 # Define the stat lines to evaluate
@@ -11,7 +11,8 @@ lines = {
     'PTS': [0.5, 1.5, 2.5],
     'SOG': [1.5, 2.5, 3.5, 4.5, 5.5],
     'BLK': [0.5, 1.5, 2.5, 3.5, 4.5],
-    'HIT': [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]
+    'HIT': [0.5, 1.5, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5],
+    'TOI': [17.5, 18.5, 18.75, 19, 19.5, 20, 20.25, 20.5, 20.75, 21, 21.25, 21.75, 22.25, 22.5, 22.75, 23, 23.25, 23.5, 23.75, 24, 24.25, 24.5, 24.75, 25, 25.25, 25.5]
 }
 
 # Load historical data

@@ -1,0 +1,1406 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Gamelog for REM PITLICK</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("gamelog-table");
+        const headerRow = table.querySelector("thead tr:first-child");
+        const filterRow = document.querySelector("#filter-row");
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
+        const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+        const clearAllButton = document.getElementById("clear-all-btn");
+        const clearButton = document.getElementById("clear-filters-btn");
+        let showSelectedOnly = false;
+        let isDragging = false;
+
+        // Add filters and sorting
+        addFilters(table);
+        addSortToHeaders(table);
+
+        // "Clear Filters" button functionality
+        clearButton.addEventListener("click", () => {
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            filterTable();
+        });
+
+        // "Clear All" functionality
+        clearAllButton.addEventListener("click", () => {
+            document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
+            rows.forEach(row => {
+                row.classList.remove("selected-row");
+                row.style.display = "";
+            });
+            document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+            toggleSelectionBtn.textContent = "Show Selected Only";
+            showSelectedOnly = false;
+            filterTable();
+        });
+
+        rows.forEach(row => {
+            row.addEventListener("mousedown", function () {
+                isDragging = true;
+                toggleRowSelection(row);
+            });
+            row.addEventListener("mouseenter", function () {
+                if (isDragging) toggleRowSelection(row);
+            });
+            row.addEventListener("mouseup", () => isDragging = false);
+        });
+
+        document.addEventListener("mouseup", () => isDragging = false);
+
+        function toggleRowSelection(row) {
+            row.classList.toggle("selected-row");
+        }
+
+        toggleSelectionBtn.addEventListener("click", () => {
+            showSelectedOnly = !showSelectedOnly;
+            if (showSelectedOnly) {
+                rows.forEach(row => {
+                    row.style.display = row.classList.contains("selected-row") ? "" : "none";
+                });
+                toggleSelectionBtn.textContent = "Show All";
+            } else {
+                rows.forEach(row => (row.style.display = ""));
+                toggleSelectionBtn.textContent = "Show Selected Only";
+            }
+        });
+
+        function addFilters(table) {
+            const headerRow = table.querySelector("thead tr:first-child");
+            const filterRow = document.querySelector("#filter-row");
+
+            Array.from(headerRow.cells).forEach((header, index) => {
+                const filterCell = document.createElement("td");
+                const filterSelect = document.createElement("select");
+                filterSelect.classList.add("filter-select");
+
+                filterSelect.innerHTML = '<option value="">All</option>';
+                const values = Array.from(new Set(
+                    Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                    .map(cell => cell.textContent.trim())
+                )).sort();
+
+                values.forEach(value => {
+                    const option = document.createElement("option");
+                    option.value = value;
+                    option.textContent = value;
+                    filterSelect.appendChild(option);
+                });
+
+                filterSelect.addEventListener("change", filterTable);
+                filterCell.appendChild(filterSelect);
+                filterRow.appendChild(filterCell);
+            });
+        }
+
+        function filterTable() {
+            const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
+            rows.forEach(row => {
+                const cells = Array.from(row.cells);
+                const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+                row.style.display = matchesFilter ? "" : "none";
+            });
+        }
+
+        function addSortToHeaders(table) {
+            const headers = table.querySelectorAll("thead th");
+            headers.forEach((header, index) => {
+                header.style.cursor = "pointer";
+                header.addEventListener("click", function () {
+                    sortTable(table, index);
+                });
+            });
+        }
+
+        function sortTable(table, columnIndex) {
+            const rows = Array.from(table.querySelectorAll("tbody tr"));
+            const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
+            const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+            table.dataset.sortDirection = direction;
+
+            rows.sort((a, b) => {
+                const cellA = a.cells[columnIndex].textContent.trim();
+                const cellB = b.cells[columnIndex].textContent.trim();
+
+                const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+                const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+
+                return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+            });
+
+            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+        }
+    });
+    </script>
+    </head>
+    <body>
+    <div class="topnav">
+        <a href="/">Projections</a>
+        <a href="/players/">Players</a>
+        <a href="/games/">Scores</a>
+        <a href="/teams/">Teams</a>
+    </div>    
+    <div class="header">
+    <h1>GAMELOG FOR REM PITLICK</h1>
+    </div>
+    <div class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+    </div>
+    <div id="gamelog-container">
+        <table id="gamelog-table">
+        <colgroup>
+        <col style="width:70px">
+        <col style="width:94px">
+        <col span="17" style="width:48px"
+        </colgroup>
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Date</th>
+                    <th>Team</th>
+                    <th></th>
+                    <th>Opp</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                    <th>EVG</th>
+                    <th>PPG</th>
+                    <th>SHG</th>
+                    <th>EVA</th>
+                    <th>PPA</th>
+                    <th>SHA</th>
+                </tr>
+            <tr id="filter-row">
+            </tr>
+        </thead>
+        <tbody>
+    
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202402090CHI.html" target="_blank">2/9/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>9.40</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401240SEA.html" target="_blank">1/24/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>1</td>
+                <td>0</td>
+                <td>13.52</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401220VAN.html" target="_blank">1/22/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>12.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401190CHI.html" target="_blank">1/19/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>4</td>
+                <td>16.88</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401180BUF.html" target="_blank">1/18/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>15.07</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401160CHI.html" target="_blank">1/16/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3</td>
+                <td>2</td>
+                <td>20.87</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401130CHI.html" target="_blank">1/13/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>17.47</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401110WPG.html" target="_blank">1/11/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>15.85</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2023-24</td>
+                <td style="text-align:left"><a href="/games/202401090CHI.html" target="_blank">1/9/2024</a></td>
+                <td><a href="/teams/CHI.html" target="_blank">CHI</a></td>
+                <td>vs</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>18.80</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304130MTL.html" target="_blank">4/13/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>14.97</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304120NYI.html" target="_blank">4/12/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>17.98</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304080TOR.html" target="_blank">4/8/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>14.55</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304060MTL.html" target="_blank">4/6/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WSH.html" target="_blank">WSH</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>16.07</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304040MTL.html" target="_blank">4/4/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>10.72</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202304010MTL.html" target="_blank">4/1/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>12.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303230BOS.html" target="_blank">3/23/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>13.33</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303210MTL.html" target="_blank">3/21/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>9.75</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303180TBL.html" target="_blank">3/18/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>16.72</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303160FLA.html" target="_blank">3/16/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/FLA.html" target="_blank">FLA</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>15.35</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303140PIT.html" target="_blank">3/14/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/PIT.html" target="_blank">PIT</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>14.72</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303130MTL.html" target="_blank">3/13/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/COL.html" target="_blank">COL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>5.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303110MTL.html" target="_blank">3/11/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>14.30</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303090MTL.html" target="_blank">3/9/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYR.html" target="_blank">NYR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>11.53</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303070MTL.html" target="_blank">3/7/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>16.67</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303050VEG.html" target="_blank">3/5/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/VEG.html" target="_blank">VEG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>15.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303030ANA.html" target="_blank">3/3/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>15.85</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202303020LAK.html" target="_blank">3/2/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12.57</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302280SJS.html" target="_blank">2/28/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/SJS.html" target="_blank">SJS</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>14.42</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302250MTL.html" target="_blank">2/25/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>14.78</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302240PHI.html" target="_blank">2/24/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/PHI.html" target="_blank">PHI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>16.62</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302210NJD.html" target="_blank">2/21/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/NJD.html" target="_blank">NJD</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>0</td>
+                <td>12.67</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302180TOR.html" target="_blank">2/18/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>11.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302160CAR.html" target="_blank">2/16/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/CAR.html" target="_blank">CAR</a></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>10.07</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202302110MTL.html" target="_blank">2/11/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/NYI.html" target="_blank">NYI</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>14.70</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301310MTL.html" target="_blank">1/31/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>16.48</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301280OTT.html" target="_blank">1/28/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/OTT.html" target="_blank">OTT</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>18.98</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301260MTL.html" target="_blank">1/26/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>14.22</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301240MTL.html" target="_blank">1/24/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/BOS.html" target="_blank">BOS</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>19.83</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301210MTL.html" target="_blank">1/21/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>15.48</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301190MTL.html" target="_blank">1/19/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/FLA.html" target="_blank">FLA</a></td>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>11.13</td>
+                <td>2</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202301170MTL.html" target="_blank">1/17/2023</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>2</td>
+                <td>12.85</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212170MTL.html" target="_blank">12/17/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TBL.html" target="_blank">TBL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>9.73</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212150MTL.html" target="_blank">12/15/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/ANA.html" target="_blank">ANA</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>8.43</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212120MTL.html" target="_blank">12/12/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/CGY.html" target="_blank">CGY</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td>5.90</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212100MTL.html" target="_blank">12/10/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/LAK.html" target="_blank">LAK</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>6.82</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212060SEA.html" target="_blank">12/6/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/SEA.html" target="_blank">SEA</a></td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>9.52</td>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212050VAN.html" target="_blank">12/5/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/VAN.html" target="_blank">VAN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>7.98</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202212030EDM.html" target="_blank">12/3/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/EDM.html" target="_blank">EDM</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>6.33</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211030WPG.html" target="_blank">11/3/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/WPG.html" target="_blank">WPG</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>10.38</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202211010MIN.html" target="_blank">11/1/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>14.13</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210270BUF.html" target="_blank">10/27/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/BUF.html" target="_blank">BUF</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>13.25</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210250MTL.html" target="_blank">10/25/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/MIN.html" target="_blank">MIN</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2</td>
+                <td>1</td>
+                <td>11.68</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210220MTL.html" target="_blank">10/22/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/DAL.html" target="_blank">DAL</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+                <td>14.83</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210140DET.html" target="_blank">10/14/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>@</td>
+                <td><a href="/teams/DET.html" target="_blank">DET</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>12.75</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            <tr>
+                <td style="text-align:left">2022-23</td>
+                <td style="text-align:left"><a href="/games/202210120MTL.html" target="_blank">10/12/2022</a></td>
+                <td><a href="/teams/MTL.html" target="_blank">MTL</a></td>
+                <td>vs</td>
+                <td><a href="/teams/TOR.html" target="_blank">TOR</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+                <td>11.55</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        
+            </tbody>
+        </table>
+        </div>
+    </body>
+    </html>
+    

@@ -217,10 +217,10 @@ for player_id, player_data in grouped_data:
         html_content += f'''
             <tr>
                 <td style="text-align:left">{row['Season']}</td>
-                <td style="text-align:left"><a href="/games/{row['GameID']}.html" target="_blank">{row['Date']}</a></td>
-                <td><a href="/teams/{row['Team']}.html" target="_blank">{row['Team']}</a></td>
+                <td style="text-align:left"><a href="/hockey/games/{row['GameID']}.html" target="_blank">{row['Date']}</a></td>
+                <td><a href="/hockey/teams/{row['Team']}.html" target="_blank">{row['Team']}</a></td>
                 <td>{'vs' if row['Is_Home'] == 1 else '@'}</td>
-                <td><a href="/teams/{row['Opp']}.html" target="_blank">{row['Opp']}</a></td>
+                <td><a href="/hockey/teams/{row['Opp']}.html" target="_blank">{row['Opp']}</a></td>
                 <td>{row['G']}</td>
                 <td>{row['A']}</td>
                 <td>{row['PTS']}</td>

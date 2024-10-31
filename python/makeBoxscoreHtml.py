@@ -195,8 +195,8 @@ for game_id, game_data in grouped_data:
         for _, row in team_data.iterrows():
             team_table += f'''
                 <tr>
-                    <td style="text-align:left"><a href="/player/{row['PlayerID']}.html" target="_blank">{row['Player']}</a></td>
-                    <td style="text-align:left"><a href="/team/{row['Team']}.html" target="_blank">{row['Team']}</a></td>
+                    <td style="text-align:left"><a href="/hockey/players/{row['PlayerID']}.html" target="_blank">{row['Player']}</a></td>
+                    <td style="text-align:left"><a href="/hockey/teams/{row['Team']}.html" target="_blank">{row['Team']}</a></td>
                     <td>{row['G']}</td>
                     <td>{row['A']}</td>
                     <td>{row['PTS']}</td>

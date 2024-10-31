@@ -168,7 +168,7 @@ for team_id, team_data in grouped_data:
         <a href="/hockey/games/">Scores</a>
         <a href="/hockey/teams/">Teams</a>
     </div>    
-    <div class="header">
+    <div id="page-title" class="header">
     <h1>{team_name} Gamelog</h1>
     </div>
     <div class="button-container">
@@ -176,6 +176,8 @@ for team_id, team_data in grouped_data:
         <button id="clear-filters-btn">Remove Filters</button>
         <button id="clear-all-btn">Clear All</button>
     </div>
+    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    
     <div id="team-container">
         <table id="team-table">
         <colgroup>

@@ -19,14 +19,15 @@ def fetch_webpage(url):
 
 # Define the game IDs, home teams, and away teams
 games_info = { 
-    "202410290BOS": ("BOS", "PHI"),
-    "202410290MTL": ("MTL", "SEA"),
-    "202410290OTT": ("OTT", "STL"),
-    "202410290WSH": ("WSH", "NYR"),
-    "202410290NYI": ("NYI", "ANA"),
-    "202410290PIT": ("PIT", "MIN"),
-    "202410290SJS": ("SJS", "LAK")
+    "202410300CBJ": ("CBJ", "NYI"),
+    "202410300DET": ("DET", "WPG"),
+    "202410300COL": ("COL", "TBL"),
+    "202410300UTA": ("UTA", "CGY"),
+    "202410300VAN": ("VAN", "NJD"),
+    "202410300LAK": ("LAK", "VEG")
 }
+
+
 
 # File paths for the CSV outputs
 base_path = r"C:\Users\ashle\Documents\Projects\hockey"

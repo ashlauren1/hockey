@@ -164,10 +164,10 @@ for player_id, player_data in grouped_data:
     </head>
     <body>
     <div class="topnav">
-        <a href="/">Projections</a>
-        <a href="/players/">Players</a>
-        <a href="/games/">Scores</a>
-        <a href="/teams/">Teams</a>
+        <a href="/hockey/">Projections</a>
+        <a href="/hockey/players/">Players</a>
+        <a href="/hockey/games/">Scores</a>
+        <a href="/hockey/teams/">Teams</a>
     </div>    
     <div class="header">
     <h1>GAMELOG FOR {player_name}</h1>

@@ -17,9 +17,18 @@ html_content = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Directory</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
 </head>
 <body>
+ <div class="topnav">
+        <a href="/hockey/">Projections</a>
+        <a href="/hockey/players/">Players</a>
+        <a href="/hockey/games/">Scores</a>
+        <a href="/hockey/teams/">Teams</a>
+    </div>    
+    <div id="page-title" class="header">
     <h1 style="text-align: center;">Team Directory</h1>
+    </div>
     <table id="player-table">
         <thead>
             <tr>

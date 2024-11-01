@@ -160,13 +160,12 @@ with open(output_file_path, 'w') as f:
 <title>Hockey!</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel=Stylesheet href=stylesheet.css>
+<link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
 
-<script language="JavaScript">
-
+<script>
 document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("data-table");
     const headerRow = table.querySelector("thead tr:first-child");
-    const filterRow = document.querySelector("#filter-row");
     const rows = Array.from(table.querySelectorAll("tbody tr"));
     const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
     const clearAllButton = document.getElementById("clear-all-btn");
@@ -179,14 +178,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add checkboxes to the header row
     const checkboxHeader = document.createElement("th");
-    checkboxHeader.style.width = "40px";
-    checkboxHeader.textContent = "Select";
+    checkboxHeader.style.width = "38px";
+    checkboxHeader.textContent = "";
     headerRow.prepend(checkboxHeader);
 
     // Add checkboxes to each row in the table
     rows.forEach(row => {
         const checkboxCell = document.createElement("td");
-        checkboxCell.style.width = "40px";
+        checkboxCell.style.width = "38px";
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.classList.add("event-checkbox");
@@ -203,41 +202,18 @@ document.addEventListener("DOMContentLoaded", function () {
         checkbox.addEventListener("change", calculateCombinedProbability);
     });
 
-    // Combined probability result display
-    const resultContainer = document.createElement("p");
-    resultContainer.id = "result";
-    resultContainer.textContent = " ";
+    // Calculate combined probability for selected rows
+    function calculateCombinedProbability() {
+        const checkboxes = document.querySelectorAll(".event-checkbox:checked");
+        let combinedProbability = 1;
 
-    // Add filters and sorting
-    addFilters(table);
-    addSortToHeaders(table);
-
-    // "Clear Filters" button functionality
-    clearButton.addEventListener("click", () => {
-        document.querySelectorAll(".filter-select").forEach(select => select.value = "");
-		document.querySelectorAll(".type-filter").forEach(checkbox => checkbox.checked = true);
-        filterTable();
-    });
-
-    // "Clear All" functionality
-    clearAllButton.addEventListener("click", () => {
-        // Uncheck all checkboxes
-        document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
-		document.querySelectorAll(".type-filter").forEach(checkbox => checkbox.checked = true);
-
-        // Deselect all rows and show all rows
-        rows.forEach(row => {
-            row.classList.remove("selected-row");
-            row.style.display = "";
+        checkboxes.forEach(checkbox => {
+            const prob = parseFloat(checkbox.dataset.prob);
+            combinedProbability *= prob;
         });
-		document.querySelectorAll(".filter-select").forEach(select => select.value = "");
-		toggleSelectionBtn.textContent = "Show Selected Only";
-        showSelectedOnly = false;
-		
-		calculateCombinedProbability();
-        filterTable();
-    });
 
+        document.getElementById("result").textContent = `Combined Probability: ${(combinedProbability * 100).toFixed(2)}%`;
+    }
 
     // Multi-row selection by dragging
     rows.forEach(row => {
@@ -274,61 +250,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Calculate combined probability for selected rows
-    function calculateCombinedProbability() {
-        const checkboxes = document.querySelectorAll(".event-checkbox:checked");
-        let combinedProbability = 1;
-
-        checkboxes.forEach(checkbox => {
-            const prob = parseFloat(checkbox.dataset.prob);
-            combinedProbability *= prob;
-        });
-
-        document.getElementById("result").textContent = `Combined Probability: ${(combinedProbability * 100).toFixed(2)}%`;
-    }
-
-    // Add filters function
-    function addFilters(table) {
-        const headerRow = table.querySelector("thead tr:first-child");
-        const filterRow = document.querySelector("#filter-row");
-
-        Array.from(headerRow.cells).forEach((header, index) => {
-            const filterCell = document.createElement("td");
-            const filterSelect = document.createElement("select");
-            filterSelect.classList.add("filter-select");
-
-            filterSelect.innerHTML = '<option value="">All</option>';
-            const values = Array.from(new Set(
-                Array.from(table.querySelectorAll(`tbody tr td:nth-child(${index + 1})`))
-                .map(cell => cell.textContent.trim())
-            )).sort();
-
-            values.forEach(value => {
-                const option = document.createElement("option");
-                option.value = value;
-                option.textContent = value;
-                filterSelect.appendChild(option);
-            });
-
-            filterSelect.addEventListener("change", filterTable);
-            filterCell.appendChild(filterSelect);
-            filterRow.appendChild(filterCell);
-        });
-    }
-
-    // Filter table based on selected rows if "Show Selected Only" is active
-    function filterTable() {
-        const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
-
-        rows.forEach(row => {
-            const cells = Array.from(row.cells);
-            const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
-            const isSelected = row.classList.contains("selected-row");
-            row.style.display = matchesFilter && (!showSelectedOnly || isSelected) ? "" : "none";
-        });
-    }
-
     // Add sorting to each header
+    addSortToHeaders(table);
+
     function addSortToHeaders(table) {
         const headers = table.querySelectorAll("thead th");
         headers.forEach((header, index) => {
@@ -358,12 +282,119 @@ document.addEventListener("DOMContentLoaded", function () {
 
         rows.forEach(row => table.querySelector("tbody").appendChild(row));
     }
-});
-document.addEventListener("DOMContentLoaded", function () {
-    const gradientColumns = ["Diff.", "Prob.", "2024-25", "H2H", "L5", "L10", "L20", "2023-24", "All"];
+
+    // Add filters
+    addFilters(table);
+
+    function addFilters(table) {
+        const filterColumns = ["Game", "Team", "Type", "Stat"];
+        const filterHeaders = Array.from(table.querySelectorAll("thead th"));
+        const filterIndexes = filterColumns.map(col => filterHeaders.findIndex(header => header.textContent.trim() === col));
+
+        filterColumns.forEach((colName, i) => {
+            const index = filterIndexes[i];
+            const values = Array.from(new Set(
+                Array.from(table.querySelectorAll(`tbody tr td:nth-child(${index + 1})`))
+                .map(cell => cell.textContent.trim())
+            )).sort();
+
+            // For each value, create a checkbox
+            const filterDiv = document.getElementById(`${colName.toLowerCase()}-filters`);
+            if (filterDiv) {
+                values.forEach(value => {
+                    const label = document.createElement('label');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = value;
+                    checkbox.checked = true;
+                    checkbox.classList.add(`${colName.toLowerCase()}-filter`);
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(value));
+                    filterDiv.appendChild(label);
+
+                    // Add event listener to the checkbox
+                    checkbox.addEventListener('change', filterTable);
+                });
+            }
+        });
+    }
+
+    // Filter table based on selected filters
+    function filterTable() {
+        const filterColumns = ["Game", "Team", "Type", "Stat"];
+        const filterClasses = ["game-filter", "team-filter", "type-filter", "stat-filter"];
+        const filterHeaders = Array.from(table.querySelectorAll("thead th"));
+        const filterIndexes = filterColumns.map(col => filterHeaders.findIndex(header => header.textContent.trim() === col));
+
+        const filters = filterClasses.map(cls => {
+            const checkboxes = document.querySelectorAll(`.${cls}:checked`);
+            return Array.from(checkboxes).map(cb => cb.value);
+        });
+		
+		const showSelectedOnly = toggleSelectionBtn.textContent === "Show All"; // Check if "Show Selected Only" mode is active
+
+        rows.forEach(row => {
+            const cells = Array.from(row.cells);
+            let matchesFilter = true;
+			
+			for (let i = 0; i < filters.length; i++) {
+				const filterValues = filters[i];
+				const cellValue = cells[filterIndexes[i]].textContent.trim();
+
+				if (filterValues.length === 0) {
+                // No checkboxes checked in this category; no rows should match
+					matchesFilter = false;
+					break;
+				} else if (!filterValues.includes(cellValue)) {
+                // Cell value does not match any selected filter values
+					matchesFilter = false;
+					break;
+            }
+        }
+		
+		if (matchesFilter && (!showSelectedOnly || row.classList.contains("selected-row"))) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+
+    // "Clear Filters" button functionality
+    clearButton.addEventListener("click", () => {
+        const filterClasses = ["game-filter", "team-filter", "type-filter", "stat-filter"];
+        filterClasses.forEach(cls => {
+            document.querySelectorAll(`.${cls}`).forEach(checkbox => checkbox.checked = true);
+        });
+        filterTable();
+    });
+
+    // "Clear All" functionality
+    clearAllButton.addEventListener("click", () => {
+        // Uncheck all event checkboxes
+        document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
+
+        // Reset filters
+        const filterClasses = ["game-filter", "team-filter", "type-filter", "stat-filter"];
+        filterClasses.forEach(cls => {
+            document.querySelectorAll(`.${cls}`).forEach(checkbox => checkbox.checked = true);
+        });
+
+        rows.forEach(row => {
+            row.classList.remove("selected-row");
+            row.style.display = "";
+        });
+        toggleSelectionBtn.textContent = "Show Selected Only";
+        showSelectedOnly = false;
+        
+        calculateCombinedProbability();
+        filterTable();
+    });
+
+    // Gradient color code...
+    const gradientColumns = ["Diff.", "Prob.", "2024-25", "L5", "L10", "L20", "2023-24", "All"];
 
     // Get column indexes based on column headers
-    const table = document.getElementById("data-table");
     const headers = Array.from(table.querySelectorAll("thead th"));
     const columnIndexes = gradientColumns.map(col => headers.findIndex(header => header.textContent.trim() === col));
 
@@ -411,81 +442,53 @@ document.addEventListener("DOMContentLoaded", function () {
         return `rgb(${red}, ${green}, ${blue})`;
     }
 });
-document.addEventListener("DOMContentLoaded", function () {
-    const typeFilters = document.querySelectorAll(".type-filter");
-    const dataTable = document.getElementById("data-table");
-
-    // Event listener for each checkbox
-    typeFilters.forEach(filter => {
-        filter.addEventListener("change", filterTableByType);
-    });
-
-    function filterTableByType() {
-        const selectedTypes = Array.from(typeFilters)
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.value);
-        
-        const rows = dataTable.querySelectorAll("tbody tr");
-
-        rows.forEach(row => {
-            const typeCell = row.querySelector("td:nth-child(5)"); // Assuming 'Type' is the 4th column
-            const typeValue = typeCell ? typeCell.textContent.trim() : "";
-
-            // Show row if type is in selected types, hide otherwise
-            row.style.display = selectedTypes.length === 0 || selectedTypes.includes(typeValue) ? "" : "none";
-        });
-    }
-});
-
-
 </script>
-
-
 </head>
-    <body>
+<body>
     <div class="topnav">
         <a href="/hockey/">Projections</a>
         <a href="/hockey/players/">Players</a>
         <a href="/hockey/games/">Scores</a>
         <a href="/hockey/teams/">Teams</a>
     </div>    
-<div id="page-title" class="header">
-<h1>Today's Probabilities and Projections</h1>
-</div>
+    <div id="page-title" class="header">
+        <h1>Today's Probabilities and Projections</h1>
+    </div>
 
+    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
 
-<div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <div id="multi-filters">
+        <div id="game-filters"><p>Games:</p></div>
+        <div id="team-filters"><p>Teams:</p></div>
+        <div id="type-filters"><p>Types:</p></div>
+        <div id="stat-filters"><p>Stats:</p></div>
+    </div>
 
-<p>Types:</p>
-<div id="type-filters">
-	<label><input type="checkbox" value="Gob." class="type-filter" checked> Gob.</label>
-	<label><input type="checkbox" value="Norm." class="type-filter" checked> Norm.</label>
-    <label><input type="checkbox" value="Dem." class="type-filter" checked> Dem.</label>
-</div>
+    <p style="width:50%; margin-left:12px; margin-top:14px; margin-bottom:0px">Click the Checkboxes to Calculate the Combined Probability:</p>
+    <div id="resultAndButtons">
+        <div id="result-container">
+            <div id="result">
+                Combined Probability:
+            </div>
+        </div>
 
-<p style="width:50%">Click the Checkboxes to Calculate the Combined Probability:</p>
-<div id="resultAndButtons">
-<div id="result-container">
-<div id="result">
-Combined Probability:
-</div>
-</div>
-
-<div class="button-container">
-    <button id="toggle-selection-btn">Show Selected</button>
-    <button id="clear-filters-btn">Remove Filters</button>
-	<button id="clear-all-btn">Clear All</button>
-</div>
-</div>
+        <div class="button-container">
+            <button id="toggle-selection-btn">Show Selected Only</button>
+            <button id="clear-filters-btn">Remove Filters</button>
+            <button id="clear-all-btn">Clear All</button>
+        </div>
+    </div>
 
 <div id="data-table-container">
 <table id="data-table">
+
 <colgroup>
-<col style="width:24px">
-<col style="width:86px">
-<col style="width:24px">
-<col style="width:112px">
-<col span="13" style="width:54px">
+<col style="width:38px">
+<col style="width:90px">
+<col style="width:48px">
+<col style="width:164px">
+<col span="3" style="width:48px">
+<col span="10" style="width:68px">
 </colgroup>
         <thead>
             <tr>
@@ -493,7 +496,6 @@ Combined Probability:
                 <th>Proj.</th><th>Diff.</th><th>Prob.</th><th>2024-25</th><th>H2H</th>
                 <th>L5</th><th>L10</th><th>L20</th><th>2023-24</th><th>All</th>
             </tr>
-    <tr id="filter-row"></tr>
 </thead>
 <tbody>
     """)

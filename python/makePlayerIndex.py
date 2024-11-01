@@ -17,45 +17,91 @@ html_content = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Directory</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("player-table");
+    const headerRow = table.querySelector("thead tr:first-child");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+    // Add sorting to each header
+    addSortToHeaders(table);
+
+    function addSortToHeaders(table) {
+        const headers = table.querySelectorAll("thead th");
+        headers.forEach((header, index) => {
+            header.style.cursor = "pointer";
+            header.addEventListener("click", function () {
+                sortTable(table, index);
+            });
+        });
+    }
+
+    // Sort the table by column
+    function sortTable(table, columnIndex) {
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
+        const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
+        const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+        table.dataset.sortDirection = direction;
+
+        rows.sort((a, b) => {
+            const cellA = a.cells[columnIndex].textContent.trim();
+            const cellB = b.cells[columnIndex].textContent.trim();
+
+            const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
+            const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+
+            return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+        });
+
+        rows.forEach(row => table.querySelector("tbody").appendChild(row));
+    }
+});
+</script>
+
 </head>
 <body>
-    <h1 style="text-align: center;">Player Directory</h1>
+    <div class="topnav">
+        <a href="/hockey/">Projections</a>
+        <a href="/hockey/players/">Players</a>
+        <a href="/hockey/games/">Scores</a>
+        <a href="/hockey/teams/">Teams</a>
+    </div>    
+    <div id="page-title" class="header">
+    <h1>Player Directory</h1>
+    </div>
     <table id="player-table">
+    <thead>
+        <tr>
+            <th style="width:60%">Player</th>
+            <th style="width:20%">Team</th>
+            <th style="width:20%">Position</th>
+        </tr>
+    </thead>
+    <tbody>
 """
 
 # Generate table rows grouped by team
-current_team = None
 for _, row in roster_data.iterrows():
-    team = row["Team"]
+    team_id = row["TeamID"]
+    team_name = row["Team"]
     player_id = row["PlayerID"]
     player_name = row["Player"]
     position = row["Position"]
 
-    # Add a new team header if the team changes
-    if team != current_team:
-        html_content += f"""
-        <tr class="team-header">
-            <th colspan="3"><a href="/hockey/teams/{team}.html">{team}</a></th>
-        </tr>
-        <tr>
-            <th>Player</th>
-            <th>Team</th>
-            <th>Position</th>
-        </tr>
-        """
-        current_team = team
-
     # Add player row
     html_content += f"""
-        <tr class="player-row">
+        <tr>
             <td><a href="/hockey/players/{player_id}.html">{player_name}</a></td>
-            <td><a href="/hockey/teams/{team}.html">{team}</a></td>
+            <td><a href="/hockey/teams/{team_id}.html">{team_id}</a></td>
             <td>{position}</td>
         </tr>
     """
 
-# Close the table and HTML tags
+# Close the single <tbody>, table, and HTML tags
 html_content += """
+    </tbody>
     </table>
 </body>
 </html>

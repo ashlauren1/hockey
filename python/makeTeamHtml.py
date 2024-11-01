@@ -27,6 +27,7 @@ for team_id, team_data in grouped_data:
     <head>
     <title>{team_name}</title>
     <link rel=Stylesheet href=stylesheet.css>
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
 
     <script>
     document.addEventListener("DOMContentLoaded", function () {{

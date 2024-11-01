@@ -35,6 +35,7 @@ for game_id, game_data in grouped_data:
     <title>{game_name}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel=Stylesheet href=stylesheet.css>
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
     
     <script>
     document.addEventListener("DOMContentLoaded", function () {{

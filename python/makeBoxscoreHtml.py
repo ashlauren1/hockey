@@ -155,7 +155,7 @@ for game_id, game_data in grouped_data:
     <div id="page-title" class="header">
     <h1>{game_name} Boxscore</h1>
     </div>
-    <div class="button-container">
+    <div class="button-container" style="margin-left:12px; width:95%">
         <button id="toggle-selection-btn">Show Selected Only</button>
         <button id="clear-filters-btn">Remove Filters</button>
         <button id="clear-all-btn">Clear All</button>

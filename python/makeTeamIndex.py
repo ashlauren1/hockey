@@ -27,9 +27,11 @@ html_content = """
         <a href="/hockey/teams/">Teams</a>
     </div>    
     <div id="page-title" class="header">
-    <h1 style="text-align: center;">Team Directory</h1>
+    <h1>Team Directory</h1>
     </div>
-    <table id="player-table">
+    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <div id="index-container">
+    <table id="team-index">
         <thead>
             <tr>
                 <th>Team</th>
@@ -45,7 +47,7 @@ for _, row in unique_teams.iterrows():
 
     html_content += f"""
         <tr>
-            <td><a href="/hockey/teams/{team_id}.html">{team_name}</a></td>
+            <td style="text-align:left"><a href="/hockey/teams/{team_id}.html">{team_name}</a></td>
         </tr>
     """
 
@@ -53,6 +55,7 @@ for _, row in unique_teams.iterrows():
 html_content += """
         </tbody>
     </table>
+    <div class="footer"></div>
 </body>
 </html>
 """

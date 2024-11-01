@@ -21,7 +21,7 @@ html_content = """
     
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const table = document.getElementById("player-table");
+    const table = document.getElementById("player-index");
     const headerRow = table.querySelector("thead tr:first-child");
     const rows = Array.from(table.querySelectorAll("tbody tr"));
 
@@ -71,12 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
     <div id="page-title" class="header">
     <h1>Player Directory</h1>
     </div>
-    <table id="player-table">
+    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <div id="index-container">
+    <table id="player-index">
     <thead>
         <tr>
-            <th style="width:60%">Player</th>
-            <th style="width:20%">Team</th>
-            <th style="width:20%">Position</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th>Position</th>
         </tr>
     </thead>
     <tbody>
@@ -93,9 +95,9 @@ for _, row in roster_data.iterrows():
     # Add player row
     html_content += f"""
         <tr>
-            <td><a href="/hockey/players/{player_id}.html">{player_name}</a></td>
-            <td><a href="/hockey/teams/{team_id}.html">{team_id}</a></td>
-            <td>{position}</td>
+            <td style="text-align:left"><a href="/hockey/players/{player_id}.html">{player_name}</a></td>
+            <td style="text-align:center"><a href="/hockey/teams/{team_id}.html">{team_id}</a></td>
+            <td style="text-align:center">{position}</td>
         </tr>
     """
 
@@ -103,6 +105,7 @@ for _, row in roster_data.iterrows():
 html_content += """
     </tbody>
     </table>
+    <div class="footer"></div>
 </body>
 </html>
 """

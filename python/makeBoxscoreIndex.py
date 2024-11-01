@@ -14,13 +14,13 @@ html_content = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Directory</title>
+    <title>Boxscore Directory</title>
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
     
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const table = document.getElementById("player-table");
+    const table = document.getElementById("game-index");
     const headerRow = table.querySelector("thead tr:first-child");
     const rows = Array.from(table.querySelectorAll("tbody tr"));
 
@@ -70,6 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <div id="page-title" class="header">
     <h1>Game Directory</h1>
     </div>
+    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <div id="index-container">
     <table id="game-index">
     <thead>
         <tr>
@@ -102,13 +104,13 @@ for _, row in team_game_data.iterrows():
 
     html_content += f"""
         <tr>
-            <td>{season}</td>
-            <td>{game_date}</td>
-            <td><a href="/hockey/games/{game_id}.html">{game_name}</a></td>
-            <td><a href="/hockey/teams/{home_id}.html">{home_name}</a></td>
-            <td><a href="/hockey/games/{game_id}.html">{home_goals}</a></td>
-            <td><a href="/hockey/teams/{away_id}.html">{away_name}</a></td>
-            <td><a href="/hockey/games/{game_id}.html">{away_goals}</a></td>
+            <td style="text-align:center">{season}</td>
+            <td style="text-align:left">{game_date}</td>
+            <td style="text-align:left"><a href="/hockey/games/{game_id}.html">{game_name}</a></td>
+            <td style="text-align:left"><a href="/hockey/teams/{home_id}.html">{home_name}</a></td>
+            <td style="text-align:center;width:24px"><a href="/hockey/games/{game_id}.html">{home_goals}</a></td>
+            <td style="text-align:left"><a href="/hockey/teams/{away_id}.html">{away_name}</a></td>
+            <td style="text-align:center;width:24px"><a href="/hockey/games/{game_id}.html">{away_goals}</a></td>
         </tr>
     """
 
@@ -116,6 +118,8 @@ for _, row in team_game_data.iterrows():
 html_content += """
         </tbody>
     </table>
+    <div class="footer"></div>
+    </div>
 </body>
 </html>
 """

@@ -1,7 +1,6 @@
 /*GENERAL STYLING*/
 
 html, body {
-	height: 100%;
 	max-width: 100%;
 	width: 100%;
 	margin: 0;
@@ -152,10 +151,12 @@ a:hover {
 	background-color: #f4f4f4;
 	font-size: 11px;
 	max-width: 100%;
+	cursor: pointer;
 }
 
 #filter-row:hover {
 	background-color: #f4f4f4;
+	cursor: pointer;
 }
 
 .filter-select {
@@ -174,8 +175,8 @@ a:hover {
 
 .filter-select option:hover {
     background-color: #c5d5c5;
+	cursor: pointer;
 }
-
 
 
 /*COMBINED PROBABILITY AND FILTERING BUTTONS*/
@@ -238,40 +239,41 @@ a:hover {
 	cursor: pointer;
 }
 
-#team-container, #gamelog-container, #boxscore-container, #data-table-container {
+#data-table-container, #team-container, #gamelog-container, #boxscore-container, #index-container {
 	max-width: 100%;
 	width: 95%;
 	margin-left: auto;
-	margin-right:auto;
-	padding-top: 12px;
+	margin-right: auto;
+	padding-top: 24px;
+	padding-bottom: 24px;
 }
 
-#gamelog-table, #team-table, #data-table, #home-boxscore, #away-boxscore, #player-index, #game-index, #team-index  {
+#data-table, #team-table, #gamelog-table, #home-boxscore, #away-boxscore, #team-index {
 	max-width: 100%;
     border-collapse: collapse;
 	border: .5pt solid #D9D9D9;
 	font-family: Verdana;
 	background-color: #fafcff;
-	margin-left: auto;
-	margin-right:auto;
-	margin-bottom: 20px;
 	word-wrap: break-word;
 	overflow-x: scroll;
-}
-#gamelog-table, #team-table, #data-table, #home-boxscore, #away-boxscore {
-	width: 100%;
 	table-layout: fixed;
 }
 
-#player-index, #game-index, #team-index {
-	width: 90%;
-	table-layout: auto;
+#boxscore-container {
+	gap: 40px;
+}
+
+#team-table, #gamelog-table, #home-boxscore, #away-boxscore, #team-index {
+	margin-top: 24px;
 }
 
 
+#team-index tbody tr:hover, #player-index tbody tr:hover, #game-index tbody tr:hover {
+    background-color: #e3eef2;
+}
 
 
-#gamelog-table th, #home-boxscore th, #away-boxscore th, #team-table th, #data-table th, #player-index th, #game-index th, #team-index th {
+#data-table th, #team-table th, #gamelog-table th, #home-boxscore th, #away-boxscore th, #team-index th, #player-index th, #game-index th {
     cursor: pointer;
 	border: .5pt solid #D9D9D9;
     background-color: #f4f4f4;
@@ -282,25 +284,26 @@ a:hover {
 	height: 22px;
 }
 
-#home-boxscore th:hover, #away-boxscore th:hover, #gamelog-table th:hover, #team-table th:hover, #data-table th:hover {
+#data-table th:hover, #team-table th:hover, #gamelog-table th:hover, #home-boxscore th:hover, #away-boxscore th:hover, #team-index th:hover, #player-index th:hover, #game-index th:hover {
     background-color: #e0e0e0;
 }
 
-#player-table tbody tr, #home-boxscore tbody tr, #away-boxscore tbody tr, #gamelog-table tbody tr, #team-table tbody tr, #data-table tbody tr {
+#data-table tbody tr, #team-table tbody tr, #gamelog-table tbody tr, #home-boxscore tbody tr, #away-boxscore tbody tr, #team-index tbody tr, #player-index tbody tr, #game-index tbody tr {
 	height: 26px;
 	vertical-align: middle;
 	background-color: #ffffff;
 }
 
-#player-table tbody tr:hover, #home-boxscore tbody tr:hover, #away-boxscore tbody tr:hover, #gamelog-table tbody tr:hover, #team-table tbody tr:hover, #data-table tbody tr:hover {
+#data-table tbody tr:hover, #team-table tbody tr:hover, #gamelog-table tbody tr:hover, #home-boxscore tbody tr:hover, #away-boxscore tbody tr:hover, #player-index tbody tr:hover {
     background-color: #e3eef2;
+	cursor: pointer;
 }
 
-#home-boxscore tbody tr.selected-row, #away-boxscore tbody tr.selected-row, #gamelog-table tbody tr.selected-row, #team-table tbody tr.selected-row, #data-table tbody tr.selected-row {
+#data-table tbody tr.selected-row, #team-table tbody tr.selected-row, #gamelog-table tbody tr.selected-row, #home-boxscore tbody tr.selected-row, #away-boxscore tbody tr.selected-row {
     background-color: #cfeffc;
 }
 
-#home-boxscore tbody tr.selected-row:hover, #away-boxscore tbody tr.selected-row:hover, #gamelog-table tbody tr.selected-row:hover, #team-table tbody tr.selected-row:hover, #data-table tbody tr.selected-row:hover {
+#data-table tbody tr.selected-row:hover, #team-table tbody tr.selected-row:hover, #gamelog-table tbody tr.selected-row:hover, #home-boxscore tbody tr.selected-row:hover, #away-boxscore tbody tr.selected-row:hover {
     background-color: #9ee4ff;
 }
 
@@ -308,7 +311,7 @@ a:hover {
     background-color: #f1f1f1;
 }
 
-#player-table td, #home-boxscore td, #away-boxscore td, #gamelog-table td, #team-table td, #data-table td {
+#data-table td, #team-table td, #gamelog-table td, #home-boxscore td, #away-boxscore td {
     padding: 4px;
     text-align: center;
 	border: .5pt solid #D9D9D9;
@@ -318,11 +321,35 @@ a:hover {
 	font-weight: 500;
 }
 
-
-#player-index td, #game-index td, #team-index td, #data-table td:nth-child(4), #data-table td:nth-child(5) {
+#data-table td:nth-child(4), #data-table td:nth-child(5) {
 	text-align: left;
 }
 
+#game-index, #player-index {
+	width: 80%;
+    border-collapse: collapse;
+	border: .5pt solid #D9D9D9;
+	font-family: Verdana;
+	background-color: #fafcff;
+	margin-left: auto;
+	margin-right:auto;
+	padding-bottom: 28px;
+	word-wrap: break-word;
+	overflow-x: scroll;
+}
+
+#player-index th, #game-index th {
+	font-weight: 700;
+}
+
+
+#player-index td, #player-index th, #game-index td, #game-index th, #team-index td, #team-index th {
+	padding: 4px;
+	border: .5pt solid #D9D9D9;
+    overflow: hidden;
+    white-space: nowrap;
+	font-size: 12px;
+}
 
 
 /*TOP ARROW*/
@@ -353,4 +380,9 @@ a:hover {
 	color: #000000;
 	font-size: 12px;
 	font-weight: 600;
+}
+
+
+.footer {
+	padding: 28px;
 }

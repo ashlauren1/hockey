@@ -215,6 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // "Clear Filters" button functionality
     clearButton.addEventListener("click", () => {
         document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+		document.querySelectorAll(".type-filter").forEach(checkbox => checkbox.checked = true);
         filterTable();
     });
 
@@ -222,6 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
     clearAllButton.addEventListener("click", () => {
         // Uncheck all checkboxes
         document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
+		document.querySelectorAll(".type-filter").forEach(checkbox => checkbox.checked = true);
 
         // Deselect all rows and show all rows
         rows.forEach(row => {
@@ -409,7 +411,31 @@ document.addEventListener("DOMContentLoaded", function () {
         return `rgb(${red}, ${green}, ${blue})`;
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const typeFilters = document.querySelectorAll(".type-filter");
+    const dataTable = document.getElementById("data-table");
 
+    // Event listener for each checkbox
+    typeFilters.forEach(filter => {
+        filter.addEventListener("change", filterTableByType);
+    });
+
+    function filterTableByType() {
+        const selectedTypes = Array.from(typeFilters)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        
+        const rows = dataTable.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            const typeCell = row.querySelector("td:nth-child(5)"); // Assuming 'Type' is the 4th column
+            const typeValue = typeCell ? typeCell.textContent.trim() : "";
+
+            // Show row if type is in selected types, hide otherwise
+            row.style.display = selectedTypes.length === 0 || selectedTypes.includes(typeValue) ? "" : "none";
+        });
+    }
+});
 
 
 </script>
@@ -427,20 +453,31 @@ document.addEventListener("DOMContentLoaded", function () {
 <h1>Today's Probabilities and Projections</h1>
 </div>
 
-<div class="button-container">
-    <button id="toggle-selection-btn">Show Selected Only</button>
-    <button id="clear-filters-btn">Remove Filters</button>
-	<button id="clear-all-btn">Clear All</button>
+
+<div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+
+<p>Types:</p>
+<div id="type-filters">
+	<label><input type="checkbox" value="Gob." class="type-filter" checked> Gob.</label>
+	<label><input type="checkbox" value="Norm." class="type-filter" checked> Norm.</label>
+    <label><input type="checkbox" value="Dem." class="type-filter" checked> Dem.</label>
 </div>
 
+<p style="width:50%">Click the Checkboxes to Calculate the Combined Probability:</p>
+<div id="resultAndButtons">
 <div id="result-container">
 <div id="result">
 Combined Probability:
 </div>
 </div>
 
-<p>Click the Checkboxes to Calculate the Combined Probability</p>
-<div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+<div class="button-container">
+    <button id="toggle-selection-btn">Show Selected</button>
+    <button id="clear-filters-btn">Remove Filters</button>
+	<button id="clear-all-btn">Clear All</button>
+</div>
+</div>
+
 <div id="data-table-container">
 <table id="data-table">
 <colgroup>

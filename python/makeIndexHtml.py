@@ -536,6 +536,7 @@ document.addEventListener("DOMContentLoaded", function () {
     f.write("""
     </tbody>
     </table>
+    <div class="footer"></div>
     </div>
     </body>
     </html>

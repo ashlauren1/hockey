@@ -238,6 +238,7 @@ for game_id, game_data in grouped_data:
                 </tr>
             </tfoot>
         </table>
+        <div class="footer"></div>
         '''
         return team_table
     

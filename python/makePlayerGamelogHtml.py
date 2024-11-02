@@ -245,6 +245,7 @@ for player_id, player_data in grouped_data:
     html_content += '''
             </tbody>
         </table>
+        <div class="footer"></div>
         </div>
     </body>
     </html>

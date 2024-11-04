@@ -144,7 +144,7 @@ for _, game in tqdm(upcoming_games_data.iterrows(), total=upcoming_games_data.sh
 
             # Compile row and add to results
             result_row = [
-                game_display, team, player_name, stat_type, stat, line_value,
+                game_display, team, player_name, player_id, stat_type, stat, line_value,
                 projected_value, difference, weighted_prob, season_ratio,
                 h2h_ratio, l5_ratio, l10_ratio, l20_ratio, prev_season_ratio, all_ratio
             ]
@@ -502,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 # Write table rows from data with formatting and links
     for row in final_results:
-        game_display, team, player_name, stat_type, stat, line_value, projected_value, difference, weighted_prob, season_ratio, h2h_ratio, l5_ratio, l10_ratio, l20_ratio, prev_season_ratio, all_ratio = row
+        game_display, team, player_name, player_id, stat_type, stat, line_value, projected_value, difference, weighted_prob, season_ratio, h2h_ratio, l5_ratio, l10_ratio, l20_ratio, prev_season_ratio, all_ratio = row
     
     # Format numeric values to two decimal places where applicable
         projected_value = f"{projected_value:.2f}"

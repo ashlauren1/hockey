@@ -42,35 +42,41 @@
             filterTable();
         }});
 
-        rows.forEach(row => {{
-            row.addEventListener("mousedown", function () {{
-                isDragging = true;
-                toggleRowSelection(row);
-            }});
-            row.addEventListener("mouseenter", function () {{
-                if (isDragging) toggleRowSelection(row);
-            }});
-            row.addEventListener("mouseup", () => isDragging = false);
-        }});
+        
+        // Multi-row selection by dragging
+        rows.forEach(row => {
+        row.addEventListener("mousedown", function () {
+            isDragging = true;
+            toggleRowSelection(row);
+        });
 
-        document.addEventListener("mouseup", () => isDragging = false);
+        row.addEventListener("mouseenter", function () {
+            if (isDragging) toggleRowSelection(row);
+        });
 
-        function toggleRowSelection(row) {{
-            row.classList.toggle("selected-row");
-        }}
+        row.addEventListener("mouseup", () => isDragging = false);
+    });
 
-        toggleSelectionBtn.addEventListener("click", () => {{
-            showSelectedOnly = !showSelectedOnly;
-            if (showSelectedOnly) {{
-                rows.forEach(row => {{
-                    row.style.display = row.classList.contains("selected-row") ? "" : "none";
-                }});
-                toggleSelectionBtn.textContent = "Show All";
-            }} else {{
-                rows.forEach(row => (row.style.display = ""));
-                toggleSelectionBtn.textContent = "Show Selected Only";
-            }}
-        }});
+    document.addEventListener("mouseup", () => isDragging = false);
+
+    // Toggle selection for individual rows
+    function toggleRowSelection(row) {
+        row.classList.toggle("selected-row");
+    }
+
+    // Show only selected rows or all rows
+    toggleSelectionBtn.addEventListener("click", () => {
+        showSelectedOnly = !showSelectedOnly;
+        if (showSelectedOnly) {
+            rows.forEach(row => {
+                row.style.display = row.classList.contains("selected-row") ? "" : "none";
+            });
+            toggleSelectionBtn.textContent = "Show All";
+        } else {
+            rows.forEach(row => (row.style.display = ""));
+            toggleSelectionBtn.textContent = "Show Selected Only";
+        }
+    });
 
         function addFilters(table) {{
             const headerRow = table.querySelector("thead tr:first-child");

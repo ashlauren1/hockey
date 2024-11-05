@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div id="page-title" class="header">
     <h1>Player Directory</h1>
     </div>
-    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
     <div id="index-container">
     <table id="player-index">
     <thead>

@@ -455,7 +455,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <h1>Today's Probabilities and Projections</h1>
     </div>
 
-	<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
+	<button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
 
     <div id="multi-filters">
         <div id="game-filters"><p>Games:</p></div>

@@ -29,7 +29,7 @@ html_content = """
     <div id="page-title" class="header">
     <h1>Team Directory</h1>
     </div>
-    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
     <div id="index-container">
     <table id="team-index">
         <thead>

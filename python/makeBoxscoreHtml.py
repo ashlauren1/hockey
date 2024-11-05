@@ -160,7 +160,7 @@ for game_id, game_data in grouped_data:
         <button id="clear-filters-btn">Remove Filters</button>
         <button id="clear-all-btn">Clear All</button>
     </div>
-    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
     <div id="boxscore-container">
     '''
     

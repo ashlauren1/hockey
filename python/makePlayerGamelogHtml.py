@@ -145,21 +145,53 @@ for player_id, player_data in grouped_data:
 
         function sortTable(table, columnIndex) {{
             const rows = Array.from(table.querySelectorAll("tbody tr"));
-            const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
             const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
             table.dataset.sortDirection = direction;
+            
+            // Detect data type
+            let isNumeric = true;
+            let isDate = true;
+            for (let row of rows) {{
+                const cellText = row.cells[columnIndex].textContent.trim();
+                if (cellText === '') continue; // Skip empty cells
+                if (isNumeric && isNaN(cellText)) {{
+                    isNumeric = false;
+                }}
+                if (isDate && isNaN(Date.parse(cellText))) {{
+                    isDate = false;
+                }}
+                if (!isNumeric && !isDate) break;
+            }}
 
             rows.sort((a, b) => {{
                 const cellA = a.cells[columnIndex].textContent.trim();
                 const cellB = b.cells[columnIndex].textContent.trim();
 
-                const valA = isNumeric ? parseFloat(cellA) : cellA.toLowerCase();
-                const valB = isNumeric ? parseFloat(cellB) : cellB.toLowerCase();
+                let valA, valB;
 
-                return direction === "asc" ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                if (isNumeric) {{
+                    valA = parseFloat(cellA);
+                    valB = parseFloat(cellB);
+                }} else if (isDate) {{
+                    valA = new Date(cellA);
+                    valB = new Date(cellB);
+                }} else {{
+                    valA = cellA.toLowerCase();
+                    valB = cellB.toLowerCase();
+                }}
+
+                if (valA < valB) {{
+                    return direction === "asc" ? -1 : 1;
+                }} else if (valA > valB) {{
+                    return direction === "asc" ? 1 : -1;
+                }} else {{
+                    return 0;
+                }}
             }});
 
-            rows.forEach(row => table.querySelector("tbody").appendChild(row));
+            // Append sorted rows to tbody
+            const tbody = table.querySelector("tbody");
+            rows.forEach(row => tbody.appendChild(row));
         }}
     }});
     </script>
@@ -179,7 +211,8 @@ for player_id, player_data in grouped_data:
         <button id="clear-filters-btn">Remove Filters</button>
         <button id="clear-all-btn">Clear All</button>
     </div>
-    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+    	<button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+
     <div id="gamelog-container">
         <table id="gamelog-table">
         <colgroup>

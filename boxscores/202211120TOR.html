@@ -1,0 +1,900 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>TOR vs VAN</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setupTableInteractions("home-boxscore");
+            setupTableInteractions("away-boxscore");
+
+            function setupTableInteractions(tableId) {
+                const table = document.getElementById(tableId);
+                const rows = Array.from(table.querySelectorAll("tbody tr"));
+                const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+                const clearAllButton = document.getElementById("clear-all-btn");
+                const clearButton = document.getElementById("clear-filters-btn");
+                let showSelectedOnly = false;
+                let isDragging = false;
+
+                addFilters(table);
+                addSortToHeaders(table);
+
+                clearButton.addEventListener("click", () => {
+                    document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+                    filterTable(table);
+                });
+
+                clearAllButton.addEventListener("click", () => {
+                    rows.forEach(row => row.classList.remove("selected-row"));
+                    document.querySelectorAll(".filter-select").forEach(select => select.value = "");
+                    toggleSelectionBtn.textContent = "Show Selected Only";
+                    showSelectedOnly = false;
+                    filterTable(table);
+                });
+
+                rows.forEach(row => {
+                    row.addEventListener("mousedown", () => { isDragging = true; toggleRowSelection(row); });
+                    row.addEventListener("mouseenter", () => { if (isDragging) toggleRowSelection(row); });
+                    row.addEventListener("mouseup", () => { isDragging = false; });
+                });
+
+                document.addEventListener("mouseup", () => { isDragging = false; });
+
+                toggleSelectionBtn.addEventListener("click", () => {
+                    showSelectedOnly = !showSelectedOnly;
+                    rows.forEach(row => {
+                        row.style.display = showSelectedOnly && !row.classList.contains("selected-row") ? "none" : "";
+                    });
+                    toggleSelectionBtn.textContent = showSelectedOnly ? "Show All" : "Show Selected Only";
+                });
+
+                function toggleRowSelection(row) { row.classList.toggle("selected-row"); }
+
+                function addFilters(table) {
+                    const headerRow = table.querySelector("thead tr");
+                    const filterRow = document.createElement("tr");
+                    Array.from(headerRow.cells).forEach((header, index) => {
+                        const filterCell = document.createElement("td");
+                        const filterSelect = document.createElement("select");
+                        filterSelect.classList.add("filter-select");
+                        filterSelect.innerHTML = '<option value="">All</option>';
+                            const values = Array.from(new Set(
+                            Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                            .map(cell => cell.textContent.trim())
+                        )).sort();
+                        values.forEach(value => {
+                            const option = document.createElement("option");
+                            option.value = value;
+                            option.textContent = value;
+                            filterSelect.appendChild(option);
+                        });
+                        filterSelect.addEventListener("change", () => filterTable(table));
+                        filterCell.appendChild(filterSelect);
+                        filterRow.appendChild(filterCell);
+                    });
+                    table.querySelector("thead").appendChild(filterRow);
+                }
+
+                function filterTable(table) {
+                    const filters = Array.from(table.querySelectorAll(".filter-select")).map(select => select.value);
+                    rows.forEach(row => {
+                        const cells = Array.from(row.cells);
+                        const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+                        row.style.display = matchesFilter ? "" : "none";
+                    });
+                }
+
+                function addSortToHeaders(table) {
+                    const headers = table.querySelectorAll("thead th");
+                    headers.forEach((header, index) => {
+                        header.style.cursor = "pointer";
+                        header.addEventListener("click", () => sortTable(table, index));
+                    });
+                }
+
+                function sortTable(table, columnIndex) {
+                    const rows = Array.from(table.querySelectorAll("tbody tr"));
+                    const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+                    table.dataset.sortDirection = direction;
+
+                    // Detect data type
+                    let isNumeric = true;
+                    let isDate = true;
+                    for (let row of rows) {
+                        const cellText = row.cells[columnIndex].textContent.trim();
+                        if (cellText === '') continue; // Skip empty cells
+                        if (isNumeric && isNaN(cellText)) {
+                            isNumeric = false;
+                        }
+                        if (isDate && isNaN(Date.parse(cellText))) {
+                            isDate = false;
+                        }
+                        if (!isNumeric && !isDate) break;
+                    }
+
+                    rows.sort((a, b) => {
+                        const cellA = a.cells[columnIndex].textContent.trim();
+                        const cellB = b.cells[columnIndex].textContent.trim();
+
+                        let valA, valB;
+
+                        if (isNumeric) {
+                            valA = parseFloat(cellA);
+                            valB = parseFloat(cellB);
+                        } else if (isDate) {
+                            valA = new Date(cellA);
+                            valB = new Date(cellB);
+                        } else {
+                            valA = cellA.toLowerCase();
+                            valB = cellB.toLowerCase();
+                        }
+
+                        if (valA < valB) {
+                            return direction === "asc" ? -1 : 1;
+                        } else if (valA > valB) {
+                            return direction === "asc" ? 1 : -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+                }
+            }
+        });
+        </script>
+        </head>
+        <body>
+        <div class="topnav">
+            <a href="/hockey/">Projections</a>
+            <a href="/hockey/players/">Players</a>
+            <a href="/hockey/boxscores/">Box Scores</a>
+            <a href="/hockey/teams/">Teams</a>
+        </div>
+        <div class="header">
+        <h1>TOR vs VAN</h1>
+        </div>
+        <div class="button-container" style="margin-left:12px; width:95%">
+            <button id="toggle-selection-btn">Show Selected Only</button>
+            <button id="clear-filters-btn">Remove Filters</button>
+            <button id="clear-all-btn">Clear All</button>
+        </div>
+        <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
+        <div id="boxscore-container">
+        
+            <table id="home-boxscore">
+            <caption>TOR (Home) Skaters</caption>
+            <colgroup>
+                <col style="width:136px">
+                <col span="15" style="width:48px">
+            </colgroup>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Team</th>
+                        <th>G</th>
+                        <th>A</th>
+                        <th>PTS</th>
+                        <th>SOG</th>
+                        <th>HIT</th>
+                        <th>BLK</th>
+                        <th>TOI</th>
+                        <th>PIM</th>
+                        <th>EVG</th>
+                        <th>PPG</th>
+                        <th>SHG</th>
+                        <th>EVA</th>
+                        <th>PPA</th>
+                        <th>SHA</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/astonza01.html" target="_blank">ZACH ASTON-REESE</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>5</td>
+                        <td>1</td>
+                        <td>12.05</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/buntimi01.html" target="_blank">MICHAEL BUNTING</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>13.32</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/engvapi01.html" target="_blank">PIERRE ENGVALL</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>11.67</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/giordma01.html" target="_blank">MARK GIORDANO</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td>21.72</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/hollju01.html" target="_blank">JUSTIN HOLL</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>20.60</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/jarnkca01.html" target="_blank">CALLE JARNKROK</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>11.95</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/kampfda01.html" target="_blank">DAVID KAMPF</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>18.40</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/kerfoal01.html" target="_blank">ALEX KERFOOT</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>16.40</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/liljeti01.html" target="_blank">TIMOTHY LILJEGREN</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>17.32</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/marnemi01.html" target="_blank">MITCH MARNER</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>21.13</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/matthau01.html" target="_blank">AUSTON MATTHEWS</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>16.88</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/nylanwi01.html" target="_blank">WILLIAM NYLANDER</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>16.73</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/riellmo01.html" target="_blank">MORGAN RIELLY</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>22.30</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/roberni01.html" target="_blank">NICHOLAS ROBERTSON</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>8.82</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/sandira01.html" target="_blank">RASMUS SANDIN</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>17.40</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/tavarjo01.html" target="_blank">JOHN TAVARES</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/TOR.html" target="_blank">TOR</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>17.52</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Total</strong></td>
+                        <td>2</td>
+                        <td>6</td>
+                        <td>8</td>
+                        <td>29</td>
+                        <td>25</td>
+                        <td>18</td>
+                        <td></td>
+                        <td>6</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>0</td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <table id="away-boxscore">
+            <caption>VAN (Away) Skaters</caption>
+            <colgroup>
+                <col style="width:136px">
+                <col span="15" style="width:48px">
+            </colgroup>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Team</th>
+                        <th>G</th>
+                        <th>A</th>
+                        <th>PTS</th>
+                        <th>SOG</th>
+                        <th>HIT</th>
+                        <th>BLK</th>
+                        <th>TOI</th>
+                        <th>PIM</th>
+                        <th>EVG</th>
+                        <th>PPG</th>
+                        <th>SHG</th>
+                        <th>EVA</th>
+                        <th>PPA</th>
+                        <th>SHA</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/amanni01.html" target="_blank">NILS AMAN</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>10.37</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/bearet01.html" target="_blank">ETHAN BEAR</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>16.18</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/boesebr01.html" target="_blank">BROCK BOESER</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>21.70</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/ekmanol01.html" target="_blank">OLIVER EKMAN-LARSSON</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>20.72</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/garlaco01.html" target="_blank">CONOR GARLAND</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>15.43</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/hoglani01.html" target="_blank">NILS HOGLANDER</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>9.68</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/horvabo01.html" target="_blank">BO HORVAT</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>22.33</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/hughequ01.html" target="_blank">QUINN HUGHES</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>24.45</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/joshuda01.html" target="_blank">DAKOTA JOSHUA</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>9.82</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/kuzmean01.html" target="_blank">ANDREI KUZMENKO</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>9.45</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/mikheil01.html" target="_blank">ILYA MIKHEYEV</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>15.93</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/millejt01.html" target="_blank">J.T. MILLER</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>23.10</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/myersty01.html" target="_blank">TYLER MYERS</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td>21.67</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/petteel01.html" target="_blank">ELIAS PETTERSSON</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>22.75</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/podkova01.html" target="_blank">VASILY PODKOLZIN</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>14.47</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/schenlu01.html" target="_blank">LUKE SCHENN</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>12</td>
+                        <td>2</td>
+                        <td>17.32</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                    <tr>
+                        <td style="text-align:left"><a href="/hockey/players/studnja01.html" target="_blank">JACK STUDNICKA</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/VAN.html" target="_blank">VAN</a></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>10.78</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Total</strong></td>
+                        <td>2</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>29</td>
+                        <td>35</td>
+                        <td>13</td>
+                        <td></td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>0</td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            </div>
+        <div class="footer"></div>
+        </body>
+        </html>
+        

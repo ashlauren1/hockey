@@ -2,21 +2,19 @@ import pandas as pd
 from tqdm import tqdm
 
 # File paths
-metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\skaters2022_25.csv"
+metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\gamelogs.csv"
 upcoming_games_path = r"C:\Users\ashle\Documents\Projects\hockey\data\games_thisWeek.csv"
 lines_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\todayLines.csv"
-historic_data_path = r"C:\Users\ashle\Documents\Projects\hockey\data\gamelogs.csv"
 output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\index.html"
 
 # Load data
-metrics_data = pd.read_csv(metrics_file_path, low_memory=False)
+metrics_data = pd.read_csv(metrics_file_path,  parse_dates=["Date"], low_memory=False)
 upcoming_games_data = pd.read_csv(upcoming_games_path, low_memory=False)
 lines_data = pd.read_csv(lines_file_path)
-historic_data = pd.read_csv(historic_data_path, parse_dates=["Date"])
 
 # Convert relevant columns to numeric types to avoid type errors
-historic_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']] = historic_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']].apply(pd.to_numeric, errors='coerce')
-historic_data['TOI'] = pd.to_numeric(historic_data['TOI'], errors='coerce')
+metrics_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']] = metrics_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']].apply(pd.to_numeric, errors='coerce')
+metrics_data['TOI'] = pd.to_numeric(metrics_data['TOI'], errors='coerce')
 
 # Create a dictionary mapping GameID to Game
 game_mapping = upcoming_games_data.set_index('GameID')['Game'].to_dict()
@@ -92,7 +90,6 @@ for _, game in tqdm(upcoming_games_data.iterrows(), total=upcoming_games_data.sh
     game_display = game_mapping.get(game_id, game_id)
     
     player_data = metrics_data[metrics_data['PlayerID'] == player_id]
-    player_historic_data = historic_data[historic_data['PlayerID'] == player_id]
     lines_for_player = lines_data[lines_data['PlayerID'] == player_id]
     
     if not player_data.empty and not lines_for_player.empty:
@@ -128,18 +125,18 @@ for _, game in tqdm(upcoming_games_data.iterrows(), total=upcoming_games_data.sh
             h2h_ratio = calculate_over_ratio(opp_data, line_value, stat)  # Keeps {x / n} format
 
             # Convert ratios to decimal if possible; otherwise, keep original
-            season_ratio_raw = calculate_over_ratio(player_historic_data[player_historic_data['Season'] == '2024-25'], line_value, stat)
+            season_ratio_raw = calculate_over_ratio(player_data[player_data['Season'] == '2024-25'], line_value, stat)
             season_ratio = safe_eval_ratio(season_ratio_raw)
 
-            last_n_ratios = calculate_ratios(player_historic_data, stat, line_value)
+            last_n_ratios = calculate_ratios(player_data, stat, line_value)
             l5_ratio = safe_eval_ratio(last_n_ratios['L5'])
             l10_ratio = safe_eval_ratio(last_n_ratios['L10'])
             l20_ratio = safe_eval_ratio(last_n_ratios['L20'])
 
-            prev_season_ratio_raw = calculate_over_ratio(player_historic_data[player_historic_data['Season'] == '2023-24'], line_value, stat)
+            prev_season_ratio_raw = calculate_over_ratio(player_data[player_data['Season'] == '2023-24'], line_value, stat)
             prev_season_ratio = safe_eval_ratio(prev_season_ratio_raw)
 
-            all_ratio_raw = calculate_over_ratio(player_historic_data, line_value, stat)
+            all_ratio_raw = calculate_over_ratio(player_data, line_value, stat)
             all_ratio = safe_eval_ratio(all_ratio_raw)
 
             # Compile row and add to results
@@ -448,10 +445,10 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="topnav">
         <a href="/hockey/">Projections</a>
         <a href="/hockey/players/">Players</a>
-        <a href="/hockey/games/">Scores</a>
+        <a href="/hockey/boxscores/">Box Scores</a>
         <a href="/hockey/teams/">Teams</a>
     </div>    
-    <div id="page-title" class="header">
+    <div class="header">
         <h1>Today's Probabilities and Projections</h1>
     </div>
 
@@ -465,14 +462,12 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 
     
-    <div id="resultAndButtons">
-	<p style="width:95%; margin: auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
+    <div><p style="width:95%; margin: auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
         <div id="result-container">
             <div id="result">
 				Combined Probability:
             </div>
         </div>
-
         <div class="button-container">
             <button id="toggle-selection-btn">Show Selected Only</button>
             <button id="clear-filters-btn">Remove Filters</button>

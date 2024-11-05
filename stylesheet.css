@@ -1,191 +1,167 @@
-/*GENERAL STYLING*/
+/* VARIABLES */
+:root {
+  --text-color: #222831; /* Dark gray for text */
+  --background-color: #f7f7f7; /* Very light gray for background */
+  --secondary-color: #ffffff; /* White for secondary backgrounds */
+  --accent-color: #0077b6; /* Muted blue for accents */
+  --hover-color: #023e8a; /* Darker blue for hover effects */
+  --box-background-color: #eaf4f9; /* Light blue-gray for buttons and boxes */
+  --section-background: #f1f1f1; /* Light gray for sections */
+  --font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, sans-serif;
+}
 
-html, body {
-	max-width: 100%;
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	font-family: Verdana;
-	background-color: #fafafa;
+/* RESET */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* TYPOGRAPHY */
+body {
+  max-width: 100%;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 h1 {
-    text-align: center;
-	font-size: 18px;
-	font-family: Verdana;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+  margin: 16px 0;
 }
 
-h2 {
-	font-size: 14px;
-	font-family: Verdana;
+h2, caption {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 12px 0;
 }
 
 p {
-	font-size: 12px;
-	margin: 10px;
-}
-
-caption {
-	width: 100%;
-	text-align: left;
-	font-size: 16px;
-	font-weight: 650;
-	padding: 6px;
+  font-size: 13px;
+  margin: 8px;
 }
 
 a:link {
-	color: #003fbd;
-	text-decoration: underline;
-}
-
-a:visited {
-	color: #4700b3;
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-	color: #0016bd;
-	cursor: pointer
+  color: var(--hover-color);
+  text-decoration: underline;
 }
 
+a:visited {
+  color: #5400d1;
+}
 
-/*HEADINGS AND NAVBAR*/
-
+/* HEADINGS AND NAVBAR */
 .header {
-	max-width: 100%;
-	margin-top: 64px;
-	margin-bottom: 18px;
-	text-align: center;
-	font-size: 16px;
-}	
+  margin-top: 60px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+}
 
+/* Navigation Bar */
 .topnav {
-	max-width: 100%;
-	width: 100%;
-	display: flex;
-	position: fixed;
-	top: 0;
-	left: 0;
-	background-color: #e3eef2;
-	cursor: pointer;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--box-background-color);
+  border-bottom: 1px solid #ccc;
 }
 
-.topnav a:link {
-	width: 25%;
-	float: left;
-	border: 1px solid #a8cad7;
-	color: #000000;
-	text-align: center;
-	font-size: 12px;
-	font-weight: 600;
-	padding: 12px 36px;
-	text-decoration: none;	
-}
-
-.topnav a:visited {
-	color: #000000;
+.topnav a {
+  width: 25%;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.1s ease;
+  border-right: 1px solid #ccc;
+  border-left: 1px solic #ccc;
 }
 
 .topnav a:hover {
-	background-color: #b9d4df;
+  background-color: var(--hover-color);
+  color: #ffffff;
 }
 
-
-/*FILTERS*/
-	
+/* FILTERS */
 #multi-filters {
-	max-width: 100%;
-	width:95%;
-	margin-left: auto;
-	margin-right: auto;
-	display: flex;
-    flex-wrap: wrap;
-	font-size: 11px;
-	background-color: #f4f4f4;
-	font-family: Verdana;
-	border: 1px solid #ccc;
-    border-radius: 4px;
-	align-items: center;
-	vertical-align: middle;
+  width: 95%;
+  margin: 12px auto;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  background-color: var(--section-background);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
 }
 
 #multi-filters p {
-	width: 36px;
-	padding-left: 6px;
-	padding-right: 12px;
-	font-weight: 550;
-	font-size: 11px;
-	align-items: center;
+  width: 100%;
+  font-weight: 500;
+  font-size: 13px;
+  margin: 4px 0 0 0;
 }
 
 #type-filters, #team-filters, #stat-filters, #game-filters {
-    width: 95%;
-	display: flex;
-	flex-wrap: wrap;
-    gap: 10px;
-	align-items: center;
-	vertical-align: middle;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
-#type-filters:hover, #team-filters:hover, #stat-filters:hover, #game-filters:hover {
-	background-color: #e3eef2;
+#multi-filters label {
+  display: flex;
+  align-items: center;
+  margin: 0 0 0 0;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-#type-filters label, #team-filters label, #stat-filters label, #game-filters label {
-    display: flex;
-    align-items: center;
-    color: #333;
-    cursor: pointer;
-	font-size: 11px;
-	height: 20px;
+#multi-filters input[type="checkbox"] {
+  margin-right: 4px;
+  cursor: pointer;
 }
 
-#type-filters input[type="checkbox"], 
-#team-filters input[type="checkbox"], 
-#stat-filters input[type="checkbox"], 
-#game-filters input[type="checkbox"] {
-    cursor: pointer;
-	width:11px;
-	height: 11px;
-}
-
-
+/* BUTTONS */
 .button-container {
-    max-width:100%;
-	width:95%;
-	margin-left:auto;
-	margin-right:auto;
-	display: flex;
-    gap: 10px;
-    align-items: center; /* Vertically align buttons */
-    height: 30px;
-	margin-top:6px;
+  width: 95%;
+  margin: 6px auto 12px auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .button-container button {
-    font-size: 12px;
-    background-color: #f5f8f9;
-    border: 1px solid #b1c1c8;
-    cursor: pointer;
-    border-radius: 4px;
-    width: 15%;
-	padding:4px;
+  background-color: var(--box-background-color);
+  color: var(--text-color);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
 }
 
 .button-container button:hover {
-    background-color: #e3eef2;
-}
-
-#filter-row {
-	height: 22px;
-	background-color: #f4f4f4;
-	font-size: 11px;
-	max-width: 100%;
-	cursor: pointer;
-}
-
-#filter-row:hover {
-	background-color: #f4f4f4;
-	cursor: pointer;
+  background-color: var(--hover-color);
+  color: #ffffff;
 }
 
 .filter-select {
@@ -194,149 +170,116 @@ a:hover {
     background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 4px;
+	cursor: pointer;
 }
 
 .filter-select option {
-    background-color: #f0f0f0;
+    background-color: #f0f2f5;
 	width: 100%;
 	color: #000000;
-}
-
-.filter-select option:hover {
-    background-color: #c5d5c5;
 	cursor: pointer;
 }
-/*COMBINED PROBABILITY AND FILTERING BUTTONS*/
 
+.event-checkbox {
+  cursor: pointer;
+}
 
+/* BACK TO TOP BUTTON */
+.arrowUp {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  width: 45px;
+  height: 35px;
+  z-index: 99;
+  background-color: rgba(234, 244, 249, 0.75);
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.arrowUp:hover {
+  background-color: rgba(196, 223, 232, 0.75);
+  cursor: pointer;
+}
+
+/* Result Container */
 #result-container {
-    max-width:100%;
-	width:95%;
-	margin-left:auto;
-	margin-right:auto;
-	display: flex;
-	border: 1px solid #b1c1c8;
-    background-color: #f5f8f9;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    height: 30px;
-	padding:8px;
-    box-sizing: border-box; /* Include padding in the element's height */
-	margin-top:0;
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  background-color: var(--section-background);
+  border-radius: 4px;
+  padding: 6px;
 }
 
 #result {
-    font-family: Verdana;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 30px; /* Matches container height for vertical centering */
-    width: 100%;
-    margin: 0; /* Removes any default margins */
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+  margin: 0;
 }
 
-/*TABLES*/
-.event-checkbox {
-	cursor: pointer;
-}
 
-#data-table-container {
-	max-width: 100%;
-	width: 95%;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 6px;
-	padding-bottom: 24px;
-}
-
-#team-container, #gamelog-container, #boxscore-container, #index-container {
-	max-width: 100%;
-	width: 95%;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 24px;
-	padding-bottom: 24px;
+/* TABLES */
+#data-table-container, #team-container, #gamelog-container, #boxscore-container, #index-container {
+  width: 95%;
+  margin: 12px auto;
+  overflow-x: auto;
 }
 
 #data-table, #team-table, #gamelog-table, #home-boxscore, #away-boxscore {
-	max-width: 100%;
-	width: 95%;
-    border-collapse: collapse;
-	border: .5pt solid #D9D9D9;
-	font-family: Verdana;
-	background-color: #fafcff;
-	word-wrap: break-word;
-	overflow-x: scroll;
-	table-layout: auto;
-	margin-left: auto;
-	margin-right: auto;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  color: var(--text-color);
+  min-width: 800px;
 }
 
 #boxscore-container {
 	gap: 40px;
 }
 
-#team-table, #gamelog-table, #home-boxscore, #away-boxscore {
-	margin-top: 24px;
+
+#data-table th, #data-table td, #team-table th, #team-table td, #gamelog-table th, #gamelog-table td, #home-boxscore th, #home-boxscore td, #away-boxscore th, #away-boxscore td, #team-index th, #team-index td, #player-index th, #player-index td, #game-index th, #game-index td {
+  padding: 4px 6px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  font-size: 12px; /* Adjusted font size for consistency */
 }
 
-
-#team-index tbody tr:hover, #player-index tbody tr:hover, #game-index tbody tr:hover {
-    background-color: #e3eef2;
+#data-table th, #team-table th, #gamelog-table th, #home-boxscore th, #away-boxscore th, #team-index th, #player-index th, #game-index th, #filter-row, #filter-row:hover {
+  background-color: #f0f2f5;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-
-#data-table th, #team-table th, #gamelog-table th, #home-boxscore th, #away-boxscore th, #team-index th, #player-index th, #game-index th {
-    cursor: pointer;
-	border: .5pt solid #D9D9D9;
-    background-color: #f4f4f4;
-	text-align: center;
-	font-size: 12px;
-	font-weight: 700;
-	padding: 4px;
-	height: 22px;
+#data-table tbody tr:hover, #team-table tbody tr:hover, #gamelog-table tbody tr:hover, #home-boxscore tbody tr:hover, #away-boxscore tbody tr:hover, #team-index tbody tr:hover, #player-index tbody tr:hover, #game-index tbody tr:hover {
+  background-color: #eaf4f9;
+  cursor: pointer;
 }
 
-#data-table th:hover, #team-table th:hover, #gamelog-table th:hover, #home-boxscore th:hover, #away-boxscore th:hover, #team-index th:hover, #player-index th:hover, #game-index th:hover {
-    background-color: #e0e0e0;
-}
-
-#data-table tbody tr, #team-table tbody tr, #gamelog-table tbody tr, #home-boxscore tbody tr, #away-boxscore tbody tr, #team-index tbody tr, #player-index tbody tr, #game-index tbody tr {
-	height: 26px;
-	vertical-align: middle;
-	background-color: #ffffff;
-}
-
-#data-table tbody tr:hover, #team-table tbody tr:hover, #gamelog-table tbody tr:hover, #home-boxscore tbody tr:hover, #away-boxscore tbody tr:hover, #player-index tbody tr:hover {
-    background-color: #e3eef2;
-	cursor: pointer;
-}
 
 #data-table tbody tr.selected-row, #team-table tbody tr.selected-row, #gamelog-table tbody tr.selected-row, #home-boxscore tbody tr.selected-row, #away-boxscore tbody tr.selected-row {
-    background-color: #cfeffc;
+  background-color: #d4e9f1;
 }
 
 #data-table tbody tr.selected-row:hover, #team-table tbody tr.selected-row:hover, #gamelog-table tbody tr.selected-row:hover, #home-boxscore tbody tr.selected-row:hover, #away-boxscore tbody tr.selected-row:hover {
-    background-color: #9ee4ff;
+  background-color: #c4dfe8;
+}
+
+#data-table td:nth-child(4), #data-table td:nth-child(5) {
+  text-align: left;
 }
 
 #home-boxscore tfoot, #away-boxscore tfoot {
     background-color: #f1f1f1;
 }
 
-#data-table td, #team-table td, #gamelog-table td, #home-boxscore td, #away-boxscore td {
-    padding: 4px;
-    text-align: center;
-	border: .5pt solid #D9D9D9;
-    overflow: hidden;
-    white-space: nowrap;
-	font-size: 12px;
-	font-weight: 500;
-}
-
-#data-table td:nth-child(4), #data-table td:nth-child(5) {
-	text-align: left;
-}
 
 #game-index, #player-index, #team-index {
 	width: 80%;
@@ -356,48 +299,48 @@ a:hover {
 }
 
 
-#player-index td, #player-index th, #game-index td, #game-index th, #team-index td, #team-index th {
-	padding: 4px;
-	border: .5pt solid #D9D9D9;
-    overflow: hidden;
-    white-space: nowrap;
-	font-size: 12px;
-}
 
 
-
-
-/*TOP ARROW*/
-
-.arrowUp {
-	position: fixed;
-	right: 10px;
-	bottom: 10px;
-	width: 45px;
-	height: 35px;
-	z-index: 99;
-	background-color:rgba(227, 238, 242,0.75);
-	text-align: center;
-	text-decoration: none;
-	color: #000000;
-	font-size: 12px;
-	font-weight: 600;
-}
-	
-.arrowUp:hover {
-	background-color:rgba(185, 212, 223,0.75);
-	cursor: pointer;
-}
-
-.arrowUp a {
-	text-align: center;
-	text-decoration: none;
-	color: #000000;
-	font-size: 12px;
-	font-weight: 600;
-}
-
-
+/* FOOTER */
 .footer {
-	padding: 28px;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  text-align: center;
+  padding: 12px 0;
+  font-size: 12px;
+  margin-top: 24px;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 768px) {
+  .topnav {
+    width: 100%;
+  }
+
+  .topnav a {
+    width: 25%;
+    padding: 8px 0;
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .button-container {
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .button-container button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  #multi-filters {
+    flex-direction: column;
+  }
+}
+
+/* FOCUS STATES */
+a:focus,
+button:focus {
+  outline: 1px solid var(--accent-color);
+  outline-offset: 1px;
 }

@@ -455,7 +455,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <h1>Today's Probabilities and Projections</h1>
     </div>
 
-    <div><button class="arrowUp"><a href="#page-title">Top</a></button></div>
+	<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
 
     <div id="multi-filters">
         <div id="game-filters"><p>Games:</p></div>
@@ -464,11 +464,12 @@ document.addEventListener("DOMContentLoaded", function () {
         <div id="stat-filters"><p>Stats:</p></div>
     </div>
 
-    <p style="width:50%; margin-left:12px; margin-top:14px; margin-bottom:0px">Click the Checkboxes to Calculate the Combined Probability:</p>
+    
     <div id="resultAndButtons">
+	<p style="width:95%; margin: auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
         <div id="result-container">
             <div id="result">
-                Combined Probability:
+				Combined Probability:
             </div>
         </div>
 

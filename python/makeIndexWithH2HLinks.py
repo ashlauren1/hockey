@@ -646,7 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
         # Create links
         player_link = f'<a href="/hockey/players/{row["PlayerID"]}.html" target="_blank">{row["Player"]}</a>'
         team_link = f'<a href="/hockey/teams/{row["Team"]}.html" target="_blank">{row["Team"]}</a>'
-        h2h_link = f'/hockey/players/h2h/{row["PlayerID"]}_vs_{row["Opp"]}.html'
+        h2h_link = f'/hockey/h2h/{row["PlayerID"]}_vs_{row["Opp"]}.html'
         h2h_cell = f'<a href="{h2h_link}" target="_blank">{row["H2H"]}</a>'
         
         # Write the row

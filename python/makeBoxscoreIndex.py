@@ -190,9 +190,14 @@ html_content = """
         <a href="/hockey/teams/">Teams</a>
     </div>    
     <div id="page-title" class="header">
-    <h1>Game Directory</h1>
+        <h1>Game Directory</h1>
     </div>
     <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+    <div class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+     </div>
     <div id="index-container">
     <table id="game-index">
     <thead>
@@ -205,6 +210,7 @@ html_content = """
             <th>Away</th>
             <th>Goals</th>
         </tr>
+        <tr id="filter-row"></tr>
     </thead>
     <tbody>
 

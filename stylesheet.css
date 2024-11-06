@@ -1,13 +1,13 @@
 /* VARIABLES */
 :root {
   --text-color: #222831; /* Dark gray for text */
-  --background-color: #f7f7f7; /* Very light gray for background */
+  --background-color: #fefefe; /* Very light gray for background */
   --secondary-color: #ffffff; /* White for secondary backgrounds */
   --accent-color: #0077b6; /* Muted blue for accents */
   --hover-color: #d4e9f1; /* Darker blue for hover effects */
   --box-background-color: #eaf4f9; /* Light blue-gray for buttons and boxes */
-  --section-background: #f1f1f1; /* Light gray for sections */
-  --font-family: 'Segoe UI', Helvetica;
+  --section-background: #f7fbfd; /* Light gray for sections */
+  --font-family: "Inter", "Montserrat", "Segoe UI", Helvetica;
 }
 
 /* RESET */
@@ -27,16 +27,18 @@ body {
 }
 
 h1 {
-  text-align: center;
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 16px 0;
+  font-family: Georgia;
+  text-align: center;
 }
 
 h2, caption {
   font-size: 18px;
   font-weight: 400;
   margin: 12px 0;
+  font-family: Georgia;
 }
 
 p {
@@ -62,14 +64,11 @@ a:visited {
 /* MISC */
 .event-checkbox {
   cursor: pointer;
+  width: 12px;
+  height: 12px;
 }
 
 .footer {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  text-align: center;
-  padding: 12px 0;
-  font-size: 12px;
   margin-top: 24px;
 }
 
@@ -77,9 +76,6 @@ a:visited {
 .header {
   margin-top: 60px;
   margin-bottom: 12px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 500;
 }
 
 .topnav {
@@ -96,6 +92,7 @@ a:visited {
   width: 25%;
   text-align: center;
   padding: 12px 0;
+  font-family: Georgia;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-color);
@@ -129,48 +126,53 @@ a:visited {
   cursor: pointer;
 }
 
-/* FILTERS */
+/* FILTER BOXES */
 #multi-filters {
   width: 95%;
-  margin: 12px auto;
+  margin: 14px auto;
   display: flex;
   flex-wrap: wrap;
+  font-family: var(--font-family);
   font-size: 12px;
+  font-weight: 500;
   background-color: var(--section-background);
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 12px;
-}
-
-#multi-filters p {
-  width: 100%;
-  font-weight: 500;
-  font-size: 13px;
-  margin: 4px 0 0 0;
+  padding-left: 12px;
 }
 
 #multi-filters label {
   display: flex;
   align-items: center;
-  margin: 0 0 0 0;
-  font-size: 12px;
   cursor: pointer;
 }
 
 #multi-filters input[type="checkbox"] {
-  margin-right: 4px;
   cursor: pointer;
+  height: 12px;
+  width: 12px;
+  margin-right: 4px;
+  margin-left: 14px;
 }
 
 #type-filters, #team-filters, #stat-filters, #game-filters {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
   align-items: center;
-  margin-bottom: 6px;
 }
 
+.multi-filters {
+	width:100%;
+}
+
+.multi-filters tr {
+	height: 38px;
+}
+
+
+
+/* FILTER ROWS */
 #filter-row, #filter-row:hover {
   background-color: #f2f2f2;
   font-weight: 500;
@@ -221,7 +223,7 @@ a:visited {
 /* RESULT CONTAINER */
 #result-container {
   width: 95%;
-  margin: 0 auto;
+  margin: 4px auto;
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
@@ -257,21 +259,27 @@ a:visited {
 }
 
 #data-table th, #team-table th, #player-table th, #home-boxscore th, #away-boxscore th, #home-boxscore tfoot, #away-boxscore tfoot, #H2H-table th {
-  background-color: #f2f2f2;
+  background-color: var(--box-background-color);
   font-weight: 600;
   cursor: pointer;
   padding: 8px 6px;
   text-align: center;
   border: 1px solid #e0e0e0;
-  font-size: 14px;
+  font-size: 12px;
+  font-family: var(--font-family);
 }
 
+#data-table th:hover,#team-table th:hover,#player-table th:hover, #home-boxscore th:hover, #away-boxscore th:hover, #H2H-table th:hover {
+  background-color: var(--hover-color);
+}
+
+
 #data-table td, #team-table td, #player-table td, #home-boxscore td, #away-boxscore td, #H2H-table td {
-  padding: 8px 6px;
+  padding: 8px 4px;
   text-align: center;
   border: 1px solid #e0e0e0;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 #data-table tbody tr:hover, #team-table tbody tr:hover, #player-table tbody tr:hover, #home-boxscore tbody tr:hover, #away-boxscore tbody tr:hover, #H2H-table tbody tr:hover {
@@ -287,10 +295,11 @@ a:visited {
   background-color: #c4dfe8;
 }
 
-
-#data-table td:nth-child(2), #data-table td:nth-child(4), #data-table td:nth-child(5) {
-	text-align:left;
+#data-table td:nth-child(4), #data-table td:nth-child(5) {
+	text-align: left;
 }
+
+
 
 
 /* INDEX TABLES */

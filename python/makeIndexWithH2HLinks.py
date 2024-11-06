@@ -159,12 +159,12 @@ for _, game in tqdm(upcoming_games_data.iterrows(), total=upcoming_games_data.sh
                 'Proj.': projected_value,
                 'Diff.': difference,
                 'Prob.': weighted_prob,
-                '2024-25': season_ratio,
+                '24-25': season_ratio,
                 'H2H': h2h_ratio,
                 'L5': l5_ratio,
                 'L10': l10_ratio,
                 'L20': l20_ratio,
-                '2023-24': prev_season_ratio,
+                '23-24': prev_season_ratio,
                 'All': all_ratio
             }
             final_results.append(result_row)
@@ -191,43 +191,46 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
 
         # Start HTML content
         html_content = f'''
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>{player_name} vs {opp_name} - Previous Matchups</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="../stylesheet.css">
-            <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
-        </head>
-        <body>
-            <div class="topnav">
-                <a href="/hockey/">Projections</a>
-                <a href="/hockey/players/">Players</a>
-                <a href="/hockey/boxscores/">Box Scores</a>
-                <a href="/hockey/teams/">Teams</a>
-            </div>
-            <div class="header">
-                <h1>{player_name} vs {opp_name} - Previous Matchups</h1>
-            </div>
-            <div id="H2H-container">
-                <table id="H2H-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Team</th>
-                        <th></th>
-                        <th>Opp</th>
-                        <th>G</th>
-                        <th>A</th>
-                        <th>PTS</th>
-                        <th>SOG</th>
-                        <th>HIT</th>
-                        <th>BLK</th>
-                        <th>TOI</th>
-                        <th>PIM</th>
-                    </tr>
-                </thead>
-                <tbody>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{player_name} vs {opp_name} - Previous Matchups</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="topnav">
+        <a href="/hockey/">Projections</a>
+        <a href="/hockey/players/">Players</a>
+        <a href="/hockey/boxscores/">Box Scores</a>
+        <a href="/hockey/teams/">Teams</a>
+    </div>
+    <div class="header">
+        <h1>{player_name} vs {opp_name} - Previous Matchups</h1>
+    </div>
+    <div id="H2H-container">
+        <table id="H2H-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Team</th>
+                <th></th>
+                <th>Opp</th>
+                <th>G</th>
+                <th>A</th>
+                <th>PTS</th>
+                <th>SOG</th>
+                <th>HIT</th>
+                <th>BLK</th>
+                <th>TOI</th>
+                <th>PIM</th>
+            </tr>
+        </thead>
+        <tbody>
         '''
 
         # Add rows for each game
@@ -272,12 +275,12 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
 
         # Close HTML content
         html_content += '''
-                </tbody>
-                </table>
-            </div>
-        <div class="footer"></div>
-        </body>
-        </html>
+        </tbody>
+        </table>
+    </div>
+    <div class="footer"></div>
+</body>
+</html>
         '''
 
         # Write the HTML content to file
@@ -292,13 +295,16 @@ generate_h2h_pages(metrics_data, h2h_pairs, os.path.dirname(output_file_path))
 # Convert results to HTML format with specified JavaScript functionality
 with open(output_file_path, 'w') as f:
     f.write("""
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Hockey!</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel=Stylesheet href=stylesheet.css>
-<link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <title>Hockey!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=Stylesheet href=stylesheet.css>
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -530,7 +536,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Gradient color code...
-    const gradientColumns = ["Diff.", "Prob.", "2024-25", "L5", "L10", "L20", "2023-24", "All"];
+    const gradientColumns = ["Diff.", "Prob.", "24-25", "L5", "L10", "L20", "23-24", "All"];
 
     // Get column indexes based on column headers
     const headers = Array.from(table.querySelectorAll("thead th"));
@@ -593,21 +599,20 @@ document.addEventListener("DOMContentLoaded", function () {
         <h1>Today's Probabilities and Projections</h1>
     </div>
 
-	<button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
-
-    <div id="multi-filters">
-        <div id="game-filters"><p>Games:</p></div>
-        <div id="team-filters"><p>Teams:</p></div>
-        <div id="type-filters"><p>Types:</p></div>
-        <div id="stat-filters"><p>Stats:</p></div>
-    </div>
-
+	<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
     
-    <div><p style="width:95%; margin: auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
+    <div id="multi-filters">
+        <table class="multi-filters">
+            <tr><td style="width:8%;font-weight:700">Games:</td><td><div id="game-filters"></div></td></tr>
+            <tr><td style="width:8%;font-weight:700">Teams:</td><td><div id="team-filters"></div></td></tr>
+            <tr><td style="width:8%;font-weight:700">Types:</td><td><div id="type-filters"></div></td></tr>
+            <tr><td style="width:8%;font-weight:700">Stats:</td><td><div id="stat-filters"></div></td></tr>
+        </table>
+    </div>
+    
+    <div><p style="width:95%; margin:auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
         <div id="result-container">
-            <div id="result">
-				Combined Probability:
-            </div>
+            <div id="result">Combined Probability:</div>
         </div>
         <div class="button-container">
             <button id="toggle-selection-btn">Show Selected Only</button>
@@ -616,25 +621,29 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     </div>
 
-<div id="data-table-container">
-<table id="data-table">
-
-<colgroup>
-<col style="width:38px">
-<col style="width:90px">
-<col style="width:48px">
-<col style="width:164px">
-<col span="3" style="width:48px">
-<col span="10" style="width:68px">
-</colgroup>
+    <div id="data-table-container">
+        <table id="data-table">
         <thead>
             <tr>
-                <th>Game</th><th>Team</th><th>Player</th><th>Type</th><th>Stat</th><th>Line</th>
-                <th>Proj.</th><th>Diff.</th><th>Prob.</th><th>2024-25</th><th>H2H</th>
-                <th>L5</th><th>L10</th><th>L20</th><th>2023-24</th><th>All</th>
+                <th>Game</th>
+                <th>Team</th>
+                <th>Player</th>
+                <th>Type</th>
+                <th>Stat</th>
+                <th>Line</th>
+                <th>Proj.</th>
+                <th>Diff.</th>
+                <th>Prob.</th>
+                <th>24-25</th>
+                <th>H2H</th>
+                <th>L5</th>
+                <th>L10</th>
+                <th>L20</th>
+                <th>23-24</th>
+                <th>All</th>
             </tr>
-</thead>
-<tbody>
+        </thead>
+        <tbody>
     """)
 
     # Adjust your code to loop through final_results as dictionaries
@@ -660,22 +669,22 @@ document.addEventListener("DOMContentLoaded", function () {
         f.write(f"<td>{projected_value}</td>")
         f.write(f"<td>{difference}</td>")
         f.write(f"<td>{weighted_prob}</td>")
-        f.write(f"<td>{row['2024-25']}</td>")
+        f.write(f"<td>{row['24-25']}</td>")
         f.write(f"<td>{h2h_cell}</td>")
         f.write(f"<td>{row['L5']}</td>")
         f.write(f"<td>{row['L10']}</td>")
         f.write(f"<td>{row['L20']}</td>")
-        f.write(f"<td>{row['2023-24']}</td>")
+        f.write(f"<td>{row['23-24']}</td>")
         f.write(f"<td>{row['All']}</td>")
         f.write("</tr>")
     
     f.write("""
-    </tbody>
-    </table>
+        </tbody>
+        </table>
     </div>
     <div class="footer"></div>
-    </body>
-    </html>
+</body>
+</html>
         """)
 
     print(f"HTML output saved to: {output_file_path}")

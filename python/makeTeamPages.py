@@ -261,7 +261,6 @@ def create_team_pages(data, output_dir):
             <a href="/hockey/teams/">Teams</a>
         </div>    
         <div class="header">
-        <div class="team-logo"><img src="/hockey/images/{team_id}.png" alt="{team_id}"></div>
         <h1>{team_name} Gamelog</h1>
         </div>
         <div class="button-container">

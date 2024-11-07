@@ -263,6 +263,7 @@ def create_team_pages(data, output_dir):
         <div class="header">
         <h1>{team_name} Gamelog</h1>
         </div>
+        <div class="team-logo"><img src="/hockey/images/{team_id}.png" alt="{team_id}">
         <div class="button-container">
             <button id="toggle-selection-btn">Show Selected Only</button>
             <button id="clear-filters-btn">Remove Filters</button>

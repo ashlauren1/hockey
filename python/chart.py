@@ -20,55 +20,107 @@ chart_script_template = """
 
     <!-- Filter Controls -->
     <div class="barChart-filters">
+        <div class="barChartFilter">
         <label for="{stat}_{game_id}_teamFilter">Opponent:</label>
         <select id="{stat}_{game_id}_teamFilter" onchange="applyFilters_{stat}_{game_id}()">
             <option value="all">All</option>
             {team_options}
         </select>
-
+        </div>
+        
+        <div class="barChartFilter">
         <label for="{stat}_{game_id}_homeAwayFilter">Home/Away:</label>
         <select id="{stat}_{game_id}_homeAwayFilter" onchange="applyFilters_{stat}_{game_id}()">
             <option value="all">All</option>
             <option value="home">Home</option>
             <option value="away">Away</option>
         </select>
-
+        </div>
+        
+        <div class="barChartFilter">
         <label for="{stat}_{game_id}_startDate">Start Date:</label>
         <input type="date" id="{stat}_{game_id}_startDate" onchange="applyFilters_{stat}_{game_id}()">
-
+        </div>
+        
+        <div class="barChartFilter">
         <label for="{stat}_{game_id}_endDate">End Date:</label>
         <input type="date" id="{stat}_{game_id}_endDate" onchange="applyFilters_{stat}_{game_id}()">
+        </div>
+        
+        <div class="barChartFilter">
+        <button id="clear-filters-btn-{stat}_{game_id}" onclick="clearFilters_{stat}_{game_id}()" class="clear-chart-filters">Clear Filters</button>
+        </div>
+    </div>
+
+    <!-- Slider for betting line adjustment -->
+    <div class="slider-container">
+    <div class="line-slider">
+        <label for="{stat}_{game_id}_lineSlider">Change Line:</label>
+        <input type="range" id="{stat}_{game_id}_lineSlider" min="0" max="30" step="0.5" value="{betting_line}" oninput="updateLine_{stat}_{game_id}(this.value)" class="line-slider">
+        <span id="{stat}_{game_id}_lineValue">{betting_line}</span>
+    </div>
+    <div class="resetLine">
+    <button id="reset-line-btn-{stat}_{game_id}" onclick="resetLine_{stat}_{game_id}_lineSlider()" class="reset-line-btn">Reset Line</button>
+    </div>
     </div>
 
     <script>
     const allData_{stat}_{game_id} = {chart_data};  // Full data for player
-    const Line_{stat}_{game_id} = {betting_line};  // Betting line for this stat
+    let Line_{stat}_{game_id} = {betting_line};  // Default betting line
     let chart_{stat}_{game_id};
 
     function initChart_{stat}_{game_id}() {{
         const ctx = document.getElementById('{stat}_{game_id}_chart').getContext('2d');
-        const barBackgroundColor = getComputedStyle(ctx.canvas).getPropertyValue('--bar-background-color').trim();
-        const barBorderColor = getComputedStyle(ctx.canvas).getPropertyValue('--bar-border-color').trim();
-
+        
         chart_{stat}_{game_id} = new Chart(ctx, {{
             type: 'bar',
             data: {{
                 labels: allData_{stat}_{game_id}.map(d => `${{d.date}} ${{d.location === 'home' ? 'vs' : '@'}} ${{d.opponent}}`),
                 datasets: [{{
-                    label: '{stat}',
-                    data: allData_{stat}_{game_id}.map(d => d.stat),
-                    backgroundColor: barBackgroundColor,
-                    borderColor: barBorderColor,
-                    borderWidth: 1
+                    label: '{stat}',  // Label used in title only
+                    data: allData_{stat}_{game_id}.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
+                    backgroundColor: allData_{stat}_{game_id}.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_{stat}_{game_id} ? '#16c049' : '#c01616')),  // Red for 0 values
+                    borderColor: allData_{stat}_{game_id}.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_{stat}_{game_id} ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
+                    borderWidth: 0.5,  // Thin border for a clean look
+                    barPercentage: 1.0,  // No gap between bars
+                    categoryPercentage: 1.0  // Fill category width
                 }}]
             }},
             options: {{
+                plugins: {{
+                    legend: {{
+                        display: false  // Remove legend entirely
+                    }},
+                    title: {{
+                        display: true,  // Add title as a caption
+                        text: '{stat}',  // Set title to stat name
+                        font: {{
+                            size: 16
+                        }},
+                        padding: {{
+                            top: 10,
+                            bottom: 20
+                        }}
+                    }},
+                    annotation: {{
+                        annotations: {{
+                            line1: {{
+                                type: 'line',
+                                yMin: Line_{stat}_{game_id},
+                                yMax: Line_{stat}_{game_id},
+                                borderColor: '#b3b3b3',
+                                borderWidth: 1,
+                                label: {{ content: '', enabled: true, position: 'end' }}
+                            }}
+                        }}
+                    }}
+                }},
                 scales: {{
                     y: {{ 
                         beginAtZero: true, 
                         ticks: {{
-                            color: '#222831',  // Color for y-axis labels
-                            font: {{ size: 11 }}  // Font size for y-axis labels
+                            color: '#222831',
+                            font: {{ size: 10 }}
                         }},
                         grid: {{
                             display: false
@@ -77,30 +129,31 @@ chart_script_template = """
                     }},
                     x: {{
                         ticks: {{
-                            color: '#222831',  // Color for x-axis labels
-                            font: {{ size: 11 }}  // Font size for x-axis labels
+                            color: '#222831',
+                            font: {{ size: 10 }}
                         }},
                         grid: {{
                             display: false
                         }}
                     }}
-                }},
-                plugins: {{
-                    annotation: {{
-                        annotations: {{
-                            line1: {{
-                                type: 'line',
-                                yMin: Line_{stat}_{game_id},
-                                yMax: Line_{stat}_{game_id},
-                                borderColor: '#73b089',
-                                borderWidth: 2,
-                                label: {{ content: '', enabled: true, position: 'end' }}
-                            }}
-                        }}
-                    }}
                 }}
             }}
-        }});
+        }}); 
+    }}
+
+    function updateLine_{stat}_{game_id}(newLine) {{
+        Line_{stat}_{game_id} = parseFloat(newLine);
+        document.getElementById('{stat}_{game_id}_lineValue').innerText = newLine;
+
+        // Update annotation line
+        chart_{stat}_{game_id}.options.plugins.annotation.annotations.line1.yMin = Line_{stat}_{game_id};
+        chart_{stat}_{game_id}.options.plugins.annotation.annotations.line1.yMax = Line_{stat}_{game_id};
+
+        // Update bar colors based on the new line
+        chart_{stat}_{game_id}.data.datasets[0].backgroundColor = allData_{stat}_{game_id}.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_{stat}_{game_id} ? '#16c049' : '#c01616'));
+        chart_{stat}_{game_id}.data.datasets[0].borderColor = allData_{stat}_{game_id}.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_{stat}_{game_id} ? '#304f3a' : '#421f1f'));
+
+        chart_{stat}_{game_id}.update();
     }}
 
     function applyFilters_{stat}_{game_id}() {{
@@ -121,15 +174,46 @@ chart_script_template = """
         }});
 
         chart_{stat}_{game_id}.data.labels = filteredData.map(d => `${{d.date}} ${{d.location === 'home' ? 'vs' : '@'}} ${{d.opponent}}`);
-        chart_{stat}_{game_id}.data.datasets[0].data = filteredData.map(d => d.stat);
+        chart_{stat}_{game_id}.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
+        chart_{stat}_{game_id}.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_{stat}_{game_id} ? '#16c049' : '#c01616'));
+        chart_{stat}_{game_id}.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_{stat}_{game_id} ? '#304f3a' : '#421f1f'));
         chart_{stat}_{game_id}.update();
     }}
+
+    function clearFilters_{stat}_{game_id}() {{
+        // Reset filter values
+        document.getElementById('{stat}_{game_id}_teamFilter').value = "all";
+        document.getElementById('{stat}_{game_id}_homeAwayFilter').value = "all";
+        document.getElementById('{stat}_{game_id}_startDate').value = "";
+        document.getElementById('{stat}_{game_id}_endDate').value = "";
+
+        // Reset the line slider to the default betting line
+        document.getElementById('{stat}_{game_id}_lineSlider').value = {betting_line};
+        document.getElementById('{stat}_{game_id}_lineValue').innerText = {betting_line};  // Update the displayed line value
+
+        // Apply filters with no active filters and reset line annotation
+        applyFilters_{stat}_{game_id}();
+        updateLine_{stat}_{game_id}({betting_line});
+    }}
+    
+    function resetLine_{stat}_{game_id}_lineSlider () {{
+        document.getElementById('{stat}_{game_id}_lineSlider').value = {betting_line};
+        document.getElementById('{stat}_{game_id}_lineValue').innerText = {betting_line};  // Update the displayed line value
+        
+        updateLine_{stat}_{game_id}({betting_line});
+     }}
 
     // Initialize the chart immediately
     initChart_{stat}_{game_id}();
     </script>
 </div>
 """
+
+
+
+
+
+
 
 # Rest of the script remains the same...
 

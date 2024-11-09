@@ -148,7 +148,7 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
         <!DOCTYPE html>
         <html>
         <head>
-        <title>Gamelog for {player_name}</title>
+        <title>{player_name}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="stylesheet.css">
         <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
@@ -326,16 +326,19 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
             <a href="/hockey/teams/">Teams</a>
         </div>    
         <div class="header">
-        <h1>GAMELOG FOR {player_name}</h1>
+        <h1>{player_name}</h1>
         </div>
-        <div class="button-container">
+        <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+
+        <div id="player-container">
+        
+        <div id="table-container">
+        <span class="table-button-container">
+		<span class="caption">Gamelog</span>
             <button id="toggle-selection-btn">Show Selected Only</button>
             <button id="clear-filters-btn">Remove Filters</button>
             <button id="clear-all-btn">Clear All</button>
-        </div>
-            <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
-
-        <div id="player-container">
+        </span>
             <table id="player-table">
             <colgroup>
             <col style="width:70px">
@@ -400,8 +403,9 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
         html_content += '''
                 </tbody>
             </table>
-            <div class="footer"></div>
             </div>
+            </div>
+            <div class="footer"></div>
         </body>
         </html>
         '''

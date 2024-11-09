@@ -130,14 +130,14 @@
 <div class="footer"></div>
 
 <div class="chart-container">
-<canvas class="barChart" id="A_202411080WSH_chart"></canvas>
+<canvas class="barChart" id="A_202411080WSH_0_5_chart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <!-- Filter Controls -->
 <div class="barChart-filters">
 <div class="barChartFilter">
-<label for="A_202411080WSH_teamFilter">Opponent:</label>
-<select id="A_202411080WSH_teamFilter" onchange="applyFilters_A_202411080WSH()">
+<label for="A_202411080WSH_0_5_teamFilter">Opponent:</label>
+<select id="A_202411080WSH_0_5_teamFilter" onchange="applyFilters_A_202411080WSH_0_5()">
 <option value="all">All</option>
 <option value="CAR">CAR</option>
 <option value="NYI">NYI</option>
@@ -174,53 +174,51 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="A_202411080WSH_homeAwayFilter">Home/Away:</label>
-<select id="A_202411080WSH_homeAwayFilter" onchange="applyFilters_A_202411080WSH()">
+<label for="A_202411080WSH_0_5_homeAwayFilter">Home/Away:</label>
+<select id="A_202411080WSH_0_5_homeAwayFilter" onchange="applyFilters_A_202411080WSH_0_5()">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
 </select>
 </div>
 <div class="barChartFilter">
-<label for="A_202411080WSH_startDate">Start Date:</label>
-<input id="A_202411080WSH_startDate" onchange="applyFilters_A_202411080WSH()" type="date"/>
+<label for="A_202411080WSH_0_5_startDate">Start Date:</label>
+<input id="A_202411080WSH_0_5_startDate" onchange="applyFilters_A_202411080WSH_0_5()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="A_202411080WSH_endDate">End Date:</label>
-<input id="A_202411080WSH_endDate" onchange="applyFilters_A_202411080WSH()" type="date"/>
-</div>
-<div class="barChartFilter">
-<button class="clear-chart-filters" id="clear-filters-btn-A_202411080WSH" onclick="clearFilters_A_202411080WSH()">Clear Filters</button>
+<label for="A_202411080WSH_0_5_endDate">End Date:</label>
+<input id="A_202411080WSH_0_5_endDate" onchange="applyFilters_A_202411080WSH_0_5()" type="date"/>
 </div>
 </div>
 <!-- Slider for betting line adjustment -->
 <div class="slider-container">
 <div class="line-slider">
-<label for="A_202411080WSH_lineSlider">Change Line:</label>
-<input class="line-slider" id="A_202411080WSH_lineSlider" max="30" min="0" oninput="updateLine_A_202411080WSH(this.value)" step="0.5" type="range" value="0.5"/>
-<span id="A_202411080WSH_lineValue">0.5</span>
+<label for="A_202411080WSH_0_5_lineSlider">Change Line:</label>
+<input class="line-slider" id="A_202411080WSH_0_5_lineSlider" max="30" min="0" oninput="updateLine_A_202411080WSH_0_5(this.value)" step="0.5" type="range" value="0.5"/>
+<span id="A_202411080WSH_0_5_lineValue">0.5</span>
 </div>
-<div class="resetLine">
-<button class="reset-line-btn" id="reset-line-btn-A_202411080WSH" onclick="resetLine_A_202411080WSH_lineSlider()">Reset Line</button>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn-A_202411080WSH_0_5" onclick="resetLine_A_202411080WSH_0_5_lineSlider()">Reset Line</button>
+<button class="clear-chart-filters" id="clear-filters-btn-A_202411080WSH_0_5" onclick="clearFilters_A_202411080WSH_0_5()">Clear Filters</button>
 </div>
 </div>
 <script>
-    const allData_A_202411080WSH = [{'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 2}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 1}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 1}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 0}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 2}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 2}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 1}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 2}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 1}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 1}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 1}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 0}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 1}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 2}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 1}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 0}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 1}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 0}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 0}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 0}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 1}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 2}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 1}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 1}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 0}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 0}];  // Full data for player
-    let Line_A_202411080WSH = 0.5;  // Default betting line
-    let chart_A_202411080WSH;
+    const allData_A_202411080WSH_0_5 = [{'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 1}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 2}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 1}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 0}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 0}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 1}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 2}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 1}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 1}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 1}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 2}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 1}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 0}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 0}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 2}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 2}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 0}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 1}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 0}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 1}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 1}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 1}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 2}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 1}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}];  // Full data for player
+    let Line_A_202411080WSH_0_5 = 0.5;  // Default betting line
+    let chart_A_202411080WSH_0_5;
 
-    function initChart_A_202411080WSH() {
-        const ctx = document.getElementById('A_202411080WSH_chart').getContext('2d');
+    function initChart_A_202411080WSH_0_5() {
+        const ctx = document.getElementById('A_202411080WSH_0_5_chart').getContext('2d');
         
-        chart_A_202411080WSH = new Chart(ctx, {
+        chart_A_202411080WSH_0_5 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_A_202411080WSH.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_A_202411080WSH_0_5.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
                 datasets: [{
                     label: 'A',  // Label used in title only
-                    data: allData_A_202411080WSH.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
-                    backgroundColor: allData_A_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_A_202411080WSH ? '#16c049' : '#c01616')),  // Red for 0 values
-                    borderColor: allData_A_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_A_202411080WSH ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
+                    data: allData_A_202411080WSH_0_5.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
+                    backgroundColor: allData_A_202411080WSH_0_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_A_202411080WSH_0_5 ? '#16c049' : '#c01616')),  // Red for 0 values
+                    borderColor: allData_A_202411080WSH_0_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_A_202411080WSH_0_5 ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
                     borderWidth: 0.5,  // Thin border for a clean look
                     barPercentage: 1.0,  // No gap between bars
                     categoryPercentage: 1.0  // Fill category width
@@ -246,10 +244,10 @@
                         annotations: {
                             line1: {
                                 type: 'line',
-                                yMin: Line_A_202411080WSH,
-                                yMax: Line_A_202411080WSH,
-                                borderColor: '#b3b3b3',
-                                borderWidth: 1,
+                                yMin: Line_A_202411080WSH_0_5,
+                                yMax: Line_A_202411080WSH_0_5,
+                                borderColor: '#fff',
+                                borderWidth: 2,
                                 label: { content: '', enabled: true, position: 'end' }
                             }
                         }
@@ -281,28 +279,28 @@
         }); 
     }
 
-    function updateLine_A_202411080WSH(newLine) {
-        Line_A_202411080WSH = parseFloat(newLine);
-        document.getElementById('A_202411080WSH_lineValue').innerText = newLine;
+    function updateLine_A_202411080WSH_0_5(newLine) {
+        Line_A_202411080WSH_0_5 = parseFloat(newLine);
+        document.getElementById('A_202411080WSH_0_5_lineValue').innerText = newLine;
 
         // Update annotation line
-        chart_A_202411080WSH.options.plugins.annotation.annotations.line1.yMin = Line_A_202411080WSH;
-        chart_A_202411080WSH.options.plugins.annotation.annotations.line1.yMax = Line_A_202411080WSH;
+        chart_A_202411080WSH_0_5.options.plugins.annotation.annotations.line1.yMin = Line_A_202411080WSH_0_5;
+        chart_A_202411080WSH_0_5.options.plugins.annotation.annotations.line1.yMax = Line_A_202411080WSH_0_5;
 
         // Update bar colors based on the new line
-        chart_A_202411080WSH.data.datasets[0].backgroundColor = allData_A_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_A_202411080WSH ? '#16c049' : '#c01616'));
-        chart_A_202411080WSH.data.datasets[0].borderColor = allData_A_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_A_202411080WSH ? '#304f3a' : '#421f1f'));
+        chart_A_202411080WSH_0_5.data.datasets[0].backgroundColor = allData_A_202411080WSH_0_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_A_202411080WSH_0_5 ? '#16c049' : '#c01616'));
+        chart_A_202411080WSH_0_5.data.datasets[0].borderColor = allData_A_202411080WSH_0_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_A_202411080WSH_0_5 ? '#304f3a' : '#421f1f'));
 
-        chart_A_202411080WSH.update();
+        chart_A_202411080WSH_0_5.update();
     }
 
-    function applyFilters_A_202411080WSH() {
-        const teamFilter = document.getElementById('A_202411080WSH_teamFilter').value;
-        const homeAwayFilter = document.getElementById('A_202411080WSH_homeAwayFilter').value;
-        const startDate = document.getElementById('A_202411080WSH_startDate').value;
-        const endDate = document.getElementById('A_202411080WSH_endDate').value;
+    function applyFilters_A_202411080WSH_0_5() {
+        const teamFilter = document.getElementById('A_202411080WSH_0_5_teamFilter').value;
+        const homeAwayFilter = document.getElementById('A_202411080WSH_0_5_homeAwayFilter').value;
+        const startDate = document.getElementById('A_202411080WSH_0_5_startDate').value;
+        const endDate = document.getElementById('A_202411080WSH_0_5_endDate').value;
 
-        const filteredData = allData_A_202411080WSH.filter(d => {
+        const filteredData = allData_A_202411080WSH_0_5.filter(d => {
             const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
             const isLocationMatch = (homeAwayFilter === 'all') || 
                                     (homeAwayFilter === 'home' && d.location === 'home') || 
@@ -313,50 +311,50 @@
             return isTeamMatch && isLocationMatch && isDateInRange;
         });
 
-        chart_A_202411080WSH.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_A_202411080WSH.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
-        chart_A_202411080WSH.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_A_202411080WSH ? '#16c049' : '#c01616'));
-        chart_A_202411080WSH.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_A_202411080WSH ? '#304f3a' : '#421f1f'));
-        chart_A_202411080WSH.update();
+        chart_A_202411080WSH_0_5.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
+        chart_A_202411080WSH_0_5.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
+        chart_A_202411080WSH_0_5.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_A_202411080WSH_0_5 ? '#16c049' : '#c01616'));
+        chart_A_202411080WSH_0_5.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_A_202411080WSH_0_5 ? '#304f3a' : '#421f1f'));
+        chart_A_202411080WSH_0_5.update();
     }
 
-    function clearFilters_A_202411080WSH() {
+    function clearFilters_A_202411080WSH_0_5() {
         // Reset filter values
-        document.getElementById('A_202411080WSH_teamFilter').value = "all";
-        document.getElementById('A_202411080WSH_homeAwayFilter').value = "all";
-        document.getElementById('A_202411080WSH_startDate').value = "";
-        document.getElementById('A_202411080WSH_endDate').value = "";
+        document.getElementById('A_202411080WSH_0_5_teamFilter').value = "all";
+        document.getElementById('A_202411080WSH_0_5_homeAwayFilter').value = "all";
+        document.getElementById('A_202411080WSH_0_5_startDate').value = "";
+        document.getElementById('A_202411080WSH_0_5_endDate').value = "";
 
         // Reset the line slider to the default betting line
-        document.getElementById('A_202411080WSH_lineSlider').value = 0.5;
-        document.getElementById('A_202411080WSH_lineValue').innerText = 0.5;  // Update the displayed line value
+        document.getElementById('A_202411080WSH_0_5_lineSlider').value = 0.5;
+        document.getElementById('A_202411080WSH_0_5_lineValue').innerText = 0.5;  // Update the displayed line value
 
         // Apply filters with no active filters and reset line annotation
-        applyFilters_A_202411080WSH();
-        updateLine_A_202411080WSH(0.5);
+        applyFilters_A_202411080WSH_0_5();
+        updateLine_A_202411080WSH_0_5(0.5);
     }
     
-    function resetLine_A_202411080WSH_lineSlider () {
-        document.getElementById('A_202411080WSH_lineSlider').value = 0.5;
-        document.getElementById('A_202411080WSH_lineValue').innerText = 0.5;  // Update the displayed line value
+    function resetLine_A_202411080WSH_0_5_lineSlider () {
+        document.getElementById('A_202411080WSH_0_5_lineSlider').value = 0.5;
+        document.getElementById('A_202411080WSH_0_5_lineValue').innerText = 0.5;  // Update the displayed line value
         
-        updateLine_A_202411080WSH(0.5);
+        updateLine_A_202411080WSH_0_5(0.5);
      }
 
     // Initialize the chart immediately
-    initChart_A_202411080WSH();
+    initChart_A_202411080WSH_0_5();
     </script>
 </div>
 
 <div class="chart-container">
-<canvas class="barChart" id="PTS_202411080WSH_chart"></canvas>
+<canvas class="barChart" id="PTS_202411080WSH_0_5_chart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <!-- Filter Controls -->
 <div class="barChart-filters">
 <div class="barChartFilter">
-<label for="PTS_202411080WSH_teamFilter">Opponent:</label>
-<select id="PTS_202411080WSH_teamFilter" onchange="applyFilters_PTS_202411080WSH()">
+<label for="PTS_202411080WSH_0_5_teamFilter">Opponent:</label>
+<select id="PTS_202411080WSH_0_5_teamFilter" onchange="applyFilters_PTS_202411080WSH_0_5()">
 <option value="all">All</option>
 <option value="CAR">CAR</option>
 <option value="NYI">NYI</option>
@@ -393,53 +391,51 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="PTS_202411080WSH_homeAwayFilter">Home/Away:</label>
-<select id="PTS_202411080WSH_homeAwayFilter" onchange="applyFilters_PTS_202411080WSH()">
+<label for="PTS_202411080WSH_0_5_homeAwayFilter">Home/Away:</label>
+<select id="PTS_202411080WSH_0_5_homeAwayFilter" onchange="applyFilters_PTS_202411080WSH_0_5()">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
 </select>
 </div>
 <div class="barChartFilter">
-<label for="PTS_202411080WSH_startDate">Start Date:</label>
-<input id="PTS_202411080WSH_startDate" onchange="applyFilters_PTS_202411080WSH()" type="date"/>
+<label for="PTS_202411080WSH_0_5_startDate">Start Date:</label>
+<input id="PTS_202411080WSH_0_5_startDate" onchange="applyFilters_PTS_202411080WSH_0_5()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="PTS_202411080WSH_endDate">End Date:</label>
-<input id="PTS_202411080WSH_endDate" onchange="applyFilters_PTS_202411080WSH()" type="date"/>
-</div>
-<div class="barChartFilter">
-<button class="clear-chart-filters" id="clear-filters-btn-PTS_202411080WSH" onclick="clearFilters_PTS_202411080WSH()">Clear Filters</button>
+<label for="PTS_202411080WSH_0_5_endDate">End Date:</label>
+<input id="PTS_202411080WSH_0_5_endDate" onchange="applyFilters_PTS_202411080WSH_0_5()" type="date"/>
 </div>
 </div>
 <!-- Slider for betting line adjustment -->
 <div class="slider-container">
 <div class="line-slider">
-<label for="PTS_202411080WSH_lineSlider">Change Line:</label>
-<input class="line-slider" id="PTS_202411080WSH_lineSlider" max="30" min="0" oninput="updateLine_PTS_202411080WSH(this.value)" step="0.5" type="range" value="0.5"/>
-<span id="PTS_202411080WSH_lineValue">0.5</span>
+<label for="PTS_202411080WSH_0_5_lineSlider">Change Line:</label>
+<input class="line-slider" id="PTS_202411080WSH_0_5_lineSlider" max="30" min="0" oninput="updateLine_PTS_202411080WSH_0_5(this.value)" step="0.5" type="range" value="0.5"/>
+<span id="PTS_202411080WSH_0_5_lineValue">0.5</span>
 </div>
-<div class="resetLine">
-<button class="reset-line-btn" id="reset-line-btn-PTS_202411080WSH" onclick="resetLine_PTS_202411080WSH_lineSlider()">Reset Line</button>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn-PTS_202411080WSH_0_5" onclick="resetLine_PTS_202411080WSH_0_5_lineSlider()">Reset Line</button>
+<button class="clear-chart-filters" id="clear-filters-btn-PTS_202411080WSH_0_5" onclick="clearFilters_PTS_202411080WSH_0_5()">Clear Filters</button>
 </div>
 </div>
 <script>
-    const allData_PTS_202411080WSH = [{'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 2}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 3}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 2}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 2}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 1}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 1}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 1}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 1}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 1}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 0}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 1}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 3}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 2}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 1}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 1}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 2}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 1}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 1}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 0}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 1}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 2}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 2}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 2}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 0}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 3}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 2}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 0}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 1}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 1}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 1}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 2}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 1}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 0}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 1}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}];  // Full data for player
-    let Line_PTS_202411080WSH = 0.5;  // Default betting line
-    let chart_PTS_202411080WSH;
+    const allData_PTS_202411080WSH_0_5 = [{'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 2}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 2}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 1}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 2}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 3}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 0}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 0}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 1}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 2}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 1}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 1}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 1}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 2}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 1}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 0}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 1}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 2}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 3}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 1}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 1}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 2}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 1}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 1}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 1}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 0}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 1}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 1}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 1}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 2}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 1}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 2}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 2}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 3}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}];  // Full data for player
+    let Line_PTS_202411080WSH_0_5 = 0.5;  // Default betting line
+    let chart_PTS_202411080WSH_0_5;
 
-    function initChart_PTS_202411080WSH() {
-        const ctx = document.getElementById('PTS_202411080WSH_chart').getContext('2d');
+    function initChart_PTS_202411080WSH_0_5() {
+        const ctx = document.getElementById('PTS_202411080WSH_0_5_chart').getContext('2d');
         
-        chart_PTS_202411080WSH = new Chart(ctx, {
+        chart_PTS_202411080WSH_0_5 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_PTS_202411080WSH.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_PTS_202411080WSH_0_5.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
                 datasets: [{
                     label: 'PTS',  // Label used in title only
-                    data: allData_PTS_202411080WSH.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
-                    backgroundColor: allData_PTS_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_PTS_202411080WSH ? '#16c049' : '#c01616')),  // Red for 0 values
-                    borderColor: allData_PTS_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_PTS_202411080WSH ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
+                    data: allData_PTS_202411080WSH_0_5.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
+                    backgroundColor: allData_PTS_202411080WSH_0_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_PTS_202411080WSH_0_5 ? '#16c049' : '#c01616')),  // Red for 0 values
+                    borderColor: allData_PTS_202411080WSH_0_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_PTS_202411080WSH_0_5 ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
                     borderWidth: 0.5,  // Thin border for a clean look
                     barPercentage: 1.0,  // No gap between bars
                     categoryPercentage: 1.0  // Fill category width
@@ -465,10 +461,10 @@
                         annotations: {
                             line1: {
                                 type: 'line',
-                                yMin: Line_PTS_202411080WSH,
-                                yMax: Line_PTS_202411080WSH,
-                                borderColor: '#b3b3b3',
-                                borderWidth: 1,
+                                yMin: Line_PTS_202411080WSH_0_5,
+                                yMax: Line_PTS_202411080WSH_0_5,
+                                borderColor: '#fff',
+                                borderWidth: 2,
                                 label: { content: '', enabled: true, position: 'end' }
                             }
                         }
@@ -500,28 +496,28 @@
         }); 
     }
 
-    function updateLine_PTS_202411080WSH(newLine) {
-        Line_PTS_202411080WSH = parseFloat(newLine);
-        document.getElementById('PTS_202411080WSH_lineValue').innerText = newLine;
+    function updateLine_PTS_202411080WSH_0_5(newLine) {
+        Line_PTS_202411080WSH_0_5 = parseFloat(newLine);
+        document.getElementById('PTS_202411080WSH_0_5_lineValue').innerText = newLine;
 
         // Update annotation line
-        chart_PTS_202411080WSH.options.plugins.annotation.annotations.line1.yMin = Line_PTS_202411080WSH;
-        chart_PTS_202411080WSH.options.plugins.annotation.annotations.line1.yMax = Line_PTS_202411080WSH;
+        chart_PTS_202411080WSH_0_5.options.plugins.annotation.annotations.line1.yMin = Line_PTS_202411080WSH_0_5;
+        chart_PTS_202411080WSH_0_5.options.plugins.annotation.annotations.line1.yMax = Line_PTS_202411080WSH_0_5;
 
         // Update bar colors based on the new line
-        chart_PTS_202411080WSH.data.datasets[0].backgroundColor = allData_PTS_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_PTS_202411080WSH ? '#16c049' : '#c01616'));
-        chart_PTS_202411080WSH.data.datasets[0].borderColor = allData_PTS_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_PTS_202411080WSH ? '#304f3a' : '#421f1f'));
+        chart_PTS_202411080WSH_0_5.data.datasets[0].backgroundColor = allData_PTS_202411080WSH_0_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_PTS_202411080WSH_0_5 ? '#16c049' : '#c01616'));
+        chart_PTS_202411080WSH_0_5.data.datasets[0].borderColor = allData_PTS_202411080WSH_0_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_PTS_202411080WSH_0_5 ? '#304f3a' : '#421f1f'));
 
-        chart_PTS_202411080WSH.update();
+        chart_PTS_202411080WSH_0_5.update();
     }
 
-    function applyFilters_PTS_202411080WSH() {
-        const teamFilter = document.getElementById('PTS_202411080WSH_teamFilter').value;
-        const homeAwayFilter = document.getElementById('PTS_202411080WSH_homeAwayFilter').value;
-        const startDate = document.getElementById('PTS_202411080WSH_startDate').value;
-        const endDate = document.getElementById('PTS_202411080WSH_endDate').value;
+    function applyFilters_PTS_202411080WSH_0_5() {
+        const teamFilter = document.getElementById('PTS_202411080WSH_0_5_teamFilter').value;
+        const homeAwayFilter = document.getElementById('PTS_202411080WSH_0_5_homeAwayFilter').value;
+        const startDate = document.getElementById('PTS_202411080WSH_0_5_startDate').value;
+        const endDate = document.getElementById('PTS_202411080WSH_0_5_endDate').value;
 
-        const filteredData = allData_PTS_202411080WSH.filter(d => {
+        const filteredData = allData_PTS_202411080WSH_0_5.filter(d => {
             const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
             const isLocationMatch = (homeAwayFilter === 'all') || 
                                     (homeAwayFilter === 'home' && d.location === 'home') || 
@@ -532,50 +528,50 @@
             return isTeamMatch && isLocationMatch && isDateInRange;
         });
 
-        chart_PTS_202411080WSH.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_PTS_202411080WSH.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
-        chart_PTS_202411080WSH.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_PTS_202411080WSH ? '#16c049' : '#c01616'));
-        chart_PTS_202411080WSH.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_PTS_202411080WSH ? '#304f3a' : '#421f1f'));
-        chart_PTS_202411080WSH.update();
+        chart_PTS_202411080WSH_0_5.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
+        chart_PTS_202411080WSH_0_5.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
+        chart_PTS_202411080WSH_0_5.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_PTS_202411080WSH_0_5 ? '#16c049' : '#c01616'));
+        chart_PTS_202411080WSH_0_5.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_PTS_202411080WSH_0_5 ? '#304f3a' : '#421f1f'));
+        chart_PTS_202411080WSH_0_5.update();
     }
 
-    function clearFilters_PTS_202411080WSH() {
+    function clearFilters_PTS_202411080WSH_0_5() {
         // Reset filter values
-        document.getElementById('PTS_202411080WSH_teamFilter').value = "all";
-        document.getElementById('PTS_202411080WSH_homeAwayFilter').value = "all";
-        document.getElementById('PTS_202411080WSH_startDate').value = "";
-        document.getElementById('PTS_202411080WSH_endDate').value = "";
+        document.getElementById('PTS_202411080WSH_0_5_teamFilter').value = "all";
+        document.getElementById('PTS_202411080WSH_0_5_homeAwayFilter').value = "all";
+        document.getElementById('PTS_202411080WSH_0_5_startDate').value = "";
+        document.getElementById('PTS_202411080WSH_0_5_endDate').value = "";
 
         // Reset the line slider to the default betting line
-        document.getElementById('PTS_202411080WSH_lineSlider').value = 0.5;
-        document.getElementById('PTS_202411080WSH_lineValue').innerText = 0.5;  // Update the displayed line value
+        document.getElementById('PTS_202411080WSH_0_5_lineSlider').value = 0.5;
+        document.getElementById('PTS_202411080WSH_0_5_lineValue').innerText = 0.5;  // Update the displayed line value
 
         // Apply filters with no active filters and reset line annotation
-        applyFilters_PTS_202411080WSH();
-        updateLine_PTS_202411080WSH(0.5);
+        applyFilters_PTS_202411080WSH_0_5();
+        updateLine_PTS_202411080WSH_0_5(0.5);
     }
     
-    function resetLine_PTS_202411080WSH_lineSlider () {
-        document.getElementById('PTS_202411080WSH_lineSlider').value = 0.5;
-        document.getElementById('PTS_202411080WSH_lineValue').innerText = 0.5;  // Update the displayed line value
+    function resetLine_PTS_202411080WSH_0_5_lineSlider () {
+        document.getElementById('PTS_202411080WSH_0_5_lineSlider').value = 0.5;
+        document.getElementById('PTS_202411080WSH_0_5_lineValue').innerText = 0.5;  // Update the displayed line value
         
-        updateLine_PTS_202411080WSH(0.5);
+        updateLine_PTS_202411080WSH_0_5(0.5);
      }
 
     // Initialize the chart immediately
-    initChart_PTS_202411080WSH();
+    initChart_PTS_202411080WSH_0_5();
     </script>
 </div>
 
 <div class="chart-container">
-<canvas class="barChart" id="SOG_202411080WSH_chart"></canvas>
+<canvas class="barChart" id="SOG_202411080WSH_1_5_chart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <!-- Filter Controls -->
 <div class="barChart-filters">
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_teamFilter">Opponent:</label>
-<select id="SOG_202411080WSH_teamFilter" onchange="applyFilters_SOG_202411080WSH()">
+<label for="SOG_202411080WSH_1_5_teamFilter">Opponent:</label>
+<select id="SOG_202411080WSH_1_5_teamFilter" onchange="applyFilters_SOG_202411080WSH_1_5()">
 <option value="all">All</option>
 <option value="CAR">CAR</option>
 <option value="NYI">NYI</option>
@@ -612,53 +608,51 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_homeAwayFilter">Home/Away:</label>
-<select id="SOG_202411080WSH_homeAwayFilter" onchange="applyFilters_SOG_202411080WSH()">
+<label for="SOG_202411080WSH_1_5_homeAwayFilter">Home/Away:</label>
+<select id="SOG_202411080WSH_1_5_homeAwayFilter" onchange="applyFilters_SOG_202411080WSH_1_5()">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
 </select>
 </div>
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_startDate">Start Date:</label>
-<input id="SOG_202411080WSH_startDate" onchange="applyFilters_SOG_202411080WSH()" type="date"/>
+<label for="SOG_202411080WSH_1_5_startDate">Start Date:</label>
+<input id="SOG_202411080WSH_1_5_startDate" onchange="applyFilters_SOG_202411080WSH_1_5()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_endDate">End Date:</label>
-<input id="SOG_202411080WSH_endDate" onchange="applyFilters_SOG_202411080WSH()" type="date"/>
-</div>
-<div class="barChartFilter">
-<button class="clear-chart-filters" id="clear-filters-btn-SOG_202411080WSH" onclick="clearFilters_SOG_202411080WSH()">Clear Filters</button>
+<label for="SOG_202411080WSH_1_5_endDate">End Date:</label>
+<input id="SOG_202411080WSH_1_5_endDate" onchange="applyFilters_SOG_202411080WSH_1_5()" type="date"/>
 </div>
 </div>
 <!-- Slider for betting line adjustment -->
 <div class="slider-container">
 <div class="line-slider">
-<label for="SOG_202411080WSH_lineSlider">Change Line:</label>
-<input class="line-slider" id="SOG_202411080WSH_lineSlider" max="30" min="0" oninput="updateLine_SOG_202411080WSH(this.value)" step="0.5" type="range" value="1.5"/>
-<span id="SOG_202411080WSH_lineValue">1.5</span>
+<label for="SOG_202411080WSH_1_5_lineSlider">Change Line:</label>
+<input class="line-slider" id="SOG_202411080WSH_1_5_lineSlider" max="30" min="0" oninput="updateLine_SOG_202411080WSH_1_5(this.value)" step="0.5" type="range" value="1.5"/>
+<span id="SOG_202411080WSH_1_5_lineValue">1.5</span>
 </div>
-<div class="resetLine">
-<button class="reset-line-btn" id="reset-line-btn-SOG_202411080WSH" onclick="resetLine_SOG_202411080WSH_lineSlider()">Reset Line</button>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn-SOG_202411080WSH_1_5" onclick="resetLine_SOG_202411080WSH_1_5_lineSlider()">Reset Line</button>
+<button class="clear-chart-filters" id="clear-filters-btn-SOG_202411080WSH_1_5" onclick="clearFilters_SOG_202411080WSH_1_5()">Clear Filters</button>
 </div>
 </div>
 <script>
-    const allData_SOG_202411080WSH = [{'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 2}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 5}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 2}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 3}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 2}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 2}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 5}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 4}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 2}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 6}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 6}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 2}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 3}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 4}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 3}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 4}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 4}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 3}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 4}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 4}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 4}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 7}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 2}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 4}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 3}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 2}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 6}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 2}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 1}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 3}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 2}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 2}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 2}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 4}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 2}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 2}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 4}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 2}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 5}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 1}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 3}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 4}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 6}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 5}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 3}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 4}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 3}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 5}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 2}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 3}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 2}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 5}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 3}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 3}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 2}, {'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 5}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 4}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 6}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 3}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 6}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 4}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 2}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 4}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 2}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 1}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 3}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 1}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 1}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 2}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 4}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 1}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 4}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 3}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 3}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 2}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}];  // Full data for player
-    let Line_SOG_202411080WSH = 1.5;  // Default betting line
-    let chart_SOG_202411080WSH;
+    const allData_SOG_202411080WSH_1_5 = [{'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 2}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 2}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 3}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 6}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 3}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 5}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 5}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 1}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 4}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 2}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 2}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 2}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 3}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 3}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 1}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 5}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 3}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 3}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 4}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 2}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 1}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 4}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 2}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 4}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 5}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 5}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 1}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 2}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 3}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 2}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 1}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 2}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 2}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 1}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 2}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 4}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 2}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 2}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 6}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 3}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 6}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 2}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 3}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 4}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 2}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 4}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 4}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 2}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 4}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 2}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 3}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 2}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 7}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 4}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 4}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 4}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 2}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 3}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 4}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 4}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 5}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 3}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 4}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 3}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 3}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 3}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 2}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 4}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 3}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 2}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 4}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 5}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 6}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 6}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 6}];  // Full data for player
+    let Line_SOG_202411080WSH_1_5 = 1.5;  // Default betting line
+    let chart_SOG_202411080WSH_1_5;
 
-    function initChart_SOG_202411080WSH() {
-        const ctx = document.getElementById('SOG_202411080WSH_chart').getContext('2d');
+    function initChart_SOG_202411080WSH_1_5() {
+        const ctx = document.getElementById('SOG_202411080WSH_1_5_chart').getContext('2d');
         
-        chart_SOG_202411080WSH = new Chart(ctx, {
+        chart_SOG_202411080WSH_1_5 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_SOG_202411080WSH.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_SOG_202411080WSH_1_5.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
                 datasets: [{
                     label: 'SOG',  // Label used in title only
-                    data: allData_SOG_202411080WSH.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
-                    backgroundColor: allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH ? '#16c049' : '#c01616')),  // Red for 0 values
-                    borderColor: allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
+                    data: allData_SOG_202411080WSH_1_5.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
+                    backgroundColor: allData_SOG_202411080WSH_1_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH_1_5 ? '#16c049' : '#c01616')),  // Red for 0 values
+                    borderColor: allData_SOG_202411080WSH_1_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH_1_5 ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
                     borderWidth: 0.5,  // Thin border for a clean look
                     barPercentage: 1.0,  // No gap between bars
                     categoryPercentage: 1.0  // Fill category width
@@ -684,10 +678,10 @@
                         annotations: {
                             line1: {
                                 type: 'line',
-                                yMin: Line_SOG_202411080WSH,
-                                yMax: Line_SOG_202411080WSH,
-                                borderColor: '#b3b3b3',
-                                borderWidth: 1,
+                                yMin: Line_SOG_202411080WSH_1_5,
+                                yMax: Line_SOG_202411080WSH_1_5,
+                                borderColor: '#fff',
+                                borderWidth: 2,
                                 label: { content: '', enabled: true, position: 'end' }
                             }
                         }
@@ -719,28 +713,28 @@
         }); 
     }
 
-    function updateLine_SOG_202411080WSH(newLine) {
-        Line_SOG_202411080WSH = parseFloat(newLine);
-        document.getElementById('SOG_202411080WSH_lineValue').innerText = newLine;
+    function updateLine_SOG_202411080WSH_1_5(newLine) {
+        Line_SOG_202411080WSH_1_5 = parseFloat(newLine);
+        document.getElementById('SOG_202411080WSH_1_5_lineValue').innerText = newLine;
 
         // Update annotation line
-        chart_SOG_202411080WSH.options.plugins.annotation.annotations.line1.yMin = Line_SOG_202411080WSH;
-        chart_SOG_202411080WSH.options.plugins.annotation.annotations.line1.yMax = Line_SOG_202411080WSH;
+        chart_SOG_202411080WSH_1_5.options.plugins.annotation.annotations.line1.yMin = Line_SOG_202411080WSH_1_5;
+        chart_SOG_202411080WSH_1_5.options.plugins.annotation.annotations.line1.yMax = Line_SOG_202411080WSH_1_5;
 
         // Update bar colors based on the new line
-        chart_SOG_202411080WSH.data.datasets[0].backgroundColor = allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH ? '#16c049' : '#c01616'));
-        chart_SOG_202411080WSH.data.datasets[0].borderColor = allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH ? '#304f3a' : '#421f1f'));
+        chart_SOG_202411080WSH_1_5.data.datasets[0].backgroundColor = allData_SOG_202411080WSH_1_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH_1_5 ? '#16c049' : '#c01616'));
+        chart_SOG_202411080WSH_1_5.data.datasets[0].borderColor = allData_SOG_202411080WSH_1_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH_1_5 ? '#304f3a' : '#421f1f'));
 
-        chart_SOG_202411080WSH.update();
+        chart_SOG_202411080WSH_1_5.update();
     }
 
-    function applyFilters_SOG_202411080WSH() {
-        const teamFilter = document.getElementById('SOG_202411080WSH_teamFilter').value;
-        const homeAwayFilter = document.getElementById('SOG_202411080WSH_homeAwayFilter').value;
-        const startDate = document.getElementById('SOG_202411080WSH_startDate').value;
-        const endDate = document.getElementById('SOG_202411080WSH_endDate').value;
+    function applyFilters_SOG_202411080WSH_1_5() {
+        const teamFilter = document.getElementById('SOG_202411080WSH_1_5_teamFilter').value;
+        const homeAwayFilter = document.getElementById('SOG_202411080WSH_1_5_homeAwayFilter').value;
+        const startDate = document.getElementById('SOG_202411080WSH_1_5_startDate').value;
+        const endDate = document.getElementById('SOG_202411080WSH_1_5_endDate').value;
 
-        const filteredData = allData_SOG_202411080WSH.filter(d => {
+        const filteredData = allData_SOG_202411080WSH_1_5.filter(d => {
             const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
             const isLocationMatch = (homeAwayFilter === 'all') || 
                                     (homeAwayFilter === 'home' && d.location === 'home') || 
@@ -751,50 +745,50 @@
             return isTeamMatch && isLocationMatch && isDateInRange;
         });
 
-        chart_SOG_202411080WSH.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_SOG_202411080WSH.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
-        chart_SOG_202411080WSH.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH ? '#16c049' : '#c01616'));
-        chart_SOG_202411080WSH.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH ? '#304f3a' : '#421f1f'));
-        chart_SOG_202411080WSH.update();
+        chart_SOG_202411080WSH_1_5.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
+        chart_SOG_202411080WSH_1_5.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
+        chart_SOG_202411080WSH_1_5.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH_1_5 ? '#16c049' : '#c01616'));
+        chart_SOG_202411080WSH_1_5.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH_1_5 ? '#304f3a' : '#421f1f'));
+        chart_SOG_202411080WSH_1_5.update();
     }
 
-    function clearFilters_SOG_202411080WSH() {
+    function clearFilters_SOG_202411080WSH_1_5() {
         // Reset filter values
-        document.getElementById('SOG_202411080WSH_teamFilter').value = "all";
-        document.getElementById('SOG_202411080WSH_homeAwayFilter').value = "all";
-        document.getElementById('SOG_202411080WSH_startDate').value = "";
-        document.getElementById('SOG_202411080WSH_endDate').value = "";
+        document.getElementById('SOG_202411080WSH_1_5_teamFilter').value = "all";
+        document.getElementById('SOG_202411080WSH_1_5_homeAwayFilter').value = "all";
+        document.getElementById('SOG_202411080WSH_1_5_startDate').value = "";
+        document.getElementById('SOG_202411080WSH_1_5_endDate').value = "";
 
         // Reset the line slider to the default betting line
-        document.getElementById('SOG_202411080WSH_lineSlider').value = 1.5;
-        document.getElementById('SOG_202411080WSH_lineValue').innerText = 1.5;  // Update the displayed line value
+        document.getElementById('SOG_202411080WSH_1_5_lineSlider').value = 1.5;
+        document.getElementById('SOG_202411080WSH_1_5_lineValue').innerText = 1.5;  // Update the displayed line value
 
         // Apply filters with no active filters and reset line annotation
-        applyFilters_SOG_202411080WSH();
-        updateLine_SOG_202411080WSH(1.5);
+        applyFilters_SOG_202411080WSH_1_5();
+        updateLine_SOG_202411080WSH_1_5(1.5);
     }
     
-    function resetLine_SOG_202411080WSH_lineSlider () {
-        document.getElementById('SOG_202411080WSH_lineSlider').value = 1.5;
-        document.getElementById('SOG_202411080WSH_lineValue').innerText = 1.5;  // Update the displayed line value
+    function resetLine_SOG_202411080WSH_1_5_lineSlider () {
+        document.getElementById('SOG_202411080WSH_1_5_lineSlider').value = 1.5;
+        document.getElementById('SOG_202411080WSH_1_5_lineValue').innerText = 1.5;  // Update the displayed line value
         
-        updateLine_SOG_202411080WSH(1.5);
+        updateLine_SOG_202411080WSH_1_5(1.5);
      }
 
     // Initialize the chart immediately
-    initChart_SOG_202411080WSH();
+    initChart_SOG_202411080WSH_1_5();
     </script>
 </div>
 
 <div class="chart-container">
-<canvas class="barChart" id="SOG_202411080WSH_chart"></canvas>
+<canvas class="barChart" id="SOG_202411080WSH_2_5_chart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <!-- Filter Controls -->
 <div class="barChart-filters">
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_teamFilter">Opponent:</label>
-<select id="SOG_202411080WSH_teamFilter" onchange="applyFilters_SOG_202411080WSH()">
+<label for="SOG_202411080WSH_2_5_teamFilter">Opponent:</label>
+<select id="SOG_202411080WSH_2_5_teamFilter" onchange="applyFilters_SOG_202411080WSH_2_5()">
 <option value="all">All</option>
 <option value="CAR">CAR</option>
 <option value="NYI">NYI</option>
@@ -831,53 +825,51 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_homeAwayFilter">Home/Away:</label>
-<select id="SOG_202411080WSH_homeAwayFilter" onchange="applyFilters_SOG_202411080WSH()">
+<label for="SOG_202411080WSH_2_5_homeAwayFilter">Home/Away:</label>
+<select id="SOG_202411080WSH_2_5_homeAwayFilter" onchange="applyFilters_SOG_202411080WSH_2_5()">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
 </select>
 </div>
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_startDate">Start Date:</label>
-<input id="SOG_202411080WSH_startDate" onchange="applyFilters_SOG_202411080WSH()" type="date"/>
+<label for="SOG_202411080WSH_2_5_startDate">Start Date:</label>
+<input id="SOG_202411080WSH_2_5_startDate" onchange="applyFilters_SOG_202411080WSH_2_5()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="SOG_202411080WSH_endDate">End Date:</label>
-<input id="SOG_202411080WSH_endDate" onchange="applyFilters_SOG_202411080WSH()" type="date"/>
-</div>
-<div class="barChartFilter">
-<button class="clear-chart-filters" id="clear-filters-btn-SOG_202411080WSH" onclick="clearFilters_SOG_202411080WSH()">Clear Filters</button>
+<label for="SOG_202411080WSH_2_5_endDate">End Date:</label>
+<input id="SOG_202411080WSH_2_5_endDate" onchange="applyFilters_SOG_202411080WSH_2_5()" type="date"/>
 </div>
 </div>
 <!-- Slider for betting line adjustment -->
 <div class="slider-container">
 <div class="line-slider">
-<label for="SOG_202411080WSH_lineSlider">Change Line:</label>
-<input class="line-slider" id="SOG_202411080WSH_lineSlider" max="30" min="0" oninput="updateLine_SOG_202411080WSH(this.value)" step="0.5" type="range" value="2.5"/>
-<span id="SOG_202411080WSH_lineValue">2.5</span>
+<label for="SOG_202411080WSH_2_5_lineSlider">Change Line:</label>
+<input class="line-slider" id="SOG_202411080WSH_2_5_lineSlider" max="30" min="0" oninput="updateLine_SOG_202411080WSH_2_5(this.value)" step="0.5" type="range" value="2.5"/>
+<span id="SOG_202411080WSH_2_5_lineValue">2.5</span>
 </div>
-<div class="resetLine">
-<button class="reset-line-btn" id="reset-line-btn-SOG_202411080WSH" onclick="resetLine_SOG_202411080WSH_lineSlider()">Reset Line</button>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn-SOG_202411080WSH_2_5" onclick="resetLine_SOG_202411080WSH_2_5_lineSlider()">Reset Line</button>
+<button class="clear-chart-filters" id="clear-filters-btn-SOG_202411080WSH_2_5" onclick="clearFilters_SOG_202411080WSH_2_5()">Clear Filters</button>
 </div>
 </div>
 <script>
-    const allData_SOG_202411080WSH = [{'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 2}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 5}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 2}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 3}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 2}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 2}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 5}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 4}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 2}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 6}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 6}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 2}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 3}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 4}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 3}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 4}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 4}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 3}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 4}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 4}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 4}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 7}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 2}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 4}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 3}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 2}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 6}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 2}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 1}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 3}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 2}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 2}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 2}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 4}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 2}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 2}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 4}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 2}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 5}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 1}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 3}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 4}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 6}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 5}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 3}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 4}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 3}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 5}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 2}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 3}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 2}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 5}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 3}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 3}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 2}, {'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 5}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 4}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 6}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 3}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 6}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 4}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 2}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 4}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 2}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 1}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 3}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 1}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 1}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 2}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 4}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 1}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 4}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 3}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 3}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 2}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}];  // Full data for player
-    let Line_SOG_202411080WSH = 2.5;  // Default betting line
-    let chart_SOG_202411080WSH;
+    const allData_SOG_202411080WSH_2_5 = [{'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 2}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 2}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 2}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 3}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 6}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 3}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 5}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 5}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 1}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 1}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 4}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 2}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 2}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 2}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 3}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 3}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 1}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 2}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 5}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 3}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 3}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 4}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 2}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 1}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 4}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 2}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 4}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 5}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 5}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 1}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 1}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 1}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 1}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 2}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 3}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 2}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 1}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 1}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 1}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 2}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 2}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 2}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 1}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 2}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 4}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 3}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 2}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 2}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 2}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 6}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 3}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 3}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 2}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 6}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 2}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 3}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 4}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 2}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 4}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 4}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 1}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 2}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 4}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 3}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 2}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 2}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 3}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 2}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 7}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 4}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 4}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 2}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 4}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 2}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 3}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 4}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 4}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 5}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 3}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 2}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 4}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 3}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 3}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 3}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 2}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 2}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 4}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 1}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 1}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 3}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 3}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 4}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 2}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 3}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 2}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 1}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 4}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 5}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 3}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 6}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 3}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 2}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 6}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 6}];  // Full data for player
+    let Line_SOG_202411080WSH_2_5 = 2.5;  // Default betting line
+    let chart_SOG_202411080WSH_2_5;
 
-    function initChart_SOG_202411080WSH() {
-        const ctx = document.getElementById('SOG_202411080WSH_chart').getContext('2d');
+    function initChart_SOG_202411080WSH_2_5() {
+        const ctx = document.getElementById('SOG_202411080WSH_2_5_chart').getContext('2d');
         
-        chart_SOG_202411080WSH = new Chart(ctx, {
+        chart_SOG_202411080WSH_2_5 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_SOG_202411080WSH.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_SOG_202411080WSH_2_5.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
                 datasets: [{
                     label: 'SOG',  // Label used in title only
-                    data: allData_SOG_202411080WSH.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
-                    backgroundColor: allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH ? '#16c049' : '#c01616')),  // Red for 0 values
-                    borderColor: allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
+                    data: allData_SOG_202411080WSH_2_5.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
+                    backgroundColor: allData_SOG_202411080WSH_2_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH_2_5 ? '#16c049' : '#c01616')),  // Red for 0 values
+                    borderColor: allData_SOG_202411080WSH_2_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH_2_5 ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
                     borderWidth: 0.5,  // Thin border for a clean look
                     barPercentage: 1.0,  // No gap between bars
                     categoryPercentage: 1.0  // Fill category width
@@ -903,10 +895,10 @@
                         annotations: {
                             line1: {
                                 type: 'line',
-                                yMin: Line_SOG_202411080WSH,
-                                yMax: Line_SOG_202411080WSH,
-                                borderColor: '#b3b3b3',
-                                borderWidth: 1,
+                                yMin: Line_SOG_202411080WSH_2_5,
+                                yMax: Line_SOG_202411080WSH_2_5,
+                                borderColor: '#fff',
+                                borderWidth: 2,
                                 label: { content: '', enabled: true, position: 'end' }
                             }
                         }
@@ -938,28 +930,28 @@
         }); 
     }
 
-    function updateLine_SOG_202411080WSH(newLine) {
-        Line_SOG_202411080WSH = parseFloat(newLine);
-        document.getElementById('SOG_202411080WSH_lineValue').innerText = newLine;
+    function updateLine_SOG_202411080WSH_2_5(newLine) {
+        Line_SOG_202411080WSH_2_5 = parseFloat(newLine);
+        document.getElementById('SOG_202411080WSH_2_5_lineValue').innerText = newLine;
 
         // Update annotation line
-        chart_SOG_202411080WSH.options.plugins.annotation.annotations.line1.yMin = Line_SOG_202411080WSH;
-        chart_SOG_202411080WSH.options.plugins.annotation.annotations.line1.yMax = Line_SOG_202411080WSH;
+        chart_SOG_202411080WSH_2_5.options.plugins.annotation.annotations.line1.yMin = Line_SOG_202411080WSH_2_5;
+        chart_SOG_202411080WSH_2_5.options.plugins.annotation.annotations.line1.yMax = Line_SOG_202411080WSH_2_5;
 
         // Update bar colors based on the new line
-        chart_SOG_202411080WSH.data.datasets[0].backgroundColor = allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH ? '#16c049' : '#c01616'));
-        chart_SOG_202411080WSH.data.datasets[0].borderColor = allData_SOG_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH ? '#304f3a' : '#421f1f'));
+        chart_SOG_202411080WSH_2_5.data.datasets[0].backgroundColor = allData_SOG_202411080WSH_2_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH_2_5 ? '#16c049' : '#c01616'));
+        chart_SOG_202411080WSH_2_5.data.datasets[0].borderColor = allData_SOG_202411080WSH_2_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH_2_5 ? '#304f3a' : '#421f1f'));
 
-        chart_SOG_202411080WSH.update();
+        chart_SOG_202411080WSH_2_5.update();
     }
 
-    function applyFilters_SOG_202411080WSH() {
-        const teamFilter = document.getElementById('SOG_202411080WSH_teamFilter').value;
-        const homeAwayFilter = document.getElementById('SOG_202411080WSH_homeAwayFilter').value;
-        const startDate = document.getElementById('SOG_202411080WSH_startDate').value;
-        const endDate = document.getElementById('SOG_202411080WSH_endDate').value;
+    function applyFilters_SOG_202411080WSH_2_5() {
+        const teamFilter = document.getElementById('SOG_202411080WSH_2_5_teamFilter').value;
+        const homeAwayFilter = document.getElementById('SOG_202411080WSH_2_5_homeAwayFilter').value;
+        const startDate = document.getElementById('SOG_202411080WSH_2_5_startDate').value;
+        const endDate = document.getElementById('SOG_202411080WSH_2_5_endDate').value;
 
-        const filteredData = allData_SOG_202411080WSH.filter(d => {
+        const filteredData = allData_SOG_202411080WSH_2_5.filter(d => {
             const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
             const isLocationMatch = (homeAwayFilter === 'all') || 
                                     (homeAwayFilter === 'home' && d.location === 'home') || 
@@ -970,50 +962,50 @@
             return isTeamMatch && isLocationMatch && isDateInRange;
         });
 
-        chart_SOG_202411080WSH.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_SOG_202411080WSH.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
-        chart_SOG_202411080WSH.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH ? '#16c049' : '#c01616'));
-        chart_SOG_202411080WSH.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH ? '#304f3a' : '#421f1f'));
-        chart_SOG_202411080WSH.update();
+        chart_SOG_202411080WSH_2_5.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
+        chart_SOG_202411080WSH_2_5.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
+        chart_SOG_202411080WSH_2_5.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_SOG_202411080WSH_2_5 ? '#16c049' : '#c01616'));
+        chart_SOG_202411080WSH_2_5.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_SOG_202411080WSH_2_5 ? '#304f3a' : '#421f1f'));
+        chart_SOG_202411080WSH_2_5.update();
     }
 
-    function clearFilters_SOG_202411080WSH() {
+    function clearFilters_SOG_202411080WSH_2_5() {
         // Reset filter values
-        document.getElementById('SOG_202411080WSH_teamFilter').value = "all";
-        document.getElementById('SOG_202411080WSH_homeAwayFilter').value = "all";
-        document.getElementById('SOG_202411080WSH_startDate').value = "";
-        document.getElementById('SOG_202411080WSH_endDate').value = "";
+        document.getElementById('SOG_202411080WSH_2_5_teamFilter').value = "all";
+        document.getElementById('SOG_202411080WSH_2_5_homeAwayFilter').value = "all";
+        document.getElementById('SOG_202411080WSH_2_5_startDate').value = "";
+        document.getElementById('SOG_202411080WSH_2_5_endDate').value = "";
 
         // Reset the line slider to the default betting line
-        document.getElementById('SOG_202411080WSH_lineSlider').value = 2.5;
-        document.getElementById('SOG_202411080WSH_lineValue').innerText = 2.5;  // Update the displayed line value
+        document.getElementById('SOG_202411080WSH_2_5_lineSlider').value = 2.5;
+        document.getElementById('SOG_202411080WSH_2_5_lineValue').innerText = 2.5;  // Update the displayed line value
 
         // Apply filters with no active filters and reset line annotation
-        applyFilters_SOG_202411080WSH();
-        updateLine_SOG_202411080WSH(2.5);
+        applyFilters_SOG_202411080WSH_2_5();
+        updateLine_SOG_202411080WSH_2_5(2.5);
     }
     
-    function resetLine_SOG_202411080WSH_lineSlider () {
-        document.getElementById('SOG_202411080WSH_lineSlider').value = 2.5;
-        document.getElementById('SOG_202411080WSH_lineValue').innerText = 2.5;  // Update the displayed line value
+    function resetLine_SOG_202411080WSH_2_5_lineSlider () {
+        document.getElementById('SOG_202411080WSH_2_5_lineSlider').value = 2.5;
+        document.getElementById('SOG_202411080WSH_2_5_lineValue').innerText = 2.5;  // Update the displayed line value
         
-        updateLine_SOG_202411080WSH(2.5);
+        updateLine_SOG_202411080WSH_2_5(2.5);
      }
 
     // Initialize the chart immediately
-    initChart_SOG_202411080WSH();
+    initChart_SOG_202411080WSH_2_5();
     </script>
 </div>
 
 <div class="chart-container">
-<canvas class="barChart" id="G_202411080WSH_chart"></canvas>
+<canvas class="barChart" id="G_202411080WSH_0_5_chart"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <!-- Filter Controls -->
 <div class="barChart-filters">
 <div class="barChartFilter">
-<label for="G_202411080WSH_teamFilter">Opponent:</label>
-<select id="G_202411080WSH_teamFilter" onchange="applyFilters_G_202411080WSH()">
+<label for="G_202411080WSH_0_5_teamFilter">Opponent:</label>
+<select id="G_202411080WSH_0_5_teamFilter" onchange="applyFilters_G_202411080WSH_0_5()">
 <option value="all">All</option>
 <option value="CAR">CAR</option>
 <option value="NYI">NYI</option>
@@ -1050,53 +1042,51 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="G_202411080WSH_homeAwayFilter">Home/Away:</label>
-<select id="G_202411080WSH_homeAwayFilter" onchange="applyFilters_G_202411080WSH()">
+<label for="G_202411080WSH_0_5_homeAwayFilter">Home/Away:</label>
+<select id="G_202411080WSH_0_5_homeAwayFilter" onchange="applyFilters_G_202411080WSH_0_5()">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
 </select>
 </div>
 <div class="barChartFilter">
-<label for="G_202411080WSH_startDate">Start Date:</label>
-<input id="G_202411080WSH_startDate" onchange="applyFilters_G_202411080WSH()" type="date"/>
+<label for="G_202411080WSH_0_5_startDate">Start Date:</label>
+<input id="G_202411080WSH_0_5_startDate" onchange="applyFilters_G_202411080WSH_0_5()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="G_202411080WSH_endDate">End Date:</label>
-<input id="G_202411080WSH_endDate" onchange="applyFilters_G_202411080WSH()" type="date"/>
-</div>
-<div class="barChartFilter">
-<button class="clear-chart-filters" id="clear-filters-btn-G_202411080WSH" onclick="clearFilters_G_202411080WSH()">Clear Filters</button>
+<label for="G_202411080WSH_0_5_endDate">End Date:</label>
+<input id="G_202411080WSH_0_5_endDate" onchange="applyFilters_G_202411080WSH_0_5()" type="date"/>
 </div>
 </div>
 <!-- Slider for betting line adjustment -->
 <div class="slider-container">
 <div class="line-slider">
-<label for="G_202411080WSH_lineSlider">Change Line:</label>
-<input class="line-slider" id="G_202411080WSH_lineSlider" max="30" min="0" oninput="updateLine_G_202411080WSH(this.value)" step="0.5" type="range" value="0.5"/>
-<span id="G_202411080WSH_lineValue">0.5</span>
+<label for="G_202411080WSH_0_5_lineSlider">Change Line:</label>
+<input class="line-slider" id="G_202411080WSH_0_5_lineSlider" max="30" min="0" oninput="updateLine_G_202411080WSH_0_5(this.value)" step="0.5" type="range" value="0.5"/>
+<span id="G_202411080WSH_0_5_lineValue">0.5</span>
 </div>
-<div class="resetLine">
-<button class="reset-line-btn" id="reset-line-btn-G_202411080WSH" onclick="resetLine_G_202411080WSH_lineSlider()">Reset Line</button>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn-G_202411080WSH_0_5" onclick="resetLine_G_202411080WSH_0_5_lineSlider()">Reset Line</button>
+<button class="clear-chart-filters" id="clear-filters-btn-G_202411080WSH_0_5" onclick="clearFilters_G_202411080WSH_0_5()">Clear Filters</button>
 </div>
 </div>
 <script>
-    const allData_G_202411080WSH = [{'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 1}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 1}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 1}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 0}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 1}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 1}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 1}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 1}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 0}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 1}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 0}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 2}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 2}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 0}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 1}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 1}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 2}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 0}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 1}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}];  // Full data for player
-    let Line_G_202411080WSH = 0.5;  // Default betting line
-    let chart_G_202411080WSH;
+    const allData_G_202411080WSH_0_5 = [{'date': '1/11/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '1/11/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '1/12/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '1/13/2024', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '1/14/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 1}, {'date': '1/15/2024', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '1/17/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '1/19/2023', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '1/19/2024', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/2/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '1/21/2023', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '1/21/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 1}, {'date': '1/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '1/24/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '1/25/2023', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '1/25/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '1/27/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '1/27/2024', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '1/29/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 1}, {'date': '1/3/2023', 'opponent': 'STL', 'location': 'home', 'stat': 2}, {'date': '1/5/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '1/5/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '1/6/2024', 'opponent': 'STL', 'location': 'home', 'stat': 0}, {'date': '1/7/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '1/8/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 0}, {'date': '10/10/2024', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '10/11/2023', 'opponent': 'OTT', 'location': 'home', 'stat': 1}, {'date': '10/12/2022', 'opponent': 'MTL', 'location': 'away', 'stat': 1}, {'date': '10/12/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}, {'date': '10/13/2022', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '10/14/2023', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/14/2024', 'opponent': 'MTL', 'location': 'away', 'stat': 0}, {'date': '10/15/2022', 'opponent': 'OTT', 'location': 'home', 'stat': 0}, {'date': '10/15/2023', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/16/2024', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '10/17/2022', 'opponent': 'ARI', 'location': 'home', 'stat': 0}, {'date': '10/17/2023', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/18/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '10/19/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '10/20/2022', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '10/21/2023', 'opponent': 'COL', 'location': 'away', 'stat': 1}, {'date': '10/22/2022', 'opponent': 'WPG', 'location': 'away', 'stat': 1}, {'date': '10/22/2024', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '10/24/2022', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '10/24/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '10/25/2024', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '10/26/2023', 'opponent': 'SEA', 'location': 'home', 'stat': 0}, {'date': '10/26/2024', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '10/27/2022', 'opponent': 'SJS', 'location': 'away', 'stat': 0}, {'date': '10/27/2023', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '10/29/2022', 'opponent': 'LAK', 'location': 'away', 'stat': 0}, {'date': '10/29/2024', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '10/30/2022', 'opponent': 'ANA', 'location': 'away', 'stat': 0}, {'date': '10/30/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '10/31/2024', 'opponent': 'ANA', 'location': 'home', 'stat': 0}, {'date': '10/9/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '11/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '11/11/2022', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '11/12/2022', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '11/15/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 2}, {'date': '11/15/2023', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/17/2022', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '11/18/2023', 'opponent': 'PIT', 'location': 'home', 'stat': 0}, {'date': '11/19/2022', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/2/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 0}, {'date': '11/2/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '11/2/2024', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '11/21/2022', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/22/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '11/23/2022', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '11/24/2023', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '11/25/2022', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '11/26/2022', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '11/26/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '11/28/2022', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '11/28/2023', 'opponent': 'PHI', 'location': 'away', 'stat': 1}, {'date': '11/30/2022', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '11/30/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '11/5/2022', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '11/5/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 1}, {'date': '11/6/2022', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/7/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '11/7/2024', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '11/8/2022', 'opponent': 'VEG', 'location': 'home', 'stat': 0}, {'date': '12/10/2022', 'opponent': 'CGY', 'location': 'home', 'stat': 1}, {'date': '12/12/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '12/13/2022', 'opponent': 'ANA', 'location': 'home', 'stat': 1}, {'date': '12/14/2023', 'opponent': 'DET', 'location': 'away', 'stat': 0}, {'date': '12/15/2022', 'opponent': 'NYR', 'location': 'away', 'stat': 1}, {'date': '12/15/2023', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '12/17/2022', 'opponent': 'WSH', 'location': 'away', 'stat': 0}, {'date': '12/17/2023', 'opponent': 'WSH', 'location': 'home', 'stat': 0}, {'date': '12/19/2023', 'opponent': 'VEG', 'location': 'home', 'stat': 1}, {'date': '12/2/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '12/20/2022', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '12/21/2023', 'opponent': 'PIT', 'location': 'away', 'stat': 0}, {'date': '12/22/2022', 'opponent': 'PHI', 'location': 'home', 'stat': 1}, {'date': '12/23/2023', 'opponent': 'NYI', 'location': 'home', 'stat': 0}, {'date': '12/27/2022', 'opponent': 'STL', 'location': 'away', 'stat': 0}, {'date': '12/27/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '12/28/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 0}, {'date': '12/29/2022', 'opponent': 'ARI', 'location': 'away', 'stat': 0}, {'date': '12/3/2022', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '12/30/2023', 'opponent': 'TOR', 'location': 'away', 'stat': 1}, {'date': '12/31/2022', 'opponent': 'COL', 'location': 'away', 'stat': 2}, {'date': '12/4/2023', 'opponent': 'WPG', 'location': 'away', 'stat': 0}, {'date': '12/6/2022', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '12/6/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '12/7/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 1}, {'date': '12/8/2022', 'opponent': 'LAK', 'location': 'home', 'stat': 0}, {'date': '12/9/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '2/1/2023', 'opponent': 'BOS', 'location': 'home', 'stat': 0}, {'date': '2/10/2023', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/10/2024', 'opponent': 'NJD', 'location': 'home', 'stat': 0}, {'date': '2/11/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 1}, {'date': '2/13/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 0}, {'date': '2/15/2023', 'opponent': 'CHI', 'location': 'home', 'stat': 0}, {'date': '2/16/2024', 'opponent': 'ARI', 'location': 'away', 'stat': 1}, {'date': '2/17/2024', 'opponent': 'VEG', 'location': 'away', 'stat': 0}, {'date': '2/18/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 2}, {'date': '2/19/2023', 'opponent': 'CHI', 'location': 'away', 'stat': 0}, {'date': '2/19/2024', 'opponent': 'CHI', 'location': 'home', 'stat': 1}, {'date': '2/21/2023', 'opponent': 'BUF', 'location': 'away', 'stat': 1}, {'date': '2/22/2024', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '2/24/2023', 'opponent': 'MIN', 'location': 'home', 'stat': 0}, {'date': '2/24/2024', 'opponent': 'DAL', 'location': 'home', 'stat': 0}, {'date': '2/25/2024', 'opponent': 'BUF', 'location': 'away', 'stat': 0}, {'date': '2/26/2023', 'opponent': 'SEA', 'location': 'away', 'stat': 0}, {'date': '2/27/2024', 'opponent': 'MIN', 'location': 'away', 'stat': 0}, {'date': '2/29/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '2/6/2024', 'opponent': 'VAN', 'location': 'home', 'stat': 0}, {'date': '2/8/2024', 'opponent': 'COL', 'location': 'home', 'stat': 1}, {'date': '3/1/2023', 'opponent': 'EDM', 'location': 'away', 'stat': 0}, {'date': '3/10/2024', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/11/2023', 'opponent': 'EDM', 'location': 'home', 'stat': 0}, {'date': '3/12/2024', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '3/13/2023', 'opponent': 'BUF', 'location': 'home', 'stat': 0}, {'date': '3/14/2024', 'opponent': 'SJS', 'location': 'home', 'stat': 0}, {'date': '3/15/2023', 'opponent': 'COL', 'location': 'home', 'stat': 0}, {'date': '3/16/2024', 'opponent': 'NYR', 'location': 'home', 'stat': 0}, {'date': '3/17/2023', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/17/2024', 'opponent': 'DET', 'location': 'home', 'stat': 1}, {'date': '3/18/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 0}, {'date': '3/19/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '3/2/2023', 'opponent': 'CGY', 'location': 'away', 'stat': 0}, {'date': '3/2/2024', 'opponent': 'WPG', 'location': 'home', 'stat': 0}, {'date': '3/21/2023', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '3/22/2024', 'opponent': 'DAL', 'location': 'away', 'stat': 1}, {'date': '3/23/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 1}, {'date': '3/24/2024', 'opponent': 'COL', 'location': 'away', 'stat': 0}, {'date': '3/25/2023', 'opponent': 'CAR', 'location': 'away', 'stat': 0}, {'date': '3/26/2023', 'opponent': 'NSH', 'location': 'away', 'stat': 0}, {'date': '3/26/2024', 'opponent': 'CAR', 'location': 'home', 'stat': 0}, {'date': '3/28/2024', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '3/29/2023', 'opponent': 'FLA', 'location': 'home', 'stat': 0}, {'date': '3/30/2024', 'opponent': 'CBJ', 'location': 'away', 'stat': 0}, {'date': '3/4/2023', 'opponent': 'VAN', 'location': 'away', 'stat': 0}, {'date': '3/7/2023', 'opponent': 'NJD', 'location': 'away', 'stat': 1}, {'date': '3/9/2024', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/1/2023', 'opponent': 'OTT', 'location': 'away', 'stat': 1}, {'date': '4/1/2024', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/10/2023', 'opponent': 'FLA', 'location': 'away', 'stat': 0}, {'date': '4/11/2023', 'opponent': 'TBL', 'location': 'away', 'stat': 0}, {'date': '4/11/2024', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/13/2023', 'opponent': 'NYR', 'location': 'away', 'stat': 0}, {'date': '4/13/2024', 'opponent': 'BOS', 'location': 'home', 'stat': 1}, {'date': '4/15/2024', 'opponent': 'NSH', 'location': 'home', 'stat': 0}, {'date': '4/17/2024', 'opponent': 'NYI', 'location': 'away', 'stat': 0}, {'date': '4/2/2023', 'opponent': 'DET', 'location': 'home', 'stat': 0}, {'date': '4/2/2024', 'opponent': 'NJD', 'location': 'away', 'stat': 0}, {'date': '4/4/2023', 'opponent': 'CBJ', 'location': 'home', 'stat': 0}, {'date': '4/4/2024', 'opponent': 'WSH', 'location': 'away', 'stat': 1}, {'date': '4/6/2023', 'opponent': 'BOS', 'location': 'away', 'stat': 0}, {'date': '4/6/2024', 'opponent': 'TBL', 'location': 'home', 'stat': 1}, {'date': '4/8/2023', 'opponent': 'MTL', 'location': 'home', 'stat': 1}, {'date': '4/8/2024', 'opponent': 'TOR', 'location': 'away', 'stat': 0}];  // Full data for player
+    let Line_G_202411080WSH_0_5 = 0.5;  // Default betting line
+    let chart_G_202411080WSH_0_5;
 
-    function initChart_G_202411080WSH() {
-        const ctx = document.getElementById('G_202411080WSH_chart').getContext('2d');
+    function initChart_G_202411080WSH_0_5() {
+        const ctx = document.getElementById('G_202411080WSH_0_5_chart').getContext('2d');
         
-        chart_G_202411080WSH = new Chart(ctx, {
+        chart_G_202411080WSH_0_5 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_G_202411080WSH.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_G_202411080WSH_0_5.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
                 datasets: [{
                     label: 'G',  // Label used in title only
-                    data: allData_G_202411080WSH.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
-                    backgroundColor: allData_G_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_G_202411080WSH ? '#16c049' : '#c01616')),  // Red for 0 values
-                    borderColor: allData_G_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_G_202411080WSH ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
+                    data: allData_G_202411080WSH_0_5.map(d => d.stat || 0.02),  // Use 0.02 for display purposes if stat is 0
+                    backgroundColor: allData_G_202411080WSH_0_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_G_202411080WSH_0_5 ? '#16c049' : '#c01616')),  // Red for 0 values
+                    borderColor: allData_G_202411080WSH_0_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_G_202411080WSH_0_5 ? '#304f3a' : '#421f1f')),  // Darker red for 0 borders
                     borderWidth: 0.5,  // Thin border for a clean look
                     barPercentage: 1.0,  // No gap between bars
                     categoryPercentage: 1.0  // Fill category width
@@ -1122,10 +1112,10 @@
                         annotations: {
                             line1: {
                                 type: 'line',
-                                yMin: Line_G_202411080WSH,
-                                yMax: Line_G_202411080WSH,
-                                borderColor: '#b3b3b3',
-                                borderWidth: 1,
+                                yMin: Line_G_202411080WSH_0_5,
+                                yMax: Line_G_202411080WSH_0_5,
+                                borderColor: '#fff',
+                                borderWidth: 2,
                                 label: { content: '', enabled: true, position: 'end' }
                             }
                         }
@@ -1157,28 +1147,28 @@
         }); 
     }
 
-    function updateLine_G_202411080WSH(newLine) {
-        Line_G_202411080WSH = parseFloat(newLine);
-        document.getElementById('G_202411080WSH_lineValue').innerText = newLine;
+    function updateLine_G_202411080WSH_0_5(newLine) {
+        Line_G_202411080WSH_0_5 = parseFloat(newLine);
+        document.getElementById('G_202411080WSH_0_5_lineValue').innerText = newLine;
 
         // Update annotation line
-        chart_G_202411080WSH.options.plugins.annotation.annotations.line1.yMin = Line_G_202411080WSH;
-        chart_G_202411080WSH.options.plugins.annotation.annotations.line1.yMax = Line_G_202411080WSH;
+        chart_G_202411080WSH_0_5.options.plugins.annotation.annotations.line1.yMin = Line_G_202411080WSH_0_5;
+        chart_G_202411080WSH_0_5.options.plugins.annotation.annotations.line1.yMax = Line_G_202411080WSH_0_5;
 
         // Update bar colors based on the new line
-        chart_G_202411080WSH.data.datasets[0].backgroundColor = allData_G_202411080WSH.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_G_202411080WSH ? '#16c049' : '#c01616'));
-        chart_G_202411080WSH.data.datasets[0].borderColor = allData_G_202411080WSH.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_G_202411080WSH ? '#304f3a' : '#421f1f'));
+        chart_G_202411080WSH_0_5.data.datasets[0].backgroundColor = allData_G_202411080WSH_0_5.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_G_202411080WSH_0_5 ? '#16c049' : '#c01616'));
+        chart_G_202411080WSH_0_5.data.datasets[0].borderColor = allData_G_202411080WSH_0_5.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_G_202411080WSH_0_5 ? '#304f3a' : '#421f1f'));
 
-        chart_G_202411080WSH.update();
+        chart_G_202411080WSH_0_5.update();
     }
 
-    function applyFilters_G_202411080WSH() {
-        const teamFilter = document.getElementById('G_202411080WSH_teamFilter').value;
-        const homeAwayFilter = document.getElementById('G_202411080WSH_homeAwayFilter').value;
-        const startDate = document.getElementById('G_202411080WSH_startDate').value;
-        const endDate = document.getElementById('G_202411080WSH_endDate').value;
+    function applyFilters_G_202411080WSH_0_5() {
+        const teamFilter = document.getElementById('G_202411080WSH_0_5_teamFilter').value;
+        const homeAwayFilter = document.getElementById('G_202411080WSH_0_5_homeAwayFilter').value;
+        const startDate = document.getElementById('G_202411080WSH_0_5_startDate').value;
+        const endDate = document.getElementById('G_202411080WSH_0_5_endDate').value;
 
-        const filteredData = allData_G_202411080WSH.filter(d => {
+        const filteredData = allData_G_202411080WSH_0_5.filter(d => {
             const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
             const isLocationMatch = (homeAwayFilter === 'all') || 
                                     (homeAwayFilter === 'home' && d.location === 'home') || 
@@ -1189,38 +1179,38 @@
             return isTeamMatch && isLocationMatch && isDateInRange;
         });
 
-        chart_G_202411080WSH.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_G_202411080WSH.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
-        chart_G_202411080WSH.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_G_202411080WSH ? '#16c049' : '#c01616'));
-        chart_G_202411080WSH.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_G_202411080WSH ? '#304f3a' : '#421f1f'));
-        chart_G_202411080WSH.update();
+        chart_G_202411080WSH_0_5.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
+        chart_G_202411080WSH_0_5.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);  // Use 0.02 for zero values
+        chart_G_202411080WSH_0_5.data.datasets[0].backgroundColor = filteredData.map(d => d.stat === 0 ? '#c01616' : (d.stat >= Line_G_202411080WSH_0_5 ? '#16c049' : '#c01616'));
+        chart_G_202411080WSH_0_5.data.datasets[0].borderColor = filteredData.map(d => d.stat === 0 ? '#421f1f' : (d.stat >= Line_G_202411080WSH_0_5 ? '#304f3a' : '#421f1f'));
+        chart_G_202411080WSH_0_5.update();
     }
 
-    function clearFilters_G_202411080WSH() {
+    function clearFilters_G_202411080WSH_0_5() {
         // Reset filter values
-        document.getElementById('G_202411080WSH_teamFilter').value = "all";
-        document.getElementById('G_202411080WSH_homeAwayFilter').value = "all";
-        document.getElementById('G_202411080WSH_startDate').value = "";
-        document.getElementById('G_202411080WSH_endDate').value = "";
+        document.getElementById('G_202411080WSH_0_5_teamFilter').value = "all";
+        document.getElementById('G_202411080WSH_0_5_homeAwayFilter').value = "all";
+        document.getElementById('G_202411080WSH_0_5_startDate').value = "";
+        document.getElementById('G_202411080WSH_0_5_endDate').value = "";
 
         // Reset the line slider to the default betting line
-        document.getElementById('G_202411080WSH_lineSlider').value = 0.5;
-        document.getElementById('G_202411080WSH_lineValue').innerText = 0.5;  // Update the displayed line value
+        document.getElementById('G_202411080WSH_0_5_lineSlider').value = 0.5;
+        document.getElementById('G_202411080WSH_0_5_lineValue').innerText = 0.5;  // Update the displayed line value
 
         // Apply filters with no active filters and reset line annotation
-        applyFilters_G_202411080WSH();
-        updateLine_G_202411080WSH(0.5);
+        applyFilters_G_202411080WSH_0_5();
+        updateLine_G_202411080WSH_0_5(0.5);
     }
     
-    function resetLine_G_202411080WSH_lineSlider () {
-        document.getElementById('G_202411080WSH_lineSlider').value = 0.5;
-        document.getElementById('G_202411080WSH_lineValue').innerText = 0.5;  // Update the displayed line value
+    function resetLine_G_202411080WSH_0_5_lineSlider () {
+        document.getElementById('G_202411080WSH_0_5_lineSlider').value = 0.5;
+        document.getElementById('G_202411080WSH_0_5_lineValue').innerText = 0.5;  // Update the displayed line value
         
-        updateLine_G_202411080WSH(0.5);
+        updateLine_G_202411080WSH_0_5(0.5);
      }
 
     // Initialize the chart immediately
-    initChart_G_202411080WSH();
+    initChart_G_202411080WSH_0_5();
     </script>
 </div>
 </body>

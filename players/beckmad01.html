@@ -189,37 +189,37 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_beckmad01">Stat:</label>
-<select id="statSelector_beckmad01" onchange="updateStat_beckmad01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_beckmad01" onchange="updateStat('beckmad01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_beckmad01">Opponent:</label>
-<select id="teamFilter_beckmad01" onchange="applyFilters_beckmad01()">
+<select id="teamFilter_beckmad01" onchange="applyFilters('beckmad01')">
 <option value="all">All</option>
 <option value="ANA">ANA</option>
-<option value="SEA">SEA</option>
-<option value="SJS">SJS</option>
-<option value="NSH">NSH</option>
-<option value="WPG">WPG</option>
-<option value="DAL">DAL</option>
-<option value="LAK">LAK</option>
 <option value="ARI">ARI</option>
 <option value="COL">COL</option>
-<option value="STL">STL</option>
+<option value="DAL">DAL</option>
+<option value="LAK">LAK</option>
+<option value="NSH">NSH</option>
 <option value="OTT">OTT</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="STL">STL</option>
 <option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_beckmad01">Home/Away:</label>
-<select id="homeAwayFilter_beckmad01" onchange="applyFilters_beckmad01()">
+<select id="homeAwayFilter_beckmad01" onchange="applyFilters('beckmad01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -227,142 +227,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_beckmad01">Start:</label>
-<input id="startDate_beckmad01" onchange="applyFilters_beckmad01()" type="date"/>
+<input id="startDate_beckmad01" onchange="applyFilters('beckmad01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_beckmad01">End:</label>
-<input id="endDate_beckmad01" onchange="applyFilters_beckmad01()" type="date"/>
+<input id="endDate_beckmad01" onchange="applyFilters('beckmad01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_beckmad01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_beckmad01">Change Line:</label>
-<input id="lineSlider_beckmad01" max="30" min="0" oninput="updateLine_beckmad01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_beckmad01" max="30" min="0" oninput="updateLine('beckmad01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_beckmad01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_beckmad01" onclick="resetLine_beckmad01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_beckmad01" onclick="clearFilters_beckmad01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_beckmad01" onclick="updateLine('beckmad01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_beckmad01" onclick="clearFilters('beckmad01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_beckmad01 = [{'date': '2022-11-09', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 12.65}, {'date': '2022-11-11', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 7.87}, {'date': '2022-11-13', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.25}, {'date': '2022-11-15', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 8.4}, {'date': '2022-12-27', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 12.48}, {'date': '2022-12-29', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.18}, {'date': '2023-02-17', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.02}, {'date': '2023-02-19', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 11.67}, {'date': '2023-02-21', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2024-03-07', 'opponent': 'ARI', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 12.97}, {'date': '2024-03-08', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.08}, {'date': '2024-03-10', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.25}, {'date': '2024-03-19', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.03}, {'date': '2024-03-20', 'opponent': 'LAK', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 7.58}, {'date': '2024-03-23', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.8}, {'date': '2024-03-28', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.37}, {'date': '2024-04-02', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 1, 'TOI': 8.02}, {'date': '2024-04-04', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 8.93}, {'date': '2024-04-06', 'opponent': 'WPG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.62}, {'date': '2024-04-12', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 10.83}];  // Full data for player
-    let currentStat_beckmad01 = "G";
-    let Line_beckmad01 = 0.5;  // Default betting line
-    let chart_beckmad01;
-
-    function initChart_beckmad01() {
-        const ctx = document.getElementById('chart_beckmad01').getContext('2d');
-        chart_beckmad01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_beckmad01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_beckmad01,
-                    data: allData_beckmad01.map(d => d[currentStat_beckmad01] || 0.0),
-                    backgroundColor: allData_beckmad01.map(d => d[currentStat_beckmad01] === 0 ? '#c01616' : (d[currentStat_beckmad01] >= Line_beckmad01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_beckmad01.map(d => d[currentStat_beckmad01] === 0 ? '#421f1f' : (d[currentStat_beckmad01] >= Line_beckmad01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_beckmad01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_beckmad01,
-                                yMax: Line_beckmad01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_beckmad01(selectedStat) {
-        currentStat_beckmad01 = selectedStat;
-        chart_beckmad01.data.datasets[0].data = allData_beckmad01.map(d => d[selectedStat] || 0.0);
-        chart_beckmad01.data.datasets[0].label = selectedStat;
-        chart_beckmad01.options.plugins.title.text = selectedStat;
-
-        chart_beckmad01.data.datasets[0].backgroundColor = allData_beckmad01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_beckmad01 ? '#16c049' : '#c01616'));
-        chart_beckmad01.update();
-    }
-
-    function updateLine_beckmad01(newLine) {
-        Line_beckmad01 = parseFloat(newLine);
-        document.getElementById('lineValue_beckmad01').innerText = newLine;
-
-        chart_beckmad01.options.plugins.annotation.annotations.line1.yMin = Line_beckmad01;
-        chart_beckmad01.options.plugins.annotation.annotations.line1.yMax = Line_beckmad01;
-
-        chart_beckmad01.data.datasets[0].backgroundColor = allData_beckmad01.map(d => d[currentStat_beckmad01] === 0 ? '#c01616' : (d[currentStat_beckmad01] >= Line_beckmad01 ? '#16c049' : '#c01616'));
-        chart_beckmad01.update();
-    }
-
-    function applyFilters_beckmad01() {
-        const teamFilter = document.getElementById('teamFilter_beckmad01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_beckmad01').value;
-        const startDate = document.getElementById('startDate_beckmad01').value;
-        const endDate = document.getElementById('endDate_beckmad01').value;
-
-        const filteredData = allData_beckmad01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_beckmad01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_beckmad01.data.datasets[0].data = filteredData.map(d => d[currentStat_beckmad01] || 0.0);
-        chart_beckmad01.update();
-    }
-
-    function clearFilters_beckmad01() {
-        document.getElementById('teamFilter_beckmad01').value = "all";
-        document.getElementById('homeAwayFilter_beckmad01').value = "all";
-        document.getElementById('startDate_beckmad01').value = "";
-        document.getElementById('endDate_beckmad01').value = "";
-        applyFilters_beckmad01();
-        updateLine_beckmad01(0.5);
-    }
-
-    initChart_beckmad01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("beckmad01", [{'date': '2022-11-09', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 12.65}, {'date': '2022-11-11', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 7.87}, {'date': '2022-11-13', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.25}, {'date': '2022-11-15', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 8.4}, {'date': '2022-12-27', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 12.48}, {'date': '2022-12-29', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.18}, {'date': '2023-02-17', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.02}, {'date': '2023-02-19', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 11.67}, {'date': '2023-02-21', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2024-03-07', 'opponent': 'ARI', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 12.97}, {'date': '2024-03-08', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.08}, {'date': '2024-03-10', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.25}, {'date': '2024-03-19', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.03}, {'date': '2024-03-20', 'opponent': 'LAK', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 7.58}, {'date': '2024-03-23', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.8}, {'date': '2024-03-28', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.37}, {'date': '2024-04-02', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 1, 'TOI': 8.02}, {'date': '2024-04-04', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 8.93}, {'date': '2024-04-06', 'opponent': 'WPG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.62}, {'date': '2024-04-12', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 10.83}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

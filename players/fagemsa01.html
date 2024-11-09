@@ -189,39 +189,39 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_fagemsa01">Stat:</label>
-<select id="statSelector_fagemsa01" onchange="updateStat_fagemsa01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_fagemsa01" onchange="updateStat('fagemsa01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_fagemsa01">Opponent:</label>
-<select id="teamFilter_fagemsa01" onchange="applyFilters_fagemsa01()">
+<select id="teamFilter_fagemsa01" onchange="applyFilters('fagemsa01')">
 <option value="all">All</option>
 <option value="ARI">ARI</option>
-<option value="CAR">CAR</option>
 <option value="BUF">BUF</option>
-<option value="DAL">DAL</option>
-<option value="NSH">NSH</option>
+<option value="CAR">CAR</option>
 <option value="CHI">CHI</option>
-<option value="PHI">PHI</option>
-<option value="FLA">FLA</option>
-<option value="TBL">TBL</option>
-<option value="SJS">SJS</option>
-<option value="VAN">VAN</option>
-<option value="SEA">SEA</option>
-<option value="NYR">NYR</option>
 <option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="FLA">FLA</option>
+<option value="NSH">NSH</option>
+<option value="NYR">NYR</option>
+<option value="PHI">PHI</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_fagemsa01">Home/Away:</label>
-<select id="homeAwayFilter_fagemsa01" onchange="applyFilters_fagemsa01()">
+<select id="homeAwayFilter_fagemsa01" onchange="applyFilters('fagemsa01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -229,142 +229,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_fagemsa01">Start:</label>
-<input id="startDate_fagemsa01" onchange="applyFilters_fagemsa01()" type="date"/>
+<input id="startDate_fagemsa01" onchange="applyFilters('fagemsa01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_fagemsa01">End:</label>
-<input id="endDate_fagemsa01" onchange="applyFilters_fagemsa01()" type="date"/>
+<input id="endDate_fagemsa01" onchange="applyFilters('fagemsa01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_fagemsa01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_fagemsa01">Change Line:</label>
-<input id="lineSlider_fagemsa01" max="30" min="0" oninput="updateLine_fagemsa01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_fagemsa01" max="30" min="0" oninput="updateLine('fagemsa01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_fagemsa01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_fagemsa01" onclick="resetLine_fagemsa01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_fagemsa01" onclick="clearFilters_fagemsa01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_fagemsa01" onclick="updateLine('fagemsa01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_fagemsa01" onclick="clearFilters('fagemsa01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_fagemsa01 = [{'date': '2022-12-01', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.03}, {'date': '2022-12-03', 'opponent': 'CAR', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 3, 'TOI': 10.07}, {'date': '2022-12-13', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.87}, {'date': '2023-01-19', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 9.47}, {'date': '2023-01-21', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.62}, {'date': '2023-01-22', 'opponent': 'CHI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.12}, {'date': '2023-01-24', 'opponent': 'PHI', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 6.8}, {'date': '2023-01-27', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.18}, {'date': '2023-01-28', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 6.52}, {'date': '2023-10-21', 'opponent': 'SJS', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 0, 'BLK': 1, 'TOI': 12.53}, {'date': '2023-10-24', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 9.63}, {'date': '2023-10-31', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.38}, {'date': '2023-11-02', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 8.73}, {'date': '2024-01-20', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.3}, {'date': '2024-01-22', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 0, 'TOI': 6.65}, {'date': '2024-01-24', 'opponent': 'BUF', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.83}, {'date': '2024-01-26', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.42}];  // Full data for player
-    let currentStat_fagemsa01 = "G";
-    let Line_fagemsa01 = 0.5;  // Default betting line
-    let chart_fagemsa01;
-
-    function initChart_fagemsa01() {
-        const ctx = document.getElementById('chart_fagemsa01').getContext('2d');
-        chart_fagemsa01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_fagemsa01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_fagemsa01,
-                    data: allData_fagemsa01.map(d => d[currentStat_fagemsa01] || 0.0),
-                    backgroundColor: allData_fagemsa01.map(d => d[currentStat_fagemsa01] === 0 ? '#c01616' : (d[currentStat_fagemsa01] >= Line_fagemsa01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_fagemsa01.map(d => d[currentStat_fagemsa01] === 0 ? '#421f1f' : (d[currentStat_fagemsa01] >= Line_fagemsa01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_fagemsa01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_fagemsa01,
-                                yMax: Line_fagemsa01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_fagemsa01(selectedStat) {
-        currentStat_fagemsa01 = selectedStat;
-        chart_fagemsa01.data.datasets[0].data = allData_fagemsa01.map(d => d[selectedStat] || 0.0);
-        chart_fagemsa01.data.datasets[0].label = selectedStat;
-        chart_fagemsa01.options.plugins.title.text = selectedStat;
-
-        chart_fagemsa01.data.datasets[0].backgroundColor = allData_fagemsa01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_fagemsa01 ? '#16c049' : '#c01616'));
-        chart_fagemsa01.update();
-    }
-
-    function updateLine_fagemsa01(newLine) {
-        Line_fagemsa01 = parseFloat(newLine);
-        document.getElementById('lineValue_fagemsa01').innerText = newLine;
-
-        chart_fagemsa01.options.plugins.annotation.annotations.line1.yMin = Line_fagemsa01;
-        chart_fagemsa01.options.plugins.annotation.annotations.line1.yMax = Line_fagemsa01;
-
-        chart_fagemsa01.data.datasets[0].backgroundColor = allData_fagemsa01.map(d => d[currentStat_fagemsa01] === 0 ? '#c01616' : (d[currentStat_fagemsa01] >= Line_fagemsa01 ? '#16c049' : '#c01616'));
-        chart_fagemsa01.update();
-    }
-
-    function applyFilters_fagemsa01() {
-        const teamFilter = document.getElementById('teamFilter_fagemsa01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_fagemsa01').value;
-        const startDate = document.getElementById('startDate_fagemsa01').value;
-        const endDate = document.getElementById('endDate_fagemsa01').value;
-
-        const filteredData = allData_fagemsa01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_fagemsa01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_fagemsa01.data.datasets[0].data = filteredData.map(d => d[currentStat_fagemsa01] || 0.0);
-        chart_fagemsa01.update();
-    }
-
-    function clearFilters_fagemsa01() {
-        document.getElementById('teamFilter_fagemsa01').value = "all";
-        document.getElementById('homeAwayFilter_fagemsa01').value = "all";
-        document.getElementById('startDate_fagemsa01').value = "";
-        document.getElementById('endDate_fagemsa01').value = "";
-        applyFilters_fagemsa01();
-        updateLine_fagemsa01(0.5);
-    }
-
-    initChart_fagemsa01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("fagemsa01", [{'date': '2022-12-01', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.03}, {'date': '2022-12-03', 'opponent': 'CAR', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 3, 'TOI': 10.07}, {'date': '2022-12-13', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.87}, {'date': '2023-01-19', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 9.47}, {'date': '2023-01-21', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.62}, {'date': '2023-01-22', 'opponent': 'CHI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.12}, {'date': '2023-01-24', 'opponent': 'PHI', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 6.8}, {'date': '2023-01-27', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.18}, {'date': '2023-01-28', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 6.52}, {'date': '2023-10-21', 'opponent': 'SJS', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 0, 'BLK': 1, 'TOI': 12.53}, {'date': '2023-10-24', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 9.63}, {'date': '2023-10-31', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.38}, {'date': '2023-11-02', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 8.73}, {'date': '2024-01-20', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.3}, {'date': '2024-01-22', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 0, 'TOI': 6.65}, {'date': '2024-01-24', 'opponent': 'BUF', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.83}, {'date': '2024-01-26', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.42}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

@@ -189,37 +189,37 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_crookan01">Stat:</label>
-<select id="statSelector_crookan01" onchange="updateStat_crookan01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_crookan01" onchange="updateStat('crookan01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_crookan01">Opponent:</label>
-<select id="teamFilter_crookan01" onchange="applyFilters_crookan01()">
+<select id="teamFilter_crookan01" onchange="applyFilters('crookan01')">
 <option value="all">All</option>
-<option value="VEG">VEG</option>
 <option value="ARI">ARI</option>
-<option value="COL">COL</option>
-<option value="PIT">PIT</option>
-<option value="TOR">TOR</option>
-<option value="NJD">NJD</option>
-<option value="SEA">SEA</option>
-<option value="EDM">EDM</option>
 <option value="BUF">BUF</option>
 <option value="CHI">CHI</option>
-<option value="WPG">WPG</option>
+<option value="COL">COL</option>
+<option value="EDM">EDM</option>
 <option value="MIN">MIN</option>
+<option value="NJD">NJD</option>
+<option value="PIT">PIT</option>
+<option value="SEA">SEA</option>
+<option value="TOR">TOR</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_crookan01">Home/Away:</label>
-<select id="homeAwayFilter_crookan01" onchange="applyFilters_crookan01()">
+<select id="homeAwayFilter_crookan01" onchange="applyFilters('crookan01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -227,142 +227,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_crookan01">Start:</label>
-<input id="startDate_crookan01" onchange="applyFilters_crookan01()" type="date"/>
+<input id="startDate_crookan01" onchange="applyFilters('crookan01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_crookan01">End:</label>
-<input id="endDate_crookan01" onchange="applyFilters_crookan01()" type="date"/>
+<input id="endDate_crookan01" onchange="applyFilters('crookan01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_crookan01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_crookan01">Change Line:</label>
-<input id="lineSlider_crookan01" max="30" min="0" oninput="updateLine_crookan01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_crookan01" max="30" min="0" oninput="updateLine('crookan01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_crookan01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_crookan01" onclick="resetLine_crookan01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_crookan01" onclick="clearFilters_crookan01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_crookan01" onclick="updateLine('crookan01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_crookan01" onclick="clearFilters('crookan01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_crookan01 = [{'date': '2023-12-17', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 10.18}, {'date': '2023-12-19', 'opponent': 'ARI', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 3, 'BLK': 1, 'TOI': 11.75}, {'date': '2023-12-21', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.58}, {'date': '2023-12-23', 'opponent': 'PIT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 5.18}, {'date': '2023-12-27', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 1, 'TOI': 8.8}, {'date': '2023-12-29', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 9.28}, {'date': '2024-01-04', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 8.0}, {'date': '2024-03-23', 'opponent': 'NJD', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 2, 'TOI': 13.87}, {'date': '2024-03-24', 'opponent': 'EDM', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 13.5}, {'date': '2024-03-27', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 15.13}, {'date': '2024-03-28', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 12.82}, {'date': '2024-03-30', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 10.75}, {'date': '2024-04-02', 'opponent': 'MIN', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 3.62}];  // Full data for player
-    let currentStat_crookan01 = "G";
-    let Line_crookan01 = 0.5;  // Default betting line
-    let chart_crookan01;
-
-    function initChart_crookan01() {
-        const ctx = document.getElementById('chart_crookan01').getContext('2d');
-        chart_crookan01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_crookan01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_crookan01,
-                    data: allData_crookan01.map(d => d[currentStat_crookan01] || 0.0),
-                    backgroundColor: allData_crookan01.map(d => d[currentStat_crookan01] === 0 ? '#c01616' : (d[currentStat_crookan01] >= Line_crookan01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_crookan01.map(d => d[currentStat_crookan01] === 0 ? '#421f1f' : (d[currentStat_crookan01] >= Line_crookan01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_crookan01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_crookan01,
-                                yMax: Line_crookan01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_crookan01(selectedStat) {
-        currentStat_crookan01 = selectedStat;
-        chart_crookan01.data.datasets[0].data = allData_crookan01.map(d => d[selectedStat] || 0.0);
-        chart_crookan01.data.datasets[0].label = selectedStat;
-        chart_crookan01.options.plugins.title.text = selectedStat;
-
-        chart_crookan01.data.datasets[0].backgroundColor = allData_crookan01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_crookan01 ? '#16c049' : '#c01616'));
-        chart_crookan01.update();
-    }
-
-    function updateLine_crookan01(newLine) {
-        Line_crookan01 = parseFloat(newLine);
-        document.getElementById('lineValue_crookan01').innerText = newLine;
-
-        chart_crookan01.options.plugins.annotation.annotations.line1.yMin = Line_crookan01;
-        chart_crookan01.options.plugins.annotation.annotations.line1.yMax = Line_crookan01;
-
-        chart_crookan01.data.datasets[0].backgroundColor = allData_crookan01.map(d => d[currentStat_crookan01] === 0 ? '#c01616' : (d[currentStat_crookan01] >= Line_crookan01 ? '#16c049' : '#c01616'));
-        chart_crookan01.update();
-    }
-
-    function applyFilters_crookan01() {
-        const teamFilter = document.getElementById('teamFilter_crookan01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_crookan01').value;
-        const startDate = document.getElementById('startDate_crookan01').value;
-        const endDate = document.getElementById('endDate_crookan01').value;
-
-        const filteredData = allData_crookan01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_crookan01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_crookan01.data.datasets[0].data = filteredData.map(d => d[currentStat_crookan01] || 0.0);
-        chart_crookan01.update();
-    }
-
-    function clearFilters_crookan01() {
-        document.getElementById('teamFilter_crookan01').value = "all";
-        document.getElementById('homeAwayFilter_crookan01').value = "all";
-        document.getElementById('startDate_crookan01').value = "";
-        document.getElementById('endDate_crookan01').value = "";
-        applyFilters_crookan01();
-        updateLine_crookan01(0.5);
-    }
-
-    initChart_crookan01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("crookan01", [{'date': '2023-12-17', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 10.18}, {'date': '2023-12-19', 'opponent': 'ARI', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 3, 'BLK': 1, 'TOI': 11.75}, {'date': '2023-12-21', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.58}, {'date': '2023-12-23', 'opponent': 'PIT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 5.18}, {'date': '2023-12-27', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 1, 'TOI': 8.8}, {'date': '2023-12-29', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 9.28}, {'date': '2024-01-04', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 8.0}, {'date': '2024-03-23', 'opponent': 'NJD', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 2, 'TOI': 13.87}, {'date': '2024-03-24', 'opponent': 'EDM', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 13.5}, {'date': '2024-03-27', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 15.13}, {'date': '2024-03-28', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 12.82}, {'date': '2024-03-30', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 10.75}, {'date': '2024-04-02', 'opponent': 'MIN', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 3.62}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

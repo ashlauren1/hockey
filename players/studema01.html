@@ -189,30 +189,30 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_studema01">Stat:</label>
-<select id="statSelector_studema01" onchange="updateStat_studema01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_studema01" onchange="updateStat('studema01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_studema01">Opponent:</label>
-<select id="teamFilter_studema01" onchange="applyFilters_studema01()">
+<select id="teamFilter_studema01" onchange="applyFilters('studema01')">
 <option value="all">All</option>
-<option value="MIN">MIN</option>
-<option value="TBL">TBL</option>
 <option value="BOS">BOS</option>
-<option value="TOR">TOR</option>
+<option value="MIN">MIN</option>
 <option value="OTT">OTT</option>
+<option value="TBL">TBL</option>
+<option value="TOR">TOR</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_studema01">Home/Away:</label>
-<select id="homeAwayFilter_studema01" onchange="applyFilters_studema01()">
+<select id="homeAwayFilter_studema01" onchange="applyFilters('studema01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -220,142 +220,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_studema01">Start:</label>
-<input id="startDate_studema01" onchange="applyFilters_studema01()" type="date"/>
+<input id="startDate_studema01" onchange="applyFilters('studema01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_studema01">End:</label>
-<input id="endDate_studema01" onchange="applyFilters_studema01()" type="date"/>
+<input id="endDate_studema01" onchange="applyFilters('studema01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_studema01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_studema01">Change Line:</label>
-<input id="lineSlider_studema01" max="30" min="0" oninput="updateLine_studema01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_studema01" max="30" min="0" oninput="updateLine('studema01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_studema01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_studema01" onclick="resetLine_studema01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_studema01" onclick="clearFilters_studema01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_studema01" onclick="updateLine('studema01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_studema01" onclick="clearFilters('studema01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_studema01 = [{'date': '2023-02-08', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 1, 'BLK': 0, 'TOI': 8.2}, {'date': '2023-02-11', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.28}, {'date': '2023-02-14', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.58}, {'date': '2023-11-30', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.88}, {'date': '2023-12-02', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.33}];  // Full data for player
-    let currentStat_studema01 = "G";
-    let Line_studema01 = 0.5;  // Default betting line
-    let chart_studema01;
-
-    function initChart_studema01() {
-        const ctx = document.getElementById('chart_studema01').getContext('2d');
-        chart_studema01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_studema01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_studema01,
-                    data: allData_studema01.map(d => d[currentStat_studema01] || 0.0),
-                    backgroundColor: allData_studema01.map(d => d[currentStat_studema01] === 0 ? '#c01616' : (d[currentStat_studema01] >= Line_studema01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_studema01.map(d => d[currentStat_studema01] === 0 ? '#421f1f' : (d[currentStat_studema01] >= Line_studema01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_studema01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_studema01,
-                                yMax: Line_studema01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_studema01(selectedStat) {
-        currentStat_studema01 = selectedStat;
-        chart_studema01.data.datasets[0].data = allData_studema01.map(d => d[selectedStat] || 0.0);
-        chart_studema01.data.datasets[0].label = selectedStat;
-        chart_studema01.options.plugins.title.text = selectedStat;
-
-        chart_studema01.data.datasets[0].backgroundColor = allData_studema01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_studema01 ? '#16c049' : '#c01616'));
-        chart_studema01.update();
-    }
-
-    function updateLine_studema01(newLine) {
-        Line_studema01 = parseFloat(newLine);
-        document.getElementById('lineValue_studema01').innerText = newLine;
-
-        chart_studema01.options.plugins.annotation.annotations.line1.yMin = Line_studema01;
-        chart_studema01.options.plugins.annotation.annotations.line1.yMax = Line_studema01;
-
-        chart_studema01.data.datasets[0].backgroundColor = allData_studema01.map(d => d[currentStat_studema01] === 0 ? '#c01616' : (d[currentStat_studema01] >= Line_studema01 ? '#16c049' : '#c01616'));
-        chart_studema01.update();
-    }
-
-    function applyFilters_studema01() {
-        const teamFilter = document.getElementById('teamFilter_studema01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_studema01').value;
-        const startDate = document.getElementById('startDate_studema01').value;
-        const endDate = document.getElementById('endDate_studema01').value;
-
-        const filteredData = allData_studema01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_studema01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_studema01.data.datasets[0].data = filteredData.map(d => d[currentStat_studema01] || 0.0);
-        chart_studema01.update();
-    }
-
-    function clearFilters_studema01() {
-        document.getElementById('teamFilter_studema01').value = "all";
-        document.getElementById('homeAwayFilter_studema01').value = "all";
-        document.getElementById('startDate_studema01').value = "";
-        document.getElementById('endDate_studema01').value = "";
-        applyFilters_studema01();
-        updateLine_studema01(0.5);
-    }
-
-    initChart_studema01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("studema01", [{'date': '2023-02-08', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 1, 'BLK': 0, 'TOI': 8.2}, {'date': '2023-02-11', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.28}, {'date': '2023-02-14', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.58}, {'date': '2023-11-30', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.88}, {'date': '2023-12-02', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.33}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

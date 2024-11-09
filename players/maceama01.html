@@ -189,32 +189,32 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_maceama01">Stat:</label>
-<select id="statSelector_maceama01" onchange="updateStat_maceama01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_maceama01" onchange="updateStat('maceama01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_maceama01">Opponent:</label>
-<select id="teamFilter_maceama01" onchange="applyFilters_maceama01()">
+<select id="teamFilter_maceama01" onchange="applyFilters('maceama01')">
 <option value="all">All</option>
-<option value="OTT">OTT</option>
-<option value="DAL">DAL</option>
-<option value="TBL">TBL</option>
-<option value="FLA">FLA</option>
 <option value="CHI">CHI</option>
 <option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="FLA">FLA</option>
+<option value="OTT">OTT</option>
 <option value="PIT">PIT</option>
+<option value="TBL">TBL</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_maceama01">Home/Away:</label>
-<select id="homeAwayFilter_maceama01" onchange="applyFilters_maceama01()">
+<select id="homeAwayFilter_maceama01" onchange="applyFilters('maceama01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -222,142 +222,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_maceama01">Start:</label>
-<input id="startDate_maceama01" onchange="applyFilters_maceama01()" type="date"/>
+<input id="startDate_maceama01" onchange="applyFilters('maceama01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_maceama01">End:</label>
-<input id="endDate_maceama01" onchange="applyFilters_maceama01()" type="date"/>
+<input id="endDate_maceama01" onchange="applyFilters('maceama01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_maceama01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_maceama01">Change Line:</label>
-<input id="lineSlider_maceama01" max="30" min="0" oninput="updateLine_maceama01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_maceama01" max="30" min="0" oninput="updateLine('maceama01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_maceama01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_maceama01" onclick="resetLine_maceama01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_maceama01" onclick="clearFilters_maceama01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_maceama01" onclick="updateLine('maceama01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_maceama01" onclick="clearFilters('maceama01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_maceama01 = [{'date': '2023-12-14', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.8}, {'date': '2023-12-16', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-12-19', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2023-12-21', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.68}, {'date': '2023-12-23', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.22}, {'date': '2023-12-27', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.5}, {'date': '2023-12-29', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 5.12}, {'date': '2023-12-30', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 5.98}];  // Full data for player
-    let currentStat_maceama01 = "G";
-    let Line_maceama01 = 0.5;  // Default betting line
-    let chart_maceama01;
-
-    function initChart_maceama01() {
-        const ctx = document.getElementById('chart_maceama01').getContext('2d');
-        chart_maceama01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_maceama01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_maceama01,
-                    data: allData_maceama01.map(d => d[currentStat_maceama01] || 0.0),
-                    backgroundColor: allData_maceama01.map(d => d[currentStat_maceama01] === 0 ? '#c01616' : (d[currentStat_maceama01] >= Line_maceama01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_maceama01.map(d => d[currentStat_maceama01] === 0 ? '#421f1f' : (d[currentStat_maceama01] >= Line_maceama01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_maceama01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_maceama01,
-                                yMax: Line_maceama01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_maceama01(selectedStat) {
-        currentStat_maceama01 = selectedStat;
-        chart_maceama01.data.datasets[0].data = allData_maceama01.map(d => d[selectedStat] || 0.0);
-        chart_maceama01.data.datasets[0].label = selectedStat;
-        chart_maceama01.options.plugins.title.text = selectedStat;
-
-        chart_maceama01.data.datasets[0].backgroundColor = allData_maceama01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_maceama01 ? '#16c049' : '#c01616'));
-        chart_maceama01.update();
-    }
-
-    function updateLine_maceama01(newLine) {
-        Line_maceama01 = parseFloat(newLine);
-        document.getElementById('lineValue_maceama01').innerText = newLine;
-
-        chart_maceama01.options.plugins.annotation.annotations.line1.yMin = Line_maceama01;
-        chart_maceama01.options.plugins.annotation.annotations.line1.yMax = Line_maceama01;
-
-        chart_maceama01.data.datasets[0].backgroundColor = allData_maceama01.map(d => d[currentStat_maceama01] === 0 ? '#c01616' : (d[currentStat_maceama01] >= Line_maceama01 ? '#16c049' : '#c01616'));
-        chart_maceama01.update();
-    }
-
-    function applyFilters_maceama01() {
-        const teamFilter = document.getElementById('teamFilter_maceama01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_maceama01').value;
-        const startDate = document.getElementById('startDate_maceama01').value;
-        const endDate = document.getElementById('endDate_maceama01').value;
-
-        const filteredData = allData_maceama01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_maceama01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_maceama01.data.datasets[0].data = filteredData.map(d => d[currentStat_maceama01] || 0.0);
-        chart_maceama01.update();
-    }
-
-    function clearFilters_maceama01() {
-        document.getElementById('teamFilter_maceama01').value = "all";
-        document.getElementById('homeAwayFilter_maceama01').value = "all";
-        document.getElementById('startDate_maceama01').value = "";
-        document.getElementById('endDate_maceama01').value = "";
-        applyFilters_maceama01();
-        updateLine_maceama01(0.5);
-    }
-
-    initChart_maceama01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("maceama01", [{'date': '2023-12-14', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.8}, {'date': '2023-12-16', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-12-19', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2023-12-21', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.68}, {'date': '2023-12-23', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.22}, {'date': '2023-12-27', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.5}, {'date': '2023-12-29', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 5.12}, {'date': '2023-12-30', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 5.98}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

@@ -189,41 +189,41 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_edstrad01">Stat:</label>
-<select id="statSelector_edstrad01" onchange="updateStat_edstrad01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_edstrad01" onchange="updateStat('edstrad01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_edstrad01">Opponent:</label>
-<select id="teamFilter_edstrad01" onchange="applyFilters_edstrad01()">
+<select id="teamFilter_edstrad01" onchange="applyFilters('edstrad01')">
 <option value="all">All</option>
 <option value="ANA">ANA</option>
-<option value="CGY">CGY</option>
-<option value="MTL">MTL</option>
-<option value="NYI">NYI</option>
-<option value="DAL">DAL</option>
-<option value="NJD">NJD</option>
-<option value="PHI">PHI</option>
-<option value="CBJ">CBJ</option>
-<option value="TOR">TOR</option>
-<option value="FLA">FLA</option>
-<option value="PIT">PIT</option>
 <option value="ARI">ARI</option>
-<option value="DET">DET</option>
-<option value="WSH">WSH</option>
-<option value="OTT">OTT</option>
 <option value="BUF">BUF</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="DAL">DAL</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="MTL">MTL</option>
+<option value="NJD">NJD</option>
+<option value="NYI">NYI</option>
+<option value="OTT">OTT</option>
+<option value="PHI">PHI</option>
+<option value="PIT">PIT</option>
+<option value="TOR">TOR</option>
+<option value="WSH">WSH</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_edstrad01">Home/Away:</label>
-<select id="homeAwayFilter_edstrad01" onchange="applyFilters_edstrad01()">
+<select id="homeAwayFilter_edstrad01" onchange="applyFilters('edstrad01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -231,142 +231,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_edstrad01">Start:</label>
-<input id="startDate_edstrad01" onchange="applyFilters_edstrad01()" type="date"/>
+<input id="startDate_edstrad01" onchange="applyFilters('edstrad01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_edstrad01">End:</label>
-<input id="endDate_edstrad01" onchange="applyFilters_edstrad01()" type="date"/>
+<input id="endDate_edstrad01" onchange="applyFilters('edstrad01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_edstrad01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_edstrad01">Change Line:</label>
-<input id="lineSlider_edstrad01" max="30" min="0" oninput="updateLine_edstrad01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_edstrad01" max="30" min="0" oninput="updateLine('edstrad01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_edstrad01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_edstrad01" onclick="resetLine_edstrad01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_edstrad01" onclick="clearFilters_edstrad01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_edstrad01" onclick="updateLine('edstrad01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_edstrad01" onclick="clearFilters('edstrad01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_edstrad01 = [{'date': '2023-12-15', 'opponent': 'ANA', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 9.65}, {'date': '2024-02-12', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 9.38}, {'date': '2024-02-15', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 10.08}, {'date': '2024-02-18', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 8.9}, {'date': '2024-02-20', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 7.78}, {'date': '2024-02-22', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 9.07}, {'date': '2024-02-24', 'opponent': 'PHI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 6.28}, {'date': '2024-02-25', 'opponent': 'CBJ', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 7.93}, {'date': '2024-02-28', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.78}, {'date': '2024-03-02', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 8.03}, {'date': '2024-03-04', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 6.62}, {'date': '2024-10-09', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 10.8}, {'date': '2024-10-12', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 1.87}, {'date': '2024-10-14', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.53}, {'date': '2024-10-17', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 9.08}, {'date': '2024-10-19', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 7.93}, {'date': '2024-10-22', 'opponent': 'MTL', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 9.82}, {'date': '2024-10-24', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 7.07}, {'date': '2024-10-26', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 7.52}, {'date': '2024-10-29', 'opponent': 'WSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 2, 'TOI': 6.93}, {'date': '2024-11-01', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 1, 'TOI': 7.283333333}, {'date': '2024-11-03', 'opponent': 'NYI', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 8.916666667}, {'date': '2024-11-07', 'opponent': 'BUF', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 12.46666667}];  // Full data for player
-    let currentStat_edstrad01 = "G";
-    let Line_edstrad01 = 0.5;  // Default betting line
-    let chart_edstrad01;
-
-    function initChart_edstrad01() {
-        const ctx = document.getElementById('chart_edstrad01').getContext('2d');
-        chart_edstrad01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_edstrad01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_edstrad01,
-                    data: allData_edstrad01.map(d => d[currentStat_edstrad01] || 0.0),
-                    backgroundColor: allData_edstrad01.map(d => d[currentStat_edstrad01] === 0 ? '#c01616' : (d[currentStat_edstrad01] >= Line_edstrad01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_edstrad01.map(d => d[currentStat_edstrad01] === 0 ? '#421f1f' : (d[currentStat_edstrad01] >= Line_edstrad01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_edstrad01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_edstrad01,
-                                yMax: Line_edstrad01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_edstrad01(selectedStat) {
-        currentStat_edstrad01 = selectedStat;
-        chart_edstrad01.data.datasets[0].data = allData_edstrad01.map(d => d[selectedStat] || 0.0);
-        chart_edstrad01.data.datasets[0].label = selectedStat;
-        chart_edstrad01.options.plugins.title.text = selectedStat;
-
-        chart_edstrad01.data.datasets[0].backgroundColor = allData_edstrad01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_edstrad01 ? '#16c049' : '#c01616'));
-        chart_edstrad01.update();
-    }
-
-    function updateLine_edstrad01(newLine) {
-        Line_edstrad01 = parseFloat(newLine);
-        document.getElementById('lineValue_edstrad01').innerText = newLine;
-
-        chart_edstrad01.options.plugins.annotation.annotations.line1.yMin = Line_edstrad01;
-        chart_edstrad01.options.plugins.annotation.annotations.line1.yMax = Line_edstrad01;
-
-        chart_edstrad01.data.datasets[0].backgroundColor = allData_edstrad01.map(d => d[currentStat_edstrad01] === 0 ? '#c01616' : (d[currentStat_edstrad01] >= Line_edstrad01 ? '#16c049' : '#c01616'));
-        chart_edstrad01.update();
-    }
-
-    function applyFilters_edstrad01() {
-        const teamFilter = document.getElementById('teamFilter_edstrad01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_edstrad01').value;
-        const startDate = document.getElementById('startDate_edstrad01').value;
-        const endDate = document.getElementById('endDate_edstrad01').value;
-
-        const filteredData = allData_edstrad01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_edstrad01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_edstrad01.data.datasets[0].data = filteredData.map(d => d[currentStat_edstrad01] || 0.0);
-        chart_edstrad01.update();
-    }
-
-    function clearFilters_edstrad01() {
-        document.getElementById('teamFilter_edstrad01').value = "all";
-        document.getElementById('homeAwayFilter_edstrad01').value = "all";
-        document.getElementById('startDate_edstrad01').value = "";
-        document.getElementById('endDate_edstrad01').value = "";
-        applyFilters_edstrad01();
-        updateLine_edstrad01(0.5);
-    }
-
-    initChart_edstrad01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("edstrad01", [{'date': '2023-12-15', 'opponent': 'ANA', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 9.65}, {'date': '2024-02-12', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 9.38}, {'date': '2024-02-15', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 10.08}, {'date': '2024-02-18', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 8.9}, {'date': '2024-02-20', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 7.78}, {'date': '2024-02-22', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 9.07}, {'date': '2024-02-24', 'opponent': 'PHI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 6.28}, {'date': '2024-02-25', 'opponent': 'CBJ', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 7.93}, {'date': '2024-02-28', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.78}, {'date': '2024-03-02', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 8.03}, {'date': '2024-03-04', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 6.62}, {'date': '2024-10-09', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 10.8}, {'date': '2024-10-12', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 1.87}, {'date': '2024-10-14', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.53}, {'date': '2024-10-17', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 9.08}, {'date': '2024-10-19', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 7.93}, {'date': '2024-10-22', 'opponent': 'MTL', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 9.82}, {'date': '2024-10-24', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 7.07}, {'date': '2024-10-26', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 7.52}, {'date': '2024-10-29', 'opponent': 'WSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 2, 'TOI': 6.93}, {'date': '2024-11-01', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 1, 'TOI': 7.283333333}, {'date': '2024-11-03', 'opponent': 'NYI', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 8.916666667}, {'date': '2024-11-07', 'opponent': 'BUF', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 12.46666667}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

@@ -189,28 +189,28 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_morrilo01">Stat:</label>
-<select id="statSelector_morrilo01" onchange="updateStat_morrilo01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_morrilo01" onchange="updateStat('morrilo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_morrilo01">Opponent:</label>
-<select id="teamFilter_morrilo01" onchange="applyFilters_morrilo01()">
+<select id="teamFilter_morrilo01" onchange="applyFilters('morrilo01')">
 <option value="all">All</option>
 <option value="ANA">ANA</option>
-<option value="DAL">DAL</option>
 <option value="ARI">ARI</option>
+<option value="DAL">DAL</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_morrilo01">Home/Away:</label>
-<select id="homeAwayFilter_morrilo01" onchange="applyFilters_morrilo01()">
+<select id="homeAwayFilter_morrilo01" onchange="applyFilters('morrilo01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -218,142 +218,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_morrilo01">Start:</label>
-<input id="startDate_morrilo01" onchange="applyFilters_morrilo01()" type="date"/>
+<input id="startDate_morrilo01" onchange="applyFilters('morrilo01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_morrilo01">End:</label>
-<input id="endDate_morrilo01" onchange="applyFilters_morrilo01()" type="date"/>
+<input id="endDate_morrilo01" onchange="applyFilters('morrilo01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_morrilo01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_morrilo01">Change Line:</label>
-<input id="lineSlider_morrilo01" max="30" min="0" oninput="updateLine_morrilo01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_morrilo01" max="30" min="0" oninput="updateLine('morrilo01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_morrilo01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_morrilo01" onclick="resetLine_morrilo01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_morrilo01" onclick="clearFilters_morrilo01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_morrilo01" onclick="updateLine('morrilo01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_morrilo01" onclick="clearFilters('morrilo01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_morrilo01 = [{'date': '2024-03-26', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 1, 'TOI': 14.35}, {'date': '2024-03-28', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 13.2}, {'date': '2024-03-30', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 3, 'TOI': 12.68}, {'date': '2024-04-09', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 12.3}];  // Full data for player
-    let currentStat_morrilo01 = "G";
-    let Line_morrilo01 = 0.5;  // Default betting line
-    let chart_morrilo01;
-
-    function initChart_morrilo01() {
-        const ctx = document.getElementById('chart_morrilo01').getContext('2d');
-        chart_morrilo01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_morrilo01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_morrilo01,
-                    data: allData_morrilo01.map(d => d[currentStat_morrilo01] || 0.0),
-                    backgroundColor: allData_morrilo01.map(d => d[currentStat_morrilo01] === 0 ? '#c01616' : (d[currentStat_morrilo01] >= Line_morrilo01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_morrilo01.map(d => d[currentStat_morrilo01] === 0 ? '#421f1f' : (d[currentStat_morrilo01] >= Line_morrilo01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_morrilo01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_morrilo01,
-                                yMax: Line_morrilo01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_morrilo01(selectedStat) {
-        currentStat_morrilo01 = selectedStat;
-        chart_morrilo01.data.datasets[0].data = allData_morrilo01.map(d => d[selectedStat] || 0.0);
-        chart_morrilo01.data.datasets[0].label = selectedStat;
-        chart_morrilo01.options.plugins.title.text = selectedStat;
-
-        chart_morrilo01.data.datasets[0].backgroundColor = allData_morrilo01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_morrilo01 ? '#16c049' : '#c01616'));
-        chart_morrilo01.update();
-    }
-
-    function updateLine_morrilo01(newLine) {
-        Line_morrilo01 = parseFloat(newLine);
-        document.getElementById('lineValue_morrilo01').innerText = newLine;
-
-        chart_morrilo01.options.plugins.annotation.annotations.line1.yMin = Line_morrilo01;
-        chart_morrilo01.options.plugins.annotation.annotations.line1.yMax = Line_morrilo01;
-
-        chart_morrilo01.data.datasets[0].backgroundColor = allData_morrilo01.map(d => d[currentStat_morrilo01] === 0 ? '#c01616' : (d[currentStat_morrilo01] >= Line_morrilo01 ? '#16c049' : '#c01616'));
-        chart_morrilo01.update();
-    }
-
-    function applyFilters_morrilo01() {
-        const teamFilter = document.getElementById('teamFilter_morrilo01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_morrilo01').value;
-        const startDate = document.getElementById('startDate_morrilo01').value;
-        const endDate = document.getElementById('endDate_morrilo01').value;
-
-        const filteredData = allData_morrilo01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_morrilo01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_morrilo01.data.datasets[0].data = filteredData.map(d => d[currentStat_morrilo01] || 0.0);
-        chart_morrilo01.update();
-    }
-
-    function clearFilters_morrilo01() {
-        document.getElementById('teamFilter_morrilo01').value = "all";
-        document.getElementById('homeAwayFilter_morrilo01').value = "all";
-        document.getElementById('startDate_morrilo01').value = "";
-        document.getElementById('endDate_morrilo01').value = "";
-        applyFilters_morrilo01();
-        updateLine_morrilo01(0.5);
-    }
-
-    initChart_morrilo01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("morrilo01", [{'date': '2024-03-26', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 1, 'TOI': 14.35}, {'date': '2024-03-28', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 13.2}, {'date': '2024-03-30', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 3, 'TOI': 12.68}, {'date': '2024-04-09', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 12.3}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

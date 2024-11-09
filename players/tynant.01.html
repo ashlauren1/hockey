@@ -189,29 +189,29 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_tynant.01">Stat:</label>
-<select id="statSelector_tynant.01" onchange="updateStat_tynant.01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_tynant.01" onchange="updateStat('tynant.01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_tynant.01">Opponent:</label>
-<select id="teamFilter_tynant.01" onchange="applyFilters_tynant.01()">
+<select id="teamFilter_tynant.01" onchange="applyFilters('tynant.01')">
 <option value="all">All</option>
-<option value="TBL">TBL</option>
 <option value="NSH">NSH</option>
 <option value="SEA">SEA</option>
+<option value="TBL">TBL</option>
 <option value="WPG">WPG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_tynant.01">Home/Away:</label>
-<select id="homeAwayFilter_tynant.01" onchange="applyFilters_tynant.01()">
+<select id="homeAwayFilter_tynant.01" onchange="applyFilters('tynant.01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -219,142 +219,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_tynant.01">Start:</label>
-<input id="startDate_tynant.01" onchange="applyFilters_tynant.01()" type="date"/>
+<input id="startDate_tynant.01" onchange="applyFilters('tynant.01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_tynant.01">End:</label>
-<input id="endDate_tynant.01" onchange="applyFilters_tynant.01()" type="date"/>
+<input id="endDate_tynant.01" onchange="applyFilters('tynant.01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_tynant.01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_tynant.01">Change Line:</label>
-<input id="lineSlider_tynant.01" max="30" min="0" oninput="updateLine_tynant.01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_tynant.01" max="30" min="0" oninput="updateLine('tynant.01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_tynant.01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_tynant.01" onclick="resetLine_tynant.01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_tynant.01" onclick="clearFilters_tynant.01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_tynant.01" onclick="updateLine('tynant.01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_tynant.01" onclick="clearFilters('tynant.01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_tynant.01 = [{'date': '2024-10-30', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.6}, {'date': '2024-11-02', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 8.25}, {'date': '2024-11-05', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.53}, {'date': '2024-11-07', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 9.183333333}];  // Full data for player
-    let currentStat_tynant.01 = "G";
-    let Line_tynant.01 = 0.5;  // Default betting line
-    let chart_tynant.01;
-
-    function initChart_tynant.01() {
-        const ctx = document.getElementById('chart_tynant.01').getContext('2d');
-        chart_tynant.01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_tynant.01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_tynant.01,
-                    data: allData_tynant.01.map(d => d[currentStat_tynant.01] || 0.0),
-                    backgroundColor: allData_tynant.01.map(d => d[currentStat_tynant.01] === 0 ? '#c01616' : (d[currentStat_tynant.01] >= Line_tynant.01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_tynant.01.map(d => d[currentStat_tynant.01] === 0 ? '#421f1f' : (d[currentStat_tynant.01] >= Line_tynant.01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_tynant.01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_tynant.01,
-                                yMax: Line_tynant.01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_tynant.01(selectedStat) {
-        currentStat_tynant.01 = selectedStat;
-        chart_tynant.01.data.datasets[0].data = allData_tynant.01.map(d => d[selectedStat] || 0.0);
-        chart_tynant.01.data.datasets[0].label = selectedStat;
-        chart_tynant.01.options.plugins.title.text = selectedStat;
-
-        chart_tynant.01.data.datasets[0].backgroundColor = allData_tynant.01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_tynant.01 ? '#16c049' : '#c01616'));
-        chart_tynant.01.update();
-    }
-
-    function updateLine_tynant.01(newLine) {
-        Line_tynant.01 = parseFloat(newLine);
-        document.getElementById('lineValue_tynant.01').innerText = newLine;
-
-        chart_tynant.01.options.plugins.annotation.annotations.line1.yMin = Line_tynant.01;
-        chart_tynant.01.options.plugins.annotation.annotations.line1.yMax = Line_tynant.01;
-
-        chart_tynant.01.data.datasets[0].backgroundColor = allData_tynant.01.map(d => d[currentStat_tynant.01] === 0 ? '#c01616' : (d[currentStat_tynant.01] >= Line_tynant.01 ? '#16c049' : '#c01616'));
-        chart_tynant.01.update();
-    }
-
-    function applyFilters_tynant.01() {
-        const teamFilter = document.getElementById('teamFilter_tynant.01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_tynant.01').value;
-        const startDate = document.getElementById('startDate_tynant.01').value;
-        const endDate = document.getElementById('endDate_tynant.01').value;
-
-        const filteredData = allData_tynant.01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_tynant.01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_tynant.01.data.datasets[0].data = filteredData.map(d => d[currentStat_tynant.01] || 0.0);
-        chart_tynant.01.update();
-    }
-
-    function clearFilters_tynant.01() {
-        document.getElementById('teamFilter_tynant.01').value = "all";
-        document.getElementById('homeAwayFilter_tynant.01').value = "all";
-        document.getElementById('startDate_tynant.01').value = "";
-        document.getElementById('endDate_tynant.01').value = "";
-        applyFilters_tynant.01();
-        updateLine_tynant.01(0.5);
-    }
-
-    initChart_tynant.01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("tynant.01", [{'date': '2024-10-30', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.6}, {'date': '2024-11-02', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 8.25}, {'date': '2024-11-05', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.53}, {'date': '2024-11-07', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 9.183333333}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

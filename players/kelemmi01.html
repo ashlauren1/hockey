@@ -189,44 +189,44 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_kelemmi01">Stat:</label>
-<select id="statSelector_kelemmi01" onchange="updateStat_kelemmi01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_kelemmi01" onchange="updateStat('kelemmi01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_kelemmi01">Opponent:</label>
-<select id="teamFilter_kelemmi01" onchange="applyFilters_kelemmi01()">
+<select id="teamFilter_kelemmi01" onchange="applyFilters('kelemmi01')">
 <option value="all">All</option>
 <option value="ANA">ANA</option>
-<option value="CAR">CAR</option>
-<option value="MIN">MIN</option>
-<option value="EDM">EDM</option>
-<option value="COL">COL</option>
-<option value="DAL">DAL</option>
-<option value="SJS">SJS</option>
-<option value="SEA">SEA</option>
-<option value="VAN">VAN</option>
-<option value="WPG">WPG</option>
-<option value="LAK">LAK</option>
-<option value="VEG">VEG</option>
-<option value="TBL">TBL</option>
-<option value="STL">STL</option>
-<option value="WSH">WSH</option>
-<option value="PHI">PHI</option>
 <option value="BOS">BOS</option>
 <option value="BUF">BUF</option>
+<option value="CAR">CAR</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="EDM">EDM</option>
+<option value="LAK">LAK</option>
+<option value="MIN">MIN</option>
+<option value="PHI">PHI</option>
 <option value="PIT">PIT</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="STL">STL</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
+<option value="WSH">WSH</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_kelemmi01">Home/Away:</label>
-<select id="homeAwayFilter_kelemmi01" onchange="applyFilters_kelemmi01()">
+<select id="homeAwayFilter_kelemmi01" onchange="applyFilters('kelemmi01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -234,142 +234,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_kelemmi01">Start:</label>
-<input id="startDate_kelemmi01" onchange="applyFilters_kelemmi01()" type="date"/>
+<input id="startDate_kelemmi01" onchange="applyFilters('kelemmi01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_kelemmi01">End:</label>
-<input id="endDate_kelemmi01" onchange="applyFilters_kelemmi01()" type="date"/>
+<input id="endDate_kelemmi01" onchange="applyFilters('kelemmi01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_kelemmi01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_kelemmi01">Change Line:</label>
-<input id="lineSlider_kelemmi01" max="30" min="0" oninput="updateLine_kelemmi01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_kelemmi01" max="30" min="0" oninput="updateLine('kelemmi01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_kelemmi01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_kelemmi01" onclick="resetLine_kelemmi01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_kelemmi01" onclick="clearFilters_kelemmi01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_kelemmi01" onclick="updateLine('kelemmi01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_kelemmi01" onclick="clearFilters('kelemmi01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_kelemmi01 = [{'date': '2023-01-24', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 10.07}, {'date': '2023-03-03', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 2, 'TOI': 8.82}, {'date': '2023-03-12', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 6.05}, {'date': '2023-03-22', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.32}, {'date': '2023-03-24', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 7.93}, {'date': '2023-03-26', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 3.83}, {'date': '2023-03-27', 'opponent': 'EDM', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 4.02}, {'date': '2023-03-31', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.0}, {'date': '2023-04-01', 'opponent': 'SJS', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 6, 'HIT': 4, 'BLK': 0, 'TOI': 8.9}, {'date': '2023-04-03', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.5}, {'date': '2023-04-06', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.93}, {'date': '2023-04-08', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 4, 'BLK': 0, 'TOI': 9.08}, {'date': '2023-04-10', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 2, 'TOI': 8.48}, {'date': '2023-04-13', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 7.58}, {'date': '2023-11-18', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.78}, {'date': '2023-11-20', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 6.55}, {'date': '2023-11-25', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 5.6}, {'date': '2023-11-28', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 7.03}, {'date': '2023-12-02', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 1, 'TOI': 9.12}, {'date': '2023-12-04', 'opponent': 'WSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 8.92}, {'date': '2023-12-07', 'opponent': 'PHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.4}, {'date': '2023-12-09', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 6.17}, {'date': '2023-12-11', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 8.37}, {'date': '2023-12-12', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 5.88}];  // Full data for player
-    let currentStat_kelemmi01 = "G";
-    let Line_kelemmi01 = 0.5;  // Default betting line
-    let chart_kelemmi01;
-
-    function initChart_kelemmi01() {
-        const ctx = document.getElementById('chart_kelemmi01').getContext('2d');
-        chart_kelemmi01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_kelemmi01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_kelemmi01,
-                    data: allData_kelemmi01.map(d => d[currentStat_kelemmi01] || 0.0),
-                    backgroundColor: allData_kelemmi01.map(d => d[currentStat_kelemmi01] === 0 ? '#c01616' : (d[currentStat_kelemmi01] >= Line_kelemmi01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_kelemmi01.map(d => d[currentStat_kelemmi01] === 0 ? '#421f1f' : (d[currentStat_kelemmi01] >= Line_kelemmi01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_kelemmi01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_kelemmi01,
-                                yMax: Line_kelemmi01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_kelemmi01(selectedStat) {
-        currentStat_kelemmi01 = selectedStat;
-        chart_kelemmi01.data.datasets[0].data = allData_kelemmi01.map(d => d[selectedStat] || 0.0);
-        chart_kelemmi01.data.datasets[0].label = selectedStat;
-        chart_kelemmi01.options.plugins.title.text = selectedStat;
-
-        chart_kelemmi01.data.datasets[0].backgroundColor = allData_kelemmi01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_kelemmi01 ? '#16c049' : '#c01616'));
-        chart_kelemmi01.update();
-    }
-
-    function updateLine_kelemmi01(newLine) {
-        Line_kelemmi01 = parseFloat(newLine);
-        document.getElementById('lineValue_kelemmi01').innerText = newLine;
-
-        chart_kelemmi01.options.plugins.annotation.annotations.line1.yMin = Line_kelemmi01;
-        chart_kelemmi01.options.plugins.annotation.annotations.line1.yMax = Line_kelemmi01;
-
-        chart_kelemmi01.data.datasets[0].backgroundColor = allData_kelemmi01.map(d => d[currentStat_kelemmi01] === 0 ? '#c01616' : (d[currentStat_kelemmi01] >= Line_kelemmi01 ? '#16c049' : '#c01616'));
-        chart_kelemmi01.update();
-    }
-
-    function applyFilters_kelemmi01() {
-        const teamFilter = document.getElementById('teamFilter_kelemmi01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_kelemmi01').value;
-        const startDate = document.getElementById('startDate_kelemmi01').value;
-        const endDate = document.getElementById('endDate_kelemmi01').value;
-
-        const filteredData = allData_kelemmi01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_kelemmi01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_kelemmi01.data.datasets[0].data = filteredData.map(d => d[currentStat_kelemmi01] || 0.0);
-        chart_kelemmi01.update();
-    }
-
-    function clearFilters_kelemmi01() {
-        document.getElementById('teamFilter_kelemmi01').value = "all";
-        document.getElementById('homeAwayFilter_kelemmi01').value = "all";
-        document.getElementById('startDate_kelemmi01').value = "";
-        document.getElementById('endDate_kelemmi01').value = "";
-        applyFilters_kelemmi01();
-        updateLine_kelemmi01(0.5);
-    }
-
-    initChart_kelemmi01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("kelemmi01", [{'date': '2023-01-24', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 10.07}, {'date': '2023-03-03', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 2, 'TOI': 8.82}, {'date': '2023-03-12', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 6.05}, {'date': '2023-03-22', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.32}, {'date': '2023-03-24', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 7.93}, {'date': '2023-03-26', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 3.83}, {'date': '2023-03-27', 'opponent': 'EDM', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 4.02}, {'date': '2023-03-31', 'opponent': 'DAL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.0}, {'date': '2023-04-01', 'opponent': 'SJS', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 6, 'HIT': 4, 'BLK': 0, 'TOI': 8.9}, {'date': '2023-04-03', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.5}, {'date': '2023-04-06', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.93}, {'date': '2023-04-08', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 4, 'BLK': 0, 'TOI': 9.08}, {'date': '2023-04-10', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 2, 'TOI': 8.48}, {'date': '2023-04-13', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 7.58}, {'date': '2023-11-18', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.78}, {'date': '2023-11-20', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 6.55}, {'date': '2023-11-25', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 5.6}, {'date': '2023-11-28', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 7.03}, {'date': '2023-12-02', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 1, 'TOI': 9.12}, {'date': '2023-12-04', 'opponent': 'WSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 8.92}, {'date': '2023-12-07', 'opponent': 'PHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.4}, {'date': '2023-12-09', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 6.17}, {'date': '2023-12-11', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 8.37}, {'date': '2023-12-12', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 5.88}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

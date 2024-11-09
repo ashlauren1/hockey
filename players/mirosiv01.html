@@ -189,42 +189,42 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_mirosiv01">Stat:</label>
-<select id="statSelector_mirosiv01" onchange="updateStat_mirosiv01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_mirosiv01" onchange="updateStat('mirosiv01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_mirosiv01">Opponent:</label>
-<select id="teamFilter_mirosiv01" onchange="applyFilters_mirosiv01()">
+<select id="teamFilter_mirosiv01" onchange="applyFilters('mirosiv01')">
 <option value="all">All</option>
-<option value="NYI">NYI</option>
-<option value="CBJ">CBJ</option>
-<option value="TBL">TBL</option>
-<option value="NYR">NYR</option>
-<option value="PIT">PIT</option>
-<option value="CHI">CHI</option>
-<option value="WPG">WPG</option>
-<option value="EDM">EDM</option>
-<option value="SEA">SEA</option>
-<option value="VAN">VAN</option>
-<option value="CGY">CGY</option>
-<option value="TOR">TOR</option>
-<option value="CAR">CAR</option>
-<option value="DET">DET</option>
 <option value="BOS">BOS</option>
 <option value="BUF">BUF</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="CHI">CHI</option>
+<option value="DET">DET</option>
+<option value="EDM">EDM</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
 <option value="OTT">OTT</option>
+<option value="PIT">PIT</option>
+<option value="SEA">SEA</option>
+<option value="TBL">TBL</option>
+<option value="TOR">TOR</option>
+<option value="VAN">VAN</option>
+<option value="WPG">WPG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_mirosiv01">Home/Away:</label>
-<select id="homeAwayFilter_mirosiv01" onchange="applyFilters_mirosiv01()">
+<select id="homeAwayFilter_mirosiv01" onchange="applyFilters('mirosiv01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -232,142 +232,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_mirosiv01">Start:</label>
-<input id="startDate_mirosiv01" onchange="applyFilters_mirosiv01()" type="date"/>
+<input id="startDate_mirosiv01" onchange="applyFilters('mirosiv01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_mirosiv01">End:</label>
-<input id="endDate_mirosiv01" onchange="applyFilters_mirosiv01()" type="date"/>
+<input id="endDate_mirosiv01" onchange="applyFilters('mirosiv01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_mirosiv01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_mirosiv01">Change Line:</label>
-<input id="lineSlider_mirosiv01" max="30" min="0" oninput="updateLine_mirosiv01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_mirosiv01" max="30" min="0" oninput="updateLine('mirosiv01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_mirosiv01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_mirosiv01" onclick="resetLine_mirosiv01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_mirosiv01" onclick="clearFilters_mirosiv01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_mirosiv01" onclick="updateLine('mirosiv01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_mirosiv01" onclick="clearFilters('mirosiv01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_mirosiv01 = [{'date': '2023-12-20', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 10.23}, {'date': '2023-12-21', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 9.6}, {'date': '2023-12-23', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 1, 'TOI': 8.8}, {'date': '2023-12-27', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 12.87}, {'date': '2024-03-07', 'opponent': 'PIT', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 12.45}, {'date': '2024-03-09', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 3, 'BLK': 0, 'TOI': 13.42}, {'date': '2024-03-11', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 14.33}, {'date': '2024-03-13', 'opponent': 'EDM', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2024-03-14', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 11.62}, {'date': '2024-03-16', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 12.82}, {'date': '2024-03-18', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2024-03-20', 'opponent': 'TOR', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 12.0}, {'date': '2024-03-22', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 13.12}, {'date': '2024-03-24', 'opponent': 'WPG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 1, 'TOI': 10.78}, {'date': '2024-03-26', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 15.87}, {'date': '2024-03-28', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 8, 'BLK': 0, 'TOI': 15.93}, {'date': '2024-03-30', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 5, 'BLK': 0, 'TOI': 9.23}, {'date': '2024-04-02', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 15.02}, {'date': '2024-04-04', 'opponent': 'PIT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 4, 'BLK': 0, 'TOI': 15.5}, {'date': '2024-04-05', 'opponent': 'CAR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.5}, {'date': '2024-04-07', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.08}];  // Full data for player
-    let currentStat_mirosiv01 = "G";
-    let Line_mirosiv01 = 0.5;  // Default betting line
-    let chart_mirosiv01;
-
-    function initChart_mirosiv01() {
-        const ctx = document.getElementById('chart_mirosiv01').getContext('2d');
-        chart_mirosiv01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_mirosiv01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_mirosiv01,
-                    data: allData_mirosiv01.map(d => d[currentStat_mirosiv01] || 0.0),
-                    backgroundColor: allData_mirosiv01.map(d => d[currentStat_mirosiv01] === 0 ? '#c01616' : (d[currentStat_mirosiv01] >= Line_mirosiv01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_mirosiv01.map(d => d[currentStat_mirosiv01] === 0 ? '#421f1f' : (d[currentStat_mirosiv01] >= Line_mirosiv01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_mirosiv01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_mirosiv01,
-                                yMax: Line_mirosiv01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_mirosiv01(selectedStat) {
-        currentStat_mirosiv01 = selectedStat;
-        chart_mirosiv01.data.datasets[0].data = allData_mirosiv01.map(d => d[selectedStat] || 0.0);
-        chart_mirosiv01.data.datasets[0].label = selectedStat;
-        chart_mirosiv01.options.plugins.title.text = selectedStat;
-
-        chart_mirosiv01.data.datasets[0].backgroundColor = allData_mirosiv01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_mirosiv01 ? '#16c049' : '#c01616'));
-        chart_mirosiv01.update();
-    }
-
-    function updateLine_mirosiv01(newLine) {
-        Line_mirosiv01 = parseFloat(newLine);
-        document.getElementById('lineValue_mirosiv01').innerText = newLine;
-
-        chart_mirosiv01.options.plugins.annotation.annotations.line1.yMin = Line_mirosiv01;
-        chart_mirosiv01.options.plugins.annotation.annotations.line1.yMax = Line_mirosiv01;
-
-        chart_mirosiv01.data.datasets[0].backgroundColor = allData_mirosiv01.map(d => d[currentStat_mirosiv01] === 0 ? '#c01616' : (d[currentStat_mirosiv01] >= Line_mirosiv01 ? '#16c049' : '#c01616'));
-        chart_mirosiv01.update();
-    }
-
-    function applyFilters_mirosiv01() {
-        const teamFilter = document.getElementById('teamFilter_mirosiv01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_mirosiv01').value;
-        const startDate = document.getElementById('startDate_mirosiv01').value;
-        const endDate = document.getElementById('endDate_mirosiv01').value;
-
-        const filteredData = allData_mirosiv01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_mirosiv01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_mirosiv01.data.datasets[0].data = filteredData.map(d => d[currentStat_mirosiv01] || 0.0);
-        chart_mirosiv01.update();
-    }
-
-    function clearFilters_mirosiv01() {
-        document.getElementById('teamFilter_mirosiv01').value = "all";
-        document.getElementById('homeAwayFilter_mirosiv01').value = "all";
-        document.getElementById('startDate_mirosiv01').value = "";
-        document.getElementById('endDate_mirosiv01').value = "";
-        applyFilters_mirosiv01();
-        updateLine_mirosiv01(0.5);
-    }
-
-    initChart_mirosiv01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("mirosiv01", [{'date': '2023-12-20', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 10.23}, {'date': '2023-12-21', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 9.6}, {'date': '2023-12-23', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 1, 'TOI': 8.8}, {'date': '2023-12-27', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 12.87}, {'date': '2024-03-07', 'opponent': 'PIT', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 12.45}, {'date': '2024-03-09', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 3, 'BLK': 0, 'TOI': 13.42}, {'date': '2024-03-11', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 14.33}, {'date': '2024-03-13', 'opponent': 'EDM', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2024-03-14', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 11.62}, {'date': '2024-03-16', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 12.82}, {'date': '2024-03-18', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2024-03-20', 'opponent': 'TOR', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 12.0}, {'date': '2024-03-22', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 13.12}, {'date': '2024-03-24', 'opponent': 'WPG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 1, 'TOI': 10.78}, {'date': '2024-03-26', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 15.87}, {'date': '2024-03-28', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 8, 'BLK': 0, 'TOI': 15.93}, {'date': '2024-03-30', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 5, 'BLK': 0, 'TOI': 9.23}, {'date': '2024-04-02', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 15.02}, {'date': '2024-04-04', 'opponent': 'PIT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 4, 'BLK': 0, 'TOI': 15.5}, {'date': '2024-04-05', 'opponent': 'CAR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.5}, {'date': '2024-04-07', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.08}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

@@ -189,38 +189,38 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_snivejo01">Stat:</label>
-<select id="statSelector_snivejo01" onchange="updateStat_snivejo01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_snivejo01" onchange="updateStat('snivejo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_snivejo01">Opponent:</label>
-<select id="teamFilter_snivejo01" onchange="applyFilters_snivejo01()">
+<select id="teamFilter_snivejo01" onchange="applyFilters('snivejo01')">
 <option value="all">All</option>
-<option value="OTT">OTT</option>
-<option value="LAK">LAK</option>
-<option value="VEG">VEG</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
 <option value="DET">DET</option>
 <option value="FLA">FLA</option>
+<option value="LAK">LAK</option>
 <option value="MTL">MTL</option>
-<option value="CAR">CAR</option>
-<option value="NYR">NYR</option>
-<option value="NYI">NYI</option>
-<option value="BOS">BOS</option>
 <option value="NJD">NJD</option>
-<option value="PHI">PHI</option>
 <option value="NSH">NSH</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="PHI">PHI</option>
+<option value="VEG">VEG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_snivejo01">Home/Away:</label>
-<select id="homeAwayFilter_snivejo01" onchange="applyFilters_snivejo01()">
+<select id="homeAwayFilter_snivejo01" onchange="applyFilters('snivejo01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -228,142 +228,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_snivejo01">Start:</label>
-<input id="startDate_snivejo01" onchange="applyFilters_snivejo01()" type="date"/>
+<input id="startDate_snivejo01" onchange="applyFilters('snivejo01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_snivejo01">End:</label>
-<input id="endDate_snivejo01" onchange="applyFilters_snivejo01()" type="date"/>
+<input id="endDate_snivejo01" onchange="applyFilters('snivejo01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_snivejo01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_snivejo01">Change Line:</label>
-<input id="lineSlider_snivejo01" max="30" min="0" oninput="updateLine_snivejo01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_snivejo01" max="30" min="0" oninput="updateLine('snivejo01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_snivejo01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_snivejo01" onclick="resetLine_snivejo01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_snivejo01" onclick="clearFilters_snivejo01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_snivejo01" onclick="updateLine('snivejo01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_snivejo01" onclick="clearFilters('snivejo01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_snivejo01 = [{'date': '2022-10-20', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 15.27}, {'date': '2022-10-22', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 8.27}, {'date': '2022-11-01', 'opponent': 'VEG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 12.72}, {'date': '2022-11-03', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 12.28}, {'date': '2022-11-15', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 11.15}, {'date': '2022-12-31', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 12.42}, {'date': '2023-02-14', 'opponent': 'CAR', 'location': 'home', 'G': 1, 'A': 1, 'PTS': 2, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 13.6}, {'date': '2023-02-16', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.68}, {'date': '2023-03-14', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.48}, {'date': '2023-04-10', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 14.43}, {'date': '2023-04-11', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 18.2}, {'date': '2023-04-13', 'opponent': 'NJD', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 12.65}, {'date': '2023-12-14', 'opponent': 'PHI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.52}, {'date': '2023-12-16', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 12.8}, {'date': '2023-12-17', 'opponent': 'CAR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.72}];  // Full data for player
-    let currentStat_snivejo01 = "G";
-    let Line_snivejo01 = 0.5;  // Default betting line
-    let chart_snivejo01;
-
-    function initChart_snivejo01() {
-        const ctx = document.getElementById('chart_snivejo01').getContext('2d');
-        chart_snivejo01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_snivejo01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_snivejo01,
-                    data: allData_snivejo01.map(d => d[currentStat_snivejo01] || 0.0),
-                    backgroundColor: allData_snivejo01.map(d => d[currentStat_snivejo01] === 0 ? '#c01616' : (d[currentStat_snivejo01] >= Line_snivejo01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_snivejo01.map(d => d[currentStat_snivejo01] === 0 ? '#421f1f' : (d[currentStat_snivejo01] >= Line_snivejo01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_snivejo01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_snivejo01,
-                                yMax: Line_snivejo01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_snivejo01(selectedStat) {
-        currentStat_snivejo01 = selectedStat;
-        chart_snivejo01.data.datasets[0].data = allData_snivejo01.map(d => d[selectedStat] || 0.0);
-        chart_snivejo01.data.datasets[0].label = selectedStat;
-        chart_snivejo01.options.plugins.title.text = selectedStat;
-
-        chart_snivejo01.data.datasets[0].backgroundColor = allData_snivejo01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_snivejo01 ? '#16c049' : '#c01616'));
-        chart_snivejo01.update();
-    }
-
-    function updateLine_snivejo01(newLine) {
-        Line_snivejo01 = parseFloat(newLine);
-        document.getElementById('lineValue_snivejo01').innerText = newLine;
-
-        chart_snivejo01.options.plugins.annotation.annotations.line1.yMin = Line_snivejo01;
-        chart_snivejo01.options.plugins.annotation.annotations.line1.yMax = Line_snivejo01;
-
-        chart_snivejo01.data.datasets[0].backgroundColor = allData_snivejo01.map(d => d[currentStat_snivejo01] === 0 ? '#c01616' : (d[currentStat_snivejo01] >= Line_snivejo01 ? '#16c049' : '#c01616'));
-        chart_snivejo01.update();
-    }
-
-    function applyFilters_snivejo01() {
-        const teamFilter = document.getElementById('teamFilter_snivejo01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_snivejo01').value;
-        const startDate = document.getElementById('startDate_snivejo01').value;
-        const endDate = document.getElementById('endDate_snivejo01').value;
-
-        const filteredData = allData_snivejo01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_snivejo01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_snivejo01.data.datasets[0].data = filteredData.map(d => d[currentStat_snivejo01] || 0.0);
-        chart_snivejo01.update();
-    }
-
-    function clearFilters_snivejo01() {
-        document.getElementById('teamFilter_snivejo01').value = "all";
-        document.getElementById('homeAwayFilter_snivejo01').value = "all";
-        document.getElementById('startDate_snivejo01').value = "";
-        document.getElementById('endDate_snivejo01').value = "";
-        applyFilters_snivejo01();
-        updateLine_snivejo01(0.5);
-    }
-
-    initChart_snivejo01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("snivejo01", [{'date': '2022-10-20', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 15.27}, {'date': '2022-10-22', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 8.27}, {'date': '2022-11-01', 'opponent': 'VEG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 12.72}, {'date': '2022-11-03', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 12.28}, {'date': '2022-11-15', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 11.15}, {'date': '2022-12-31', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 12.42}, {'date': '2023-02-14', 'opponent': 'CAR', 'location': 'home', 'G': 1, 'A': 1, 'PTS': 2, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 13.6}, {'date': '2023-02-16', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.68}, {'date': '2023-03-14', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.48}, {'date': '2023-04-10', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 14.43}, {'date': '2023-04-11', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 18.2}, {'date': '2023-04-13', 'opponent': 'NJD', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 12.65}, {'date': '2023-12-14', 'opponent': 'PHI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.52}, {'date': '2023-12-16', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 12.8}, {'date': '2023-12-17', 'opponent': 'CAR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.72}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

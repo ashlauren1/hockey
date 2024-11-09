@@ -189,37 +189,37 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_blakeja02">Stat:</label>
-<select id="statSelector_blakeja02" onchange="updateStat_blakeja02(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_blakeja02" onchange="updateStat('blakeja02', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_blakeja02">Opponent:</label>
-<select id="teamFilter_blakeja02" onchange="applyFilters_blakeja02()">
+<select id="teamFilter_blakeja02" onchange="applyFilters('blakeja02')">
 <option value="all">All</option>
-<option value="CBJ">CBJ</option>
-<option value="TBL">TBL</option>
-<option value="NJD">NJD</option>
-<option value="PIT">PIT</option>
-<option value="STL">STL</option>
-<option value="EDM">EDM</option>
-<option value="CGY">CGY</option>
-<option value="SEA">SEA</option>
-<option value="VAN">VAN</option>
 <option value="BOS">BOS</option>
-<option value="WSH">WSH</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="EDM">EDM</option>
+<option value="NJD">NJD</option>
 <option value="PHI">PHI</option>
+<option value="PIT">PIT</option>
+<option value="SEA">SEA</option>
+<option value="STL">STL</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
+<option value="WSH">WSH</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_blakeja02">Home/Away:</label>
-<select id="homeAwayFilter_blakeja02" onchange="applyFilters_blakeja02()">
+<select id="homeAwayFilter_blakeja02" onchange="applyFilters('blakeja02')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -227,142 +227,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_blakeja02">Start:</label>
-<input id="startDate_blakeja02" onchange="applyFilters_blakeja02()" type="date"/>
+<input id="startDate_blakeja02" onchange="applyFilters('blakeja02')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_blakeja02">End:</label>
-<input id="endDate_blakeja02" onchange="applyFilters_blakeja02()" type="date"/>
+<input id="endDate_blakeja02" onchange="applyFilters('blakeja02')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_blakeja02"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_blakeja02">Change Line:</label>
-<input id="lineSlider_blakeja02" max="30" min="0" oninput="updateLine_blakeja02(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_blakeja02" max="30" min="0" oninput="updateLine('blakeja02', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_blakeja02">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_blakeja02" onclick="resetLine_blakeja02()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_blakeja02" onclick="clearFilters_blakeja02()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_blakeja02" onclick="updateLine('blakeja02', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_blakeja02" onclick="clearFilters('blakeja02')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_blakeja02 = [{'date': '2024-04-16', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 15.3}, {'date': '2024-10-11', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.95}, {'date': '2024-10-15', 'opponent': 'NJD', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 10.13}, {'date': '2024-10-18', 'opponent': 'PIT', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 9.8}, {'date': '2024-10-19', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 5, 'HIT': 0, 'BLK': 0, 'TOI': 12.88}, {'date': '2024-10-22', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.73}, {'date': '2024-10-24', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.55}, {'date': '2024-10-26', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.72}, {'date': '2024-10-28', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 11.4}, {'date': '2024-10-31', 'opponent': 'BOS', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 12.0}, {'date': '2024-11-03', 'opponent': 'WSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 11.75}, {'date': '2024-11-05', 'opponent': 'PHI', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.87}, {'date': '2024-11-07', 'opponent': 'PIT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.0}];  // Full data for player
-    let currentStat_blakeja02 = "G";
-    let Line_blakeja02 = 0.5;  // Default betting line
-    let chart_blakeja02;
-
-    function initChart_blakeja02() {
-        const ctx = document.getElementById('chart_blakeja02').getContext('2d');
-        chart_blakeja02 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_blakeja02.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_blakeja02,
-                    data: allData_blakeja02.map(d => d[currentStat_blakeja02] || 0.0),
-                    backgroundColor: allData_blakeja02.map(d => d[currentStat_blakeja02] === 0 ? '#c01616' : (d[currentStat_blakeja02] >= Line_blakeja02 ? '#16c049' : '#c01616')),
-                    borderColor: allData_blakeja02.map(d => d[currentStat_blakeja02] === 0 ? '#421f1f' : (d[currentStat_blakeja02] >= Line_blakeja02 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_blakeja02,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_blakeja02,
-                                yMax: Line_blakeja02,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_blakeja02(selectedStat) {
-        currentStat_blakeja02 = selectedStat;
-        chart_blakeja02.data.datasets[0].data = allData_blakeja02.map(d => d[selectedStat] || 0.0);
-        chart_blakeja02.data.datasets[0].label = selectedStat;
-        chart_blakeja02.options.plugins.title.text = selectedStat;
-
-        chart_blakeja02.data.datasets[0].backgroundColor = allData_blakeja02.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_blakeja02 ? '#16c049' : '#c01616'));
-        chart_blakeja02.update();
-    }
-
-    function updateLine_blakeja02(newLine) {
-        Line_blakeja02 = parseFloat(newLine);
-        document.getElementById('lineValue_blakeja02').innerText = newLine;
-
-        chart_blakeja02.options.plugins.annotation.annotations.line1.yMin = Line_blakeja02;
-        chart_blakeja02.options.plugins.annotation.annotations.line1.yMax = Line_blakeja02;
-
-        chart_blakeja02.data.datasets[0].backgroundColor = allData_blakeja02.map(d => d[currentStat_blakeja02] === 0 ? '#c01616' : (d[currentStat_blakeja02] >= Line_blakeja02 ? '#16c049' : '#c01616'));
-        chart_blakeja02.update();
-    }
-
-    function applyFilters_blakeja02() {
-        const teamFilter = document.getElementById('teamFilter_blakeja02').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_blakeja02').value;
-        const startDate = document.getElementById('startDate_blakeja02').value;
-        const endDate = document.getElementById('endDate_blakeja02').value;
-
-        const filteredData = allData_blakeja02.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_blakeja02.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_blakeja02.data.datasets[0].data = filteredData.map(d => d[currentStat_blakeja02] || 0.0);
-        chart_blakeja02.update();
-    }
-
-    function clearFilters_blakeja02() {
-        document.getElementById('teamFilter_blakeja02').value = "all";
-        document.getElementById('homeAwayFilter_blakeja02').value = "all";
-        document.getElementById('startDate_blakeja02').value = "";
-        document.getElementById('endDate_blakeja02').value = "";
-        applyFilters_blakeja02();
-        updateLine_blakeja02(0.5);
-    }
-
-    initChart_blakeja02();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("blakeja02", [{'date': '2024-04-16', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 15.3}, {'date': '2024-10-11', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.95}, {'date': '2024-10-15', 'opponent': 'NJD', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 10.13}, {'date': '2024-10-18', 'opponent': 'PIT', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 9.8}, {'date': '2024-10-19', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 5, 'HIT': 0, 'BLK': 0, 'TOI': 12.88}, {'date': '2024-10-22', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.73}, {'date': '2024-10-24', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.55}, {'date': '2024-10-26', 'opponent': 'SEA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.72}, {'date': '2024-10-28', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 11.4}, {'date': '2024-10-31', 'opponent': 'BOS', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 12.0}, {'date': '2024-11-03', 'opponent': 'WSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 11.75}, {'date': '2024-11-05', 'opponent': 'PHI', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.87}, {'date': '2024-11-07', 'opponent': 'PIT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.0}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

@@ -189,19 +189,19 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_sourdju01">Stat:</label>
-<select id="statSelector_sourdju01" onchange="updateStat_sourdju01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_sourdju01" onchange="updateStat('sourdju01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_sourdju01">Opponent:</label>
-<select id="teamFilter_sourdju01" onchange="applyFilters_sourdju01()">
+<select id="teamFilter_sourdju01" onchange="applyFilters('sourdju01')">
 <option value="all">All</option>
 <option value="NJD">NJD</option>
 <option value="TOR">TOR</option>
@@ -210,7 +210,7 @@
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_sourdju01">Home/Away:</label>
-<select id="homeAwayFilter_sourdju01" onchange="applyFilters_sourdju01()">
+<select id="homeAwayFilter_sourdju01" onchange="applyFilters('sourdju01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -218,142 +218,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_sourdju01">Start:</label>
-<input id="startDate_sourdju01" onchange="applyFilters_sourdju01()" type="date"/>
+<input id="startDate_sourdju01" onchange="applyFilters('sourdju01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_sourdju01">End:</label>
-<input id="endDate_sourdju01" onchange="applyFilters_sourdju01()" type="date"/>
+<input id="endDate_sourdju01" onchange="applyFilters('sourdju01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_sourdju01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_sourdju01">Change Line:</label>
-<input id="lineSlider_sourdju01" max="30" min="0" oninput="updateLine_sourdju01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_sourdju01" max="30" min="0" oninput="updateLine('sourdju01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_sourdju01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_sourdju01" onclick="resetLine_sourdju01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_sourdju01" onclick="clearFilters_sourdju01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_sourdju01" onclick="updateLine('sourdju01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_sourdju01" onclick="clearFilters('sourdju01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_sourdju01 = [{'date': '2023-10-16', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-10-19', 'opponent': 'TOR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-10-21', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.52}];  // Full data for player
-    let currentStat_sourdju01 = "G";
-    let Line_sourdju01 = 0.5;  // Default betting line
-    let chart_sourdju01;
-
-    function initChart_sourdju01() {
-        const ctx = document.getElementById('chart_sourdju01').getContext('2d');
-        chart_sourdju01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_sourdju01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_sourdju01,
-                    data: allData_sourdju01.map(d => d[currentStat_sourdju01] || 0.0),
-                    backgroundColor: allData_sourdju01.map(d => d[currentStat_sourdju01] === 0 ? '#c01616' : (d[currentStat_sourdju01] >= Line_sourdju01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_sourdju01.map(d => d[currentStat_sourdju01] === 0 ? '#421f1f' : (d[currentStat_sourdju01] >= Line_sourdju01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_sourdju01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_sourdju01,
-                                yMax: Line_sourdju01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_sourdju01(selectedStat) {
-        currentStat_sourdju01 = selectedStat;
-        chart_sourdju01.data.datasets[0].data = allData_sourdju01.map(d => d[selectedStat] || 0.0);
-        chart_sourdju01.data.datasets[0].label = selectedStat;
-        chart_sourdju01.options.plugins.title.text = selectedStat;
-
-        chart_sourdju01.data.datasets[0].backgroundColor = allData_sourdju01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_sourdju01 ? '#16c049' : '#c01616'));
-        chart_sourdju01.update();
-    }
-
-    function updateLine_sourdju01(newLine) {
-        Line_sourdju01 = parseFloat(newLine);
-        document.getElementById('lineValue_sourdju01').innerText = newLine;
-
-        chart_sourdju01.options.plugins.annotation.annotations.line1.yMin = Line_sourdju01;
-        chart_sourdju01.options.plugins.annotation.annotations.line1.yMax = Line_sourdju01;
-
-        chart_sourdju01.data.datasets[0].backgroundColor = allData_sourdju01.map(d => d[currentStat_sourdju01] === 0 ? '#c01616' : (d[currentStat_sourdju01] >= Line_sourdju01 ? '#16c049' : '#c01616'));
-        chart_sourdju01.update();
-    }
-
-    function applyFilters_sourdju01() {
-        const teamFilter = document.getElementById('teamFilter_sourdju01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_sourdju01').value;
-        const startDate = document.getElementById('startDate_sourdju01').value;
-        const endDate = document.getElementById('endDate_sourdju01').value;
-
-        const filteredData = allData_sourdju01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_sourdju01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_sourdju01.data.datasets[0].data = filteredData.map(d => d[currentStat_sourdju01] || 0.0);
-        chart_sourdju01.update();
-    }
-
-    function clearFilters_sourdju01() {
-        document.getElementById('teamFilter_sourdju01').value = "all";
-        document.getElementById('homeAwayFilter_sourdju01').value = "all";
-        document.getElementById('startDate_sourdju01').value = "";
-        document.getElementById('endDate_sourdju01').value = "";
-        applyFilters_sourdju01();
-        updateLine_sourdju01(0.5);
-    }
-
-    initChart_sourdju01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("sourdju01", [{'date': '2023-10-16', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-10-19', 'opponent': 'TOR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-10-21', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.52}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

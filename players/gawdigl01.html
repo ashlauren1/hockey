@@ -189,29 +189,29 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_gawdigl01">Stat:</label>
-<select id="statSelector_gawdigl01" onchange="updateStat_gawdigl01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_gawdigl01" onchange="updateStat('gawdigl01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_gawdigl01">Opponent:</label>
-<select id="teamFilter_gawdigl01" onchange="applyFilters_gawdigl01()">
+<select id="teamFilter_gawdigl01" onchange="applyFilters('gawdigl01')">
 <option value="all">All</option>
+<option value="CHI">CHI</option>
 <option value="FLA">FLA</option>
 <option value="MIN">MIN</option>
-<option value="CHI">CHI</option>
 <option value="OTT">OTT</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_gawdigl01">Home/Away:</label>
-<select id="homeAwayFilter_gawdigl01" onchange="applyFilters_gawdigl01()">
+<select id="homeAwayFilter_gawdigl01" onchange="applyFilters('gawdigl01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -219,142 +219,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_gawdigl01">Start:</label>
-<input id="startDate_gawdigl01" onchange="applyFilters_gawdigl01()" type="date"/>
+<input id="startDate_gawdigl01" onchange="applyFilters('gawdigl01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_gawdigl01">End:</label>
-<input id="endDate_gawdigl01" onchange="applyFilters_gawdigl01()" type="date"/>
+<input id="endDate_gawdigl01" onchange="applyFilters('gawdigl01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_gawdigl01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_gawdigl01">Change Line:</label>
-<input id="lineSlider_gawdigl01" max="30" min="0" oninput="updateLine_gawdigl01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_gawdigl01" max="30" min="0" oninput="updateLine('gawdigl01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_gawdigl01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_gawdigl01" onclick="resetLine_gawdigl01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_gawdigl01" onclick="clearFilters_gawdigl01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_gawdigl01" onclick="updateLine('gawdigl01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_gawdigl01" onclick="clearFilters('gawdigl01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_gawdigl01 = [{'date': '2022-11-06', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 8.63}, {'date': '2022-11-09', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 11.57}, {'date': '2022-11-12', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.58}, {'date': '2024-03-06', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 1, 'TOI': 7.58}];  // Full data for player
-    let currentStat_gawdigl01 = "G";
-    let Line_gawdigl01 = 0.5;  // Default betting line
-    let chart_gawdigl01;
-
-    function initChart_gawdigl01() {
-        const ctx = document.getElementById('chart_gawdigl01').getContext('2d');
-        chart_gawdigl01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_gawdigl01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_gawdigl01,
-                    data: allData_gawdigl01.map(d => d[currentStat_gawdigl01] || 0.0),
-                    backgroundColor: allData_gawdigl01.map(d => d[currentStat_gawdigl01] === 0 ? '#c01616' : (d[currentStat_gawdigl01] >= Line_gawdigl01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_gawdigl01.map(d => d[currentStat_gawdigl01] === 0 ? '#421f1f' : (d[currentStat_gawdigl01] >= Line_gawdigl01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_gawdigl01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_gawdigl01,
-                                yMax: Line_gawdigl01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_gawdigl01(selectedStat) {
-        currentStat_gawdigl01 = selectedStat;
-        chart_gawdigl01.data.datasets[0].data = allData_gawdigl01.map(d => d[selectedStat] || 0.0);
-        chart_gawdigl01.data.datasets[0].label = selectedStat;
-        chart_gawdigl01.options.plugins.title.text = selectedStat;
-
-        chart_gawdigl01.data.datasets[0].backgroundColor = allData_gawdigl01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_gawdigl01 ? '#16c049' : '#c01616'));
-        chart_gawdigl01.update();
-    }
-
-    function updateLine_gawdigl01(newLine) {
-        Line_gawdigl01 = parseFloat(newLine);
-        document.getElementById('lineValue_gawdigl01').innerText = newLine;
-
-        chart_gawdigl01.options.plugins.annotation.annotations.line1.yMin = Line_gawdigl01;
-        chart_gawdigl01.options.plugins.annotation.annotations.line1.yMax = Line_gawdigl01;
-
-        chart_gawdigl01.data.datasets[0].backgroundColor = allData_gawdigl01.map(d => d[currentStat_gawdigl01] === 0 ? '#c01616' : (d[currentStat_gawdigl01] >= Line_gawdigl01 ? '#16c049' : '#c01616'));
-        chart_gawdigl01.update();
-    }
-
-    function applyFilters_gawdigl01() {
-        const teamFilter = document.getElementById('teamFilter_gawdigl01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_gawdigl01').value;
-        const startDate = document.getElementById('startDate_gawdigl01').value;
-        const endDate = document.getElementById('endDate_gawdigl01').value;
-
-        const filteredData = allData_gawdigl01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_gawdigl01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_gawdigl01.data.datasets[0].data = filteredData.map(d => d[currentStat_gawdigl01] || 0.0);
-        chart_gawdigl01.update();
-    }
-
-    function clearFilters_gawdigl01() {
-        document.getElementById('teamFilter_gawdigl01').value = "all";
-        document.getElementById('homeAwayFilter_gawdigl01').value = "all";
-        document.getElementById('startDate_gawdigl01').value = "";
-        document.getElementById('endDate_gawdigl01').value = "";
-        applyFilters_gawdigl01();
-        updateLine_gawdigl01(0.5);
-    }
-
-    initChart_gawdigl01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("gawdigl01", [{'date': '2022-11-06', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 8.63}, {'date': '2022-11-09', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 11.57}, {'date': '2022-11-12', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.58}, {'date': '2024-03-06', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 1, 'TOI': 7.58}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

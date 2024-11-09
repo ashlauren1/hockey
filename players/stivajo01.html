@@ -189,45 +189,45 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_stivajo01">Stat:</label>
-<select id="statSelector_stivajo01" onchange="updateStat_stivajo01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_stivajo01" onchange="updateStat('stivajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_stivajo01">Opponent:</label>
-<select id="teamFilter_stivajo01" onchange="applyFilters_stivajo01()">
+<select id="teamFilter_stivajo01" onchange="applyFilters('stivajo01')">
 <option value="all">All</option>
-<option value="DAL">DAL</option>
-<option value="COL">COL</option>
+<option value="ANA">ANA</option>
+<option value="BOS">BOS</option>
+<option value="BUF">BUF</option>
 <option value="CAR">CAR</option>
 <option value="CBJ">CBJ</option>
-<option value="NYR">NYR</option>
-<option value="NJD">NJD</option>
-<option value="WSH">WSH</option>
-<option value="TBL">TBL</option>
-<option value="TOR">TOR</option>
+<option value="CGY">CGY</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
 <option value="DET">DET</option>
-<option value="BOS">BOS</option>
+<option value="EDM">EDM</option>
+<option value="MIN">MIN</option>
+<option value="MTL">MTL</option>
+<option value="NJD">NJD</option>
 <option value="NSH">NSH</option>
 <option value="NYI">NYI</option>
-<option value="BUF">BUF</option>
-<option value="CGY">CGY</option>
-<option value="EDM">EDM</option>
+<option value="NYR">NYR</option>
+<option value="TBL">TBL</option>
+<option value="TOR">TOR</option>
 <option value="VAN">VAN</option>
-<option value="MIN">MIN</option>
-<option value="ANA">ANA</option>
-<option value="MTL">MTL</option>
+<option value="WSH">WSH</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_stivajo01">Home/Away:</label>
-<select id="homeAwayFilter_stivajo01" onchange="applyFilters_stivajo01()">
+<select id="homeAwayFilter_stivajo01" onchange="applyFilters('stivajo01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -235,142 +235,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_stivajo01">Start:</label>
-<input id="startDate_stivajo01" onchange="applyFilters_stivajo01()" type="date"/>
+<input id="startDate_stivajo01" onchange="applyFilters('stivajo01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_stivajo01">End:</label>
-<input id="endDate_stivajo01" onchange="applyFilters_stivajo01()" type="date"/>
+<input id="endDate_stivajo01" onchange="applyFilters('stivajo01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_stivajo01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_stivajo01">Change Line:</label>
-<input id="lineSlider_stivajo01" max="30" min="0" oninput="updateLine_stivajo01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_stivajo01" max="30" min="0" oninput="updateLine('stivajo01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_stivajo01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_stivajo01" onclick="resetLine_stivajo01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_stivajo01" onclick="clearFilters_stivajo01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_stivajo01" onclick="updateLine('stivajo01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_stivajo01" onclick="clearFilters('stivajo01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_stivajo01 = [{'date': '2024-03-22', 'opponent': 'DAL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 12.47}, {'date': '2024-03-24', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 2, 'TOI': 12.88}, {'date': '2024-03-26', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 15.1}, {'date': '2024-03-28', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 5, 'BLK': 1, 'TOI': 13.93}, {'date': '2024-03-30', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 12.7}, {'date': '2024-04-01', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 16.52}, {'date': '2024-04-02', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 15.75}, {'date': '2024-04-04', 'opponent': 'WSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 14.12}, {'date': '2024-04-06', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 6, 'TOI': 14.6}, {'date': '2024-04-08', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 1, 'TOI': 12.27}, {'date': '2024-04-11', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.35}, {'date': '2024-04-13', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 12.45}, {'date': '2024-04-15', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 14.0}, {'date': '2024-04-17', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 12.7}, {'date': '2024-10-09', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 1, 'TOI': 14.72}, {'date': '2024-10-10', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 19.1}, {'date': '2024-10-12', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 17.3}, {'date': '2024-10-16', 'opponent': 'BUF', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 14.7}, {'date': '2024-10-18', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 17.73}, {'date': '2024-10-22', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 14.92}, {'date': '2024-10-25', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 5, 'BLK': 3, 'TOI': 15.93}, {'date': '2024-10-26', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 3, 'BLK': 2, 'TOI': 14.82}, {'date': '2024-10-29', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 13.83}, {'date': '2024-10-31', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 14.53}, {'date': '2024-11-02', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 16.83333333}, {'date': '2024-11-05', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 16.02}];  // Full data for player
-    let currentStat_stivajo01 = "G";
-    let Line_stivajo01 = 0.5;  // Default betting line
-    let chart_stivajo01;
-
-    function initChart_stivajo01() {
-        const ctx = document.getElementById('chart_stivajo01').getContext('2d');
-        chart_stivajo01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_stivajo01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_stivajo01,
-                    data: allData_stivajo01.map(d => d[currentStat_stivajo01] || 0.0),
-                    backgroundColor: allData_stivajo01.map(d => d[currentStat_stivajo01] === 0 ? '#c01616' : (d[currentStat_stivajo01] >= Line_stivajo01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_stivajo01.map(d => d[currentStat_stivajo01] === 0 ? '#421f1f' : (d[currentStat_stivajo01] >= Line_stivajo01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_stivajo01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_stivajo01,
-                                yMax: Line_stivajo01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_stivajo01(selectedStat) {
-        currentStat_stivajo01 = selectedStat;
-        chart_stivajo01.data.datasets[0].data = allData_stivajo01.map(d => d[selectedStat] || 0.0);
-        chart_stivajo01.data.datasets[0].label = selectedStat;
-        chart_stivajo01.options.plugins.title.text = selectedStat;
-
-        chart_stivajo01.data.datasets[0].backgroundColor = allData_stivajo01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_stivajo01 ? '#16c049' : '#c01616'));
-        chart_stivajo01.update();
-    }
-
-    function updateLine_stivajo01(newLine) {
-        Line_stivajo01 = parseFloat(newLine);
-        document.getElementById('lineValue_stivajo01').innerText = newLine;
-
-        chart_stivajo01.options.plugins.annotation.annotations.line1.yMin = Line_stivajo01;
-        chart_stivajo01.options.plugins.annotation.annotations.line1.yMax = Line_stivajo01;
-
-        chart_stivajo01.data.datasets[0].backgroundColor = allData_stivajo01.map(d => d[currentStat_stivajo01] === 0 ? '#c01616' : (d[currentStat_stivajo01] >= Line_stivajo01 ? '#16c049' : '#c01616'));
-        chart_stivajo01.update();
-    }
-
-    function applyFilters_stivajo01() {
-        const teamFilter = document.getElementById('teamFilter_stivajo01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_stivajo01').value;
-        const startDate = document.getElementById('startDate_stivajo01').value;
-        const endDate = document.getElementById('endDate_stivajo01').value;
-
-        const filteredData = allData_stivajo01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_stivajo01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_stivajo01.data.datasets[0].data = filteredData.map(d => d[currentStat_stivajo01] || 0.0);
-        chart_stivajo01.update();
-    }
-
-    function clearFilters_stivajo01() {
-        document.getElementById('teamFilter_stivajo01').value = "all";
-        document.getElementById('homeAwayFilter_stivajo01').value = "all";
-        document.getElementById('startDate_stivajo01').value = "";
-        document.getElementById('endDate_stivajo01').value = "";
-        applyFilters_stivajo01();
-        updateLine_stivajo01(0.5);
-    }
-
-    initChart_stivajo01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("stivajo01", [{'date': '2024-03-22', 'opponent': 'DAL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 12.47}, {'date': '2024-03-24', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 2, 'TOI': 12.88}, {'date': '2024-03-26', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 15.1}, {'date': '2024-03-28', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 5, 'BLK': 1, 'TOI': 13.93}, {'date': '2024-03-30', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 12.7}, {'date': '2024-04-01', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 16.52}, {'date': '2024-04-02', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 15.75}, {'date': '2024-04-04', 'opponent': 'WSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 14.12}, {'date': '2024-04-06', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 6, 'TOI': 14.6}, {'date': '2024-04-08', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 1, 'TOI': 12.27}, {'date': '2024-04-11', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.35}, {'date': '2024-04-13', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 12.45}, {'date': '2024-04-15', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 14.0}, {'date': '2024-04-17', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 12.7}, {'date': '2024-10-09', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 1, 'TOI': 14.72}, {'date': '2024-10-10', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 19.1}, {'date': '2024-10-12', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 17.3}, {'date': '2024-10-16', 'opponent': 'BUF', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 14.7}, {'date': '2024-10-18', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 17.73}, {'date': '2024-10-22', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 0, 'TOI': 14.92}, {'date': '2024-10-25', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 5, 'BLK': 3, 'TOI': 15.93}, {'date': '2024-10-26', 'opponent': 'VAN', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 3, 'BLK': 2, 'TOI': 14.82}, {'date': '2024-10-29', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 13.83}, {'date': '2024-10-31', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 14.53}, {'date': '2024-11-02', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 16.83333333}, {'date': '2024-11-05', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 16.02}, {'date': '2024-11-08', 'opponent': 'WSH', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 16.13333333}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>
@@ -410,6 +301,27 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411080WSH.html" target="_blank">11/8/2024</a></td>
+<td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/WSH.html" target="_blank">WSH</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>16.13</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
 <tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411050NYI.html" target="_blank">11/5/2024</a></td>

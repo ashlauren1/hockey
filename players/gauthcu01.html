@@ -189,36 +189,37 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_gauthcu01">Stat:</label>
-<select id="statSelector_gauthcu01" onchange="updateStat_gauthcu01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_gauthcu01" onchange="updateStat('gauthcu01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_gauthcu01">Opponent:</label>
-<select id="teamFilter_gauthcu01" onchange="applyFilters_gauthcu01()">
+<select id="teamFilter_gauthcu01" onchange="applyFilters('gauthcu01')">
 <option value="all">All</option>
-<option value="VEG">VEG</option>
-<option value="SJS">SJS</option>
 <option value="ARI">ARI</option>
+<option value="CHI">CHI</option>
 <option value="COL">COL</option>
 <option value="LAK">LAK</option>
-<option value="NYR">NYR</option>
+<option value="MIN">MIN</option>
 <option value="NJD">NJD</option>
 <option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
 <option value="PIT">PIT</option>
-<option value="CHI">CHI</option>
+<option value="SJS">SJS</option>
 <option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_gauthcu01">Home/Away:</label>
-<select id="homeAwayFilter_gauthcu01" onchange="applyFilters_gauthcu01()">
+<select id="homeAwayFilter_gauthcu01" onchange="applyFilters('gauthcu01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -226,142 +227,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_gauthcu01">Start:</label>
-<input id="startDate_gauthcu01" onchange="applyFilters_gauthcu01()" type="date"/>
+<input id="startDate_gauthcu01" onchange="applyFilters('gauthcu01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_gauthcu01">End:</label>
-<input id="endDate_gauthcu01" onchange="applyFilters_gauthcu01()" type="date"/>
+<input id="endDate_gauthcu01" onchange="applyFilters('gauthcu01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_gauthcu01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_gauthcu01">Change Line:</label>
-<input id="lineSlider_gauthcu01" max="30" min="0" oninput="updateLine_gauthcu01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_gauthcu01" max="30" min="0" oninput="updateLine('gauthcu01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_gauthcu01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_gauthcu01" onclick="resetLine_gauthcu01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_gauthcu01" onclick="clearFilters_gauthcu01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_gauthcu01" onclick="updateLine('gauthcu01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_gauthcu01" onclick="clearFilters('gauthcu01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_gauthcu01 = [{'date': '2024-04-18', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 15.4}, {'date': '2024-10-12', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 14.82}, {'date': '2024-10-13', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 14.3}, {'date': '2024-10-16', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 12.82}, {'date': '2024-10-18', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 1, 'TOI': 15.78}, {'date': '2024-10-20', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 17.95}, {'date': '2024-10-22', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 4, 'HIT': 0, 'BLK': 0, 'TOI': 15.73}, {'date': '2024-10-26', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.82}, {'date': '2024-10-27', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 4, 'HIT': 1, 'BLK': 1, 'TOI': 14.7}, {'date': '2024-10-29', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 0, 'BLK': 0, 'TOI': 11.2}, {'date': '2024-10-31', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 5, 'HIT': 1, 'BLK': 3, 'TOI': 14.73}, {'date': '2024-11-03', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.71666667}, {'date': '2024-11-05', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 12.52}];  // Full data for player
-    let currentStat_gauthcu01 = "G";
-    let Line_gauthcu01 = 0.5;  // Default betting line
-    let chart_gauthcu01;
-
-    function initChart_gauthcu01() {
-        const ctx = document.getElementById('chart_gauthcu01').getContext('2d');
-        chart_gauthcu01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_gauthcu01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_gauthcu01,
-                    data: allData_gauthcu01.map(d => d[currentStat_gauthcu01] || 0.0),
-                    backgroundColor: allData_gauthcu01.map(d => d[currentStat_gauthcu01] === 0 ? '#c01616' : (d[currentStat_gauthcu01] >= Line_gauthcu01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_gauthcu01.map(d => d[currentStat_gauthcu01] === 0 ? '#421f1f' : (d[currentStat_gauthcu01] >= Line_gauthcu01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_gauthcu01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_gauthcu01,
-                                yMax: Line_gauthcu01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_gauthcu01(selectedStat) {
-        currentStat_gauthcu01 = selectedStat;
-        chart_gauthcu01.data.datasets[0].data = allData_gauthcu01.map(d => d[selectedStat] || 0.0);
-        chart_gauthcu01.data.datasets[0].label = selectedStat;
-        chart_gauthcu01.options.plugins.title.text = selectedStat;
-
-        chart_gauthcu01.data.datasets[0].backgroundColor = allData_gauthcu01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_gauthcu01 ? '#16c049' : '#c01616'));
-        chart_gauthcu01.update();
-    }
-
-    function updateLine_gauthcu01(newLine) {
-        Line_gauthcu01 = parseFloat(newLine);
-        document.getElementById('lineValue_gauthcu01').innerText = newLine;
-
-        chart_gauthcu01.options.plugins.annotation.annotations.line1.yMin = Line_gauthcu01;
-        chart_gauthcu01.options.plugins.annotation.annotations.line1.yMax = Line_gauthcu01;
-
-        chart_gauthcu01.data.datasets[0].backgroundColor = allData_gauthcu01.map(d => d[currentStat_gauthcu01] === 0 ? '#c01616' : (d[currentStat_gauthcu01] >= Line_gauthcu01 ? '#16c049' : '#c01616'));
-        chart_gauthcu01.update();
-    }
-
-    function applyFilters_gauthcu01() {
-        const teamFilter = document.getElementById('teamFilter_gauthcu01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_gauthcu01').value;
-        const startDate = document.getElementById('startDate_gauthcu01').value;
-        const endDate = document.getElementById('endDate_gauthcu01').value;
-
-        const filteredData = allData_gauthcu01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_gauthcu01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_gauthcu01.data.datasets[0].data = filteredData.map(d => d[currentStat_gauthcu01] || 0.0);
-        chart_gauthcu01.update();
-    }
-
-    function clearFilters_gauthcu01() {
-        document.getElementById('teamFilter_gauthcu01').value = "all";
-        document.getElementById('homeAwayFilter_gauthcu01').value = "all";
-        document.getElementById('startDate_gauthcu01').value = "";
-        document.getElementById('endDate_gauthcu01').value = "";
-        applyFilters_gauthcu01();
-        updateLine_gauthcu01(0.5);
-    }
-
-    initChart_gauthcu01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("gauthcu01", [{'date': '2024-04-18', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 15.4}, {'date': '2024-10-12', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 14.82}, {'date': '2024-10-13', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 14.3}, {'date': '2024-10-16', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 12.82}, {'date': '2024-10-18', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 1, 'TOI': 15.78}, {'date': '2024-10-20', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 17.95}, {'date': '2024-10-22', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 4, 'HIT': 0, 'BLK': 0, 'TOI': 15.73}, {'date': '2024-10-26', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.82}, {'date': '2024-10-27', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 4, 'HIT': 1, 'BLK': 1, 'TOI': 14.7}, {'date': '2024-10-29', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 0, 'BLK': 0, 'TOI': 11.2}, {'date': '2024-10-31', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 5, 'HIT': 1, 'BLK': 3, 'TOI': 14.73}, {'date': '2024-11-03', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.71666667}, {'date': '2024-11-05', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 12.52}, {'date': '2024-11-08', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 14.31666667}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>
@@ -401,6 +293,27 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411080ANA.html" target="_blank">11/8/2024</a></td>
+<td><a href="/hockey/teams/ANA.html" target="_blank">ANA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/MIN.html" target="_blank">MIN</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>14.32</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
 <tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411050ANA.html" target="_blank">11/5/2024</a></td>

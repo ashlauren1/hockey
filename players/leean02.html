@@ -189,36 +189,36 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_leean02">Stat:</label>
-<select id="statSelector_leean02" onchange="updateStat_leean02(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_leean02" onchange="updateStat('leean02', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_leean02">Opponent:</label>
-<select id="teamFilter_leean02" onchange="applyFilters_leean02()">
+<select id="teamFilter_leean02" onchange="applyFilters('leean02')">
 <option value="all">All</option>
-<option value="BUF">BUF</option>
-<option value="BOS">BOS</option>
-<option value="OTT">OTT</option>
-<option value="TOR">TOR</option>
-<option value="MTL">MTL</option>
 <option value="ANA">ANA</option>
-<option value="VEG">VEG</option>
-<option value="SJS">SJS</option>
 <option value="ARI">ARI</option>
+<option value="BOS">BOS</option>
+<option value="BUF">BUF</option>
 <option value="MIN">MIN</option>
+<option value="MTL">MTL</option>
+<option value="OTT">OTT</option>
+<option value="SJS">SJS</option>
+<option value="TOR">TOR</option>
 <option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_leean02">Home/Away:</label>
-<select id="homeAwayFilter_leean02" onchange="applyFilters_leean02()">
+<select id="homeAwayFilter_leean02" onchange="applyFilters('leean02')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -226,142 +226,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_leean02">Start:</label>
-<input id="startDate_leean02" onchange="applyFilters_leean02()" type="date"/>
+<input id="startDate_leean02" onchange="applyFilters('leean02')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_leean02">End:</label>
-<input id="endDate_leean02" onchange="applyFilters_leean02()" type="date"/>
+<input id="endDate_leean02" onchange="applyFilters('leean02')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_leean02"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_leean02">Change Line:</label>
-<input id="lineSlider_leean02" max="30" min="0" oninput="updateLine_leean02(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_leean02" max="30" min="0" oninput="updateLine('leean02', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_leean02">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_leean02" onclick="resetLine_leean02()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_leean02" onclick="clearFilters_leean02()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_leean02" onclick="updateLine('leean02', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_leean02" onclick="clearFilters('leean02')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_leean02 = [{'date': '2024-10-10', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 5.9}, {'date': '2024-10-12', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 8.05}, {'date': '2024-10-14', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.97}, {'date': '2024-10-16', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 11.05}, {'date': '2024-10-17', 'opponent': 'MTL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.47}, {'date': '2024-10-20', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.22}, {'date': '2024-10-22', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 2, 'TOI': 12.22}, {'date': '2024-10-24', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 2, 'TOI': 8.33}, {'date': '2024-10-26', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.47}, {'date': '2024-10-29', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 10.55}, {'date': '2024-11-05', 'opponent': 'MIN', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 7.98}, {'date': '2024-11-07', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 6.966666667}];  // Full data for player
-    let currentStat_leean02 = "G";
-    let Line_leean02 = 0.5;  // Default betting line
-    let chart_leean02;
-
-    function initChart_leean02() {
-        const ctx = document.getElementById('chart_leean02').getContext('2d');
-        chart_leean02 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_leean02.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_leean02,
-                    data: allData_leean02.map(d => d[currentStat_leean02] || 0.0),
-                    backgroundColor: allData_leean02.map(d => d[currentStat_leean02] === 0 ? '#c01616' : (d[currentStat_leean02] >= Line_leean02 ? '#16c049' : '#c01616')),
-                    borderColor: allData_leean02.map(d => d[currentStat_leean02] === 0 ? '#421f1f' : (d[currentStat_leean02] >= Line_leean02 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_leean02,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_leean02,
-                                yMax: Line_leean02,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_leean02(selectedStat) {
-        currentStat_leean02 = selectedStat;
-        chart_leean02.data.datasets[0].data = allData_leean02.map(d => d[selectedStat] || 0.0);
-        chart_leean02.data.datasets[0].label = selectedStat;
-        chart_leean02.options.plugins.title.text = selectedStat;
-
-        chart_leean02.data.datasets[0].backgroundColor = allData_leean02.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_leean02 ? '#16c049' : '#c01616'));
-        chart_leean02.update();
-    }
-
-    function updateLine_leean02(newLine) {
-        Line_leean02 = parseFloat(newLine);
-        document.getElementById('lineValue_leean02').innerText = newLine;
-
-        chart_leean02.options.plugins.annotation.annotations.line1.yMin = Line_leean02;
-        chart_leean02.options.plugins.annotation.annotations.line1.yMax = Line_leean02;
-
-        chart_leean02.data.datasets[0].backgroundColor = allData_leean02.map(d => d[currentStat_leean02] === 0 ? '#c01616' : (d[currentStat_leean02] >= Line_leean02 ? '#16c049' : '#c01616'));
-        chart_leean02.update();
-    }
-
-    function applyFilters_leean02() {
-        const teamFilter = document.getElementById('teamFilter_leean02').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_leean02').value;
-        const startDate = document.getElementById('startDate_leean02').value;
-        const endDate = document.getElementById('endDate_leean02').value;
-
-        const filteredData = allData_leean02.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_leean02.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_leean02.data.datasets[0].data = filteredData.map(d => d[currentStat_leean02] || 0.0);
-        chart_leean02.update();
-    }
-
-    function clearFilters_leean02() {
-        document.getElementById('teamFilter_leean02').value = "all";
-        document.getElementById('homeAwayFilter_leean02').value = "all";
-        document.getElementById('startDate_leean02').value = "";
-        document.getElementById('endDate_leean02').value = "";
-        applyFilters_leean02();
-        updateLine_leean02(0.5);
-    }
-
-    initChart_leean02();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("leean02", [{'date': '2024-10-10', 'opponent': 'BUF', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 5.9}, {'date': '2024-10-12', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 8.05}, {'date': '2024-10-14', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.97}, {'date': '2024-10-16', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 11.05}, {'date': '2024-10-17', 'opponent': 'MTL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.47}, {'date': '2024-10-20', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.22}, {'date': '2024-10-22', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 2, 'TOI': 12.22}, {'date': '2024-10-24', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 2, 'TOI': 8.33}, {'date': '2024-10-26', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.47}, {'date': '2024-10-29', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 10.55}, {'date': '2024-11-05', 'opponent': 'MIN', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 7.98}, {'date': '2024-11-07', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 6.966666667}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

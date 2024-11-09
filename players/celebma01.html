@@ -189,28 +189,28 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_celebma01">Stat:</label>
-<select id="statSelector_celebma01" onchange="updateStat_celebma01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_celebma01" onchange="updateStat('celebma01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_celebma01">Opponent:</label>
-<select id="teamFilter_celebma01" onchange="applyFilters_celebma01()">
+<select id="teamFilter_celebma01" onchange="applyFilters('celebma01')">
 <option value="all">All</option>
-<option value="STL">STL</option>
 <option value="CBJ">CBJ</option>
 <option value="MIN">MIN</option>
+<option value="STL">STL</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_celebma01">Home/Away:</label>
-<select id="homeAwayFilter_celebma01" onchange="applyFilters_celebma01()">
+<select id="homeAwayFilter_celebma01" onchange="applyFilters('celebma01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -218,142 +218,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_celebma01">Start:</label>
-<input id="startDate_celebma01" onchange="applyFilters_celebma01()" type="date"/>
+<input id="startDate_celebma01" onchange="applyFilters('celebma01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_celebma01">End:</label>
-<input id="endDate_celebma01" onchange="applyFilters_celebma01()" type="date"/>
+<input id="endDate_celebma01" onchange="applyFilters('celebma01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_celebma01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_celebma01">Change Line:</label>
-<input id="lineSlider_celebma01" max="30" min="0" oninput="updateLine_celebma01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_celebma01" max="30" min="0" oninput="updateLine('celebma01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_celebma01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_celebma01" onclick="resetLine_celebma01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_celebma01" onclick="clearFilters_celebma01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_celebma01" onclick="updateLine('celebma01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_celebma01" onclick="clearFilters('celebma01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_celebma01 = [{'date': '2024-10-10', 'opponent': 'STL', 'location': 'home', 'G': 1, 'A': 1, 'PTS': 2, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.58}, {'date': '2024-11-05', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 17.1}, {'date': '2024-11-07', 'opponent': 'MIN', 'location': 'home', 'G': 2, 'A': 0, 'PTS': 2, 'SOG': 7, 'HIT': 0, 'BLK': 0, 'TOI': 19.38333333}];  // Full data for player
-    let currentStat_celebma01 = "G";
-    let Line_celebma01 = 0.5;  // Default betting line
-    let chart_celebma01;
-
-    function initChart_celebma01() {
-        const ctx = document.getElementById('chart_celebma01').getContext('2d');
-        chart_celebma01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_celebma01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_celebma01,
-                    data: allData_celebma01.map(d => d[currentStat_celebma01] || 0.0),
-                    backgroundColor: allData_celebma01.map(d => d[currentStat_celebma01] === 0 ? '#c01616' : (d[currentStat_celebma01] >= Line_celebma01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_celebma01.map(d => d[currentStat_celebma01] === 0 ? '#421f1f' : (d[currentStat_celebma01] >= Line_celebma01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_celebma01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_celebma01,
-                                yMax: Line_celebma01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_celebma01(selectedStat) {
-        currentStat_celebma01 = selectedStat;
-        chart_celebma01.data.datasets[0].data = allData_celebma01.map(d => d[selectedStat] || 0.0);
-        chart_celebma01.data.datasets[0].label = selectedStat;
-        chart_celebma01.options.plugins.title.text = selectedStat;
-
-        chart_celebma01.data.datasets[0].backgroundColor = allData_celebma01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_celebma01 ? '#16c049' : '#c01616'));
-        chart_celebma01.update();
-    }
-
-    function updateLine_celebma01(newLine) {
-        Line_celebma01 = parseFloat(newLine);
-        document.getElementById('lineValue_celebma01').innerText = newLine;
-
-        chart_celebma01.options.plugins.annotation.annotations.line1.yMin = Line_celebma01;
-        chart_celebma01.options.plugins.annotation.annotations.line1.yMax = Line_celebma01;
-
-        chart_celebma01.data.datasets[0].backgroundColor = allData_celebma01.map(d => d[currentStat_celebma01] === 0 ? '#c01616' : (d[currentStat_celebma01] >= Line_celebma01 ? '#16c049' : '#c01616'));
-        chart_celebma01.update();
-    }
-
-    function applyFilters_celebma01() {
-        const teamFilter = document.getElementById('teamFilter_celebma01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_celebma01').value;
-        const startDate = document.getElementById('startDate_celebma01').value;
-        const endDate = document.getElementById('endDate_celebma01').value;
-
-        const filteredData = allData_celebma01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_celebma01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_celebma01.data.datasets[0].data = filteredData.map(d => d[currentStat_celebma01] || 0.0);
-        chart_celebma01.update();
-    }
-
-    function clearFilters_celebma01() {
-        document.getElementById('teamFilter_celebma01').value = "all";
-        document.getElementById('homeAwayFilter_celebma01').value = "all";
-        document.getElementById('startDate_celebma01').value = "";
-        document.getElementById('endDate_celebma01').value = "";
-        applyFilters_celebma01();
-        updateLine_celebma01(0.5);
-    }
-
-    initChart_celebma01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("celebma01", [{'date': '2024-10-10', 'opponent': 'STL', 'location': 'home', 'G': 1, 'A': 1, 'PTS': 2, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.58}, {'date': '2024-11-05', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 17.1}, {'date': '2024-11-07', 'opponent': 'MIN', 'location': 'home', 'G': 2, 'A': 0, 'PTS': 2, 'SOG': 7, 'HIT': 0, 'BLK': 0, 'TOI': 19.38333333}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

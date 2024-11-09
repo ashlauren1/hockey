@@ -189,34 +189,34 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_highmma01">Stat:</label>
-<select id="statSelector_highmma01" onchange="updateStat_highmma01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_highmma01" onchange="updateStat('highmma01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_highmma01">Opponent:</label>
-<select id="teamFilter_highmma01" onchange="applyFilters_highmma01()">
+<select id="teamFilter_highmma01" onchange="applyFilters('highmma01')">
 <option value="all">All</option>
-<option value="OTT">OTT</option>
+<option value="ANA">ANA</option>
 <option value="CAR">CAR</option>
-<option value="VAN">VAN</option>
+<option value="CBJ">CBJ</option>
 <option value="CGY">CGY</option>
 <option value="DET">DET</option>
-<option value="NYI">NYI</option>
 <option value="FLA">FLA</option>
-<option value="CBJ">CBJ</option>
-<option value="ANA">ANA</option>
+<option value="NYI">NYI</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_highmma01">Home/Away:</label>
-<select id="homeAwayFilter_highmma01" onchange="applyFilters_highmma01()">
+<select id="homeAwayFilter_highmma01" onchange="applyFilters('highmma01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -224,142 +224,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_highmma01">Start:</label>
-<input id="startDate_highmma01" onchange="applyFilters_highmma01()" type="date"/>
+<input id="startDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_highmma01">End:</label>
-<input id="endDate_highmma01" onchange="applyFilters_highmma01()" type="date"/>
+<input id="endDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_highmma01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_highmma01">Change Line:</label>
-<input id="lineSlider_highmma01" max="30" min="0" oninput="updateLine_highmma01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_highmma01" max="30" min="0" oninput="updateLine('highmma01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_highmma01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_highmma01" onclick="resetLine_highmma01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_highmma01" onclick="clearFilters_highmma01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_highmma01" onclick="updateLine('highmma01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_highmma01" onclick="clearFilters('highmma01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_highmma01 = [{'date': '2023-02-19', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2023-02-21', 'opponent': 'CAR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 9.42}, {'date': '2023-11-09', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 10.22}, {'date': '2023-11-11', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-11-16', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 5.77}, {'date': '2023-11-24', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.87}, {'date': '2023-11-27', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-12-01', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.07}, {'date': '2024-03-06', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.1}];  // Full data for player
-    let currentStat_highmma01 = "G";
-    let Line_highmma01 = 0.5;  // Default betting line
-    let chart_highmma01;
-
-    function initChart_highmma01() {
-        const ctx = document.getElementById('chart_highmma01').getContext('2d');
-        chart_highmma01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_highmma01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_highmma01,
-                    data: allData_highmma01.map(d => d[currentStat_highmma01] || 0.0),
-                    backgroundColor: allData_highmma01.map(d => d[currentStat_highmma01] === 0 ? '#c01616' : (d[currentStat_highmma01] >= Line_highmma01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_highmma01.map(d => d[currentStat_highmma01] === 0 ? '#421f1f' : (d[currentStat_highmma01] >= Line_highmma01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_highmma01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_highmma01,
-                                yMax: Line_highmma01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_highmma01(selectedStat) {
-        currentStat_highmma01 = selectedStat;
-        chart_highmma01.data.datasets[0].data = allData_highmma01.map(d => d[selectedStat] || 0.0);
-        chart_highmma01.data.datasets[0].label = selectedStat;
-        chart_highmma01.options.plugins.title.text = selectedStat;
-
-        chart_highmma01.data.datasets[0].backgroundColor = allData_highmma01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_highmma01 ? '#16c049' : '#c01616'));
-        chart_highmma01.update();
-    }
-
-    function updateLine_highmma01(newLine) {
-        Line_highmma01 = parseFloat(newLine);
-        document.getElementById('lineValue_highmma01').innerText = newLine;
-
-        chart_highmma01.options.plugins.annotation.annotations.line1.yMin = Line_highmma01;
-        chart_highmma01.options.plugins.annotation.annotations.line1.yMax = Line_highmma01;
-
-        chart_highmma01.data.datasets[0].backgroundColor = allData_highmma01.map(d => d[currentStat_highmma01] === 0 ? '#c01616' : (d[currentStat_highmma01] >= Line_highmma01 ? '#16c049' : '#c01616'));
-        chart_highmma01.update();
-    }
-
-    function applyFilters_highmma01() {
-        const teamFilter = document.getElementById('teamFilter_highmma01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_highmma01').value;
-        const startDate = document.getElementById('startDate_highmma01').value;
-        const endDate = document.getElementById('endDate_highmma01').value;
-
-        const filteredData = allData_highmma01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_highmma01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_highmma01.data.datasets[0].data = filteredData.map(d => d[currentStat_highmma01] || 0.0);
-        chart_highmma01.update();
-    }
-
-    function clearFilters_highmma01() {
-        document.getElementById('teamFilter_highmma01').value = "all";
-        document.getElementById('homeAwayFilter_highmma01').value = "all";
-        document.getElementById('startDate_highmma01').value = "";
-        document.getElementById('endDate_highmma01').value = "";
-        applyFilters_highmma01();
-        updateLine_highmma01(0.5);
-    }
-
-    initChart_highmma01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("highmma01", [{'date': '2023-02-19', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2023-02-21', 'opponent': 'CAR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 9.42}, {'date': '2023-11-09', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 10.22}, {'date': '2023-11-11', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-11-16', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 5.77}, {'date': '2023-11-24', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.87}, {'date': '2023-11-27', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-12-01', 'opponent': 'CBJ', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.07}, {'date': '2024-03-06', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.1}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

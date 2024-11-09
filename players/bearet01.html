@@ -189,57 +189,57 @@
 <div class="barChart-filters">
 <div class="barChartFilter">
 <label for="statSelector_bearet01">Stat:</label>
-<select id="statSelector_bearet01" onchange="updateStat_bearet01(this.value)">
-<option value="G">G</option>
-<option value="A">A</option>
-<option value="PTS">PTS</option>
-<option value="SOG">SOG</option>
-<option value="HIT">HIT</option>
-<option value="BLK">BLK</option>
-<option value="TOI">TOI</option>
+<select id="statSelector_bearet01" onchange="updateStat('bearet01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="teamFilter_bearet01">Opponent:</label>
-<select id="teamFilter_bearet01" onchange="applyFilters_bearet01()">
+<select id="teamFilter_bearet01" onchange="applyFilters('bearet01')">
 <option value="all">All</option>
-<option value="NJD">NJD</option>
 <option value="ANA">ANA</option>
-<option value="NSH">NSH</option>
-<option value="OTT">OTT</option>
-<option value="MTL">MTL</option>
-<option value="TOR">TOR</option>
+<option value="ARI">ARI</option>
 <option value="BOS">BOS</option>
 <option value="BUF">BUF</option>
-<option value="LAK">LAK</option>
-<option value="VEG">VEG</option>
-<option value="COL">COL</option>
-<option value="SJS">SJS</option>
-<option value="WSH">WSH</option>
-<option value="FLA">FLA</option>
-<option value="ARI">ARI</option>
-<option value="MIN">MIN</option>
-<option value="CGY">CGY</option>
-<option value="WPG">WPG</option>
-<option value="STL">STL</option>
-<option value="EDM">EDM</option>
-<option value="NYI">NYI</option>
-<option value="PIT">PIT</option>
-<option value="TBL">TBL</option>
 <option value="CAR">CAR</option>
 <option value="CBJ">CBJ</option>
-<option value="NYR">NYR</option>
-<option value="DET">DET</option>
-<option value="PHI">PHI</option>
-<option value="DAL">DAL</option>
+<option value="CGY">CGY</option>
 <option value="CHI">CHI</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="DET">DET</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="LAK">LAK</option>
+<option value="MIN">MIN</option>
+<option value="MTL">MTL</option>
+<option value="NJD">NJD</option>
+<option value="NSH">NSH</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="PHI">PHI</option>
+<option value="PIT">PIT</option>
 <option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="STL">STL</option>
+<option value="TBL">TBL</option>
+<option value="TOR">TOR</option>
 <option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
+<option value="WSH">WSH</option>
 </select>
 </div>
 <div class="barChartFilter">
 <label for="homeAwayFilter_bearet01">Home/Away:</label>
-<select id="homeAwayFilter_bearet01" onchange="applyFilters_bearet01()">
+<select id="homeAwayFilter_bearet01" onchange="applyFilters('bearet01')">
 <option value="all">All</option>
 <option value="home">Home</option>
 <option value="away">Away</option>
@@ -247,142 +247,33 @@
 </div>
 <div class="barChartFilter">
 <label for="startDate_bearet01">Start:</label>
-<input id="startDate_bearet01" onchange="applyFilters_bearet01()" type="date"/>
+<input id="startDate_bearet01" onchange="applyFilters('bearet01')" type="date"/>
 </div>
 <div class="barChartFilter">
 <label for="endDate_bearet01">End:</label>
-<input id="endDate_bearet01" onchange="applyFilters_bearet01()" type="date"/>
+<input id="endDate_bearet01" onchange="applyFilters('bearet01')" type="date"/>
 </div>
 </div>
 <canvas class="player-barChart" id="chart_bearet01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
 <div id="line-slider">
 <label for="lineSlider_bearet01">Change Line:</label>
-<input id="lineSlider_bearet01" max="30" min="0" oninput="updateLine_bearet01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_bearet01" max="30" min="0" oninput="updateLine('bearet01', this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_bearet01">0.5</span>
 </div>
 <div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_bearet01" onclick="resetLine_bearet01()">Reset Line</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_bearet01" onclick="clearFilters_bearet01()">Clear Filters</button>
+<button class="reset-line-btn" id="reset-line-btn_bearet01" onclick="updateLine('bearet01', 0.5)">Reset Line</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_bearet01" onclick="clearFilters('bearet01')">Clear Filters</button>
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
 <script>
-    const allData_bearet01 = [{'date': '2022-11-01', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 18.02}, {'date': '2022-11-03', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 5, 'TOI': 20.93}, {'date': '2022-11-05', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 4, 'TOI': 21.33}, {'date': '2022-11-08', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 2, 'TOI': 19.72}, {'date': '2022-11-09', 'opponent': 'MTL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 19.55}, {'date': '2022-11-12', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 16.18}, {'date': '2022-11-13', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 4, 'TOI': 17.7}, {'date': '2022-11-15', 'opponent': 'BUF', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 2, 'HIT': 1, 'BLK': 1, 'TOI': 18.68}, {'date': '2022-11-18', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 3, 'TOI': 20.33}, {'date': '2022-11-21', 'opponent': 'VEG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 16.15}, {'date': '2022-11-23', 'opponent': 'COL', 'location': 'away', 'G': 1, 'A': 1, 'PTS': 2, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 20.02}, {'date': '2022-11-26', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 4, 'TOI': 16.47}, {'date': '2022-11-27', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 17.37}, {'date': '2022-11-29', 'opponent': 'WSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 19.58}, {'date': '2022-12-01', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 4, 'TOI': 17.52}, {'date': '2022-12-03', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 15.3}, {'date': '2022-12-05', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 19.98}, {'date': '2022-12-07', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 20.53}, {'date': '2022-12-10', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 18.08}, {'date': '2022-12-14', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 3, 'BLK': 0, 'TOI': 20.52}, {'date': '2022-12-17', 'opponent': 'WPG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 18.3}, {'date': '2022-12-19', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 15.83}, {'date': '2022-12-23', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 21.5}, {'date': '2022-12-27', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 19.47}, {'date': '2022-12-29', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 18.62}, {'date': '2022-12-31', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 18.47}, {'date': '2023-01-03', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 16.87}, {'date': '2023-01-05', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 15.15}, {'date': '2023-01-08', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 20.15}, {'date': '2023-01-10', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 17.9}, {'date': '2023-01-12', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 1, 'TOI': 17.6}, {'date': '2023-01-14', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 15.68}, {'date': '2023-01-15', 'opponent': 'CAR', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 1, 'TOI': 17.18}, {'date': '2023-01-18', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 16.48}, {'date': '2023-01-20', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 15.22}, {'date': '2023-01-27', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 2, 'TOI': 19.95}, {'date': '2023-02-06', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 21.17}, {'date': '2023-02-08', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 2, 'TOI': 21.2}, {'date': '2023-02-09', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 17.87}, {'date': '2023-02-11', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 16.45}, {'date': '2023-02-13', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 17.42}, {'date': '2023-02-15', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 18.38}, {'date': '2023-02-18', 'opponent': 'PHI', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 3, 'TOI': 19.92}, {'date': '2023-02-21', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 5, 'HIT': 0, 'BLK': 1, 'TOI': 24.33}, {'date': '2023-02-23', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 24.55}, {'date': '2023-02-25', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 0.28}, {'date': '2023-03-18', 'opponent': 'LAK', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 4, 'TOI': 23.77}, {'date': '2023-03-19', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 19.65}, {'date': '2023-03-21', 'opponent': 'VEG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 2, 'TOI': 20.4}, {'date': '2023-03-23', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 23.77}, {'date': '2023-03-25', 'opponent': 'DAL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 17.72}, {'date': '2023-03-26', 'opponent': 'CHI', 'location': 'away', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 18.6}, {'date': '2023-03-28', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.02}, {'date': '2023-03-31', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 21.02}, {'date': '2023-04-02', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.17}, {'date': '2023-04-04', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 15.22}, {'date': '2023-04-06', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 16.98}, {'date': '2023-04-08', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 3, 'TOI': 21.25}, {'date': '2023-04-10', 'opponent': 'LAK', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 6, 'TOI': 21.25}, {'date': '2023-04-11', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 20.43}, {'date': '2023-04-13', 'opponent': 'ARI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 20.03}, {'date': '2023-12-30', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 3, 'TOI': 20.08}, {'date': '2024-01-02', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 18.57}, {'date': '2024-01-03', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 15.7}, {'date': '2024-01-05', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 18.93}, {'date': '2024-01-07', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 15.08}, {'date': '2024-01-11', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 1, 'BLK': 4, 'TOI': 17.05}, {'date': '2024-01-13', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 1, 'TOI': 17.78}, {'date': '2024-01-14', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 12.48}, {'date': '2024-01-16', 'opponent': 'ANA', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 16.12}, {'date': '2024-01-18', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 12.97}, {'date': '2024-01-20', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 2, 'TOI': 17.08}, {'date': '2024-01-24', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 16.2}, {'date': '2024-02-08', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 2, 'TOI': 15.85}, {'date': '2024-02-10', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 11.8}, {'date': '2024-02-11', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 3, 'TOI': 12.23}, {'date': '2024-02-13', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 13.03}, {'date': '2024-02-20', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.2}, {'date': '2024-02-22', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.55}, {'date': '2024-02-26', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 15.4}, {'date': '2024-02-27', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 15.97}, {'date': '2024-03-07', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 12.72}, {'date': '2024-03-09', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 12.82}, {'date': '2024-03-11', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 14.7}, {'date': '2024-03-13', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 3, 'TOI': 14.42}];  // Full data for player
-    let currentStat_bearet01 = "G";
-    let Line_bearet01 = 0.5;  // Default betting line
-    let chart_bearet01;
-
-    function initChart_bearet01() {
-        const ctx = document.getElementById('chart_bearet01').getContext('2d');
-        chart_bearet01 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: allData_bearet01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
-                datasets: [{
-                    label: currentStat_bearet01,
-                    data: allData_bearet01.map(d => d[currentStat_bearet01] || 0.0),
-                    backgroundColor: allData_bearet01.map(d => d[currentStat_bearet01] === 0 ? '#c01616' : (d[currentStat_bearet01] >= Line_bearet01 ? '#16c049' : '#c01616')),
-                    borderColor: allData_bearet01.map(d => d[currentStat_bearet01] === 0 ? '#421f1f' : (d[currentStat_bearet01] >= Line_bearet01 ? '#304f3a' : '#421f1f')),
-                    borderWidth: 0.25,
-                    barPercentage: 1.0,
-                    categoryPercentage: 1.0
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: currentStat_bearet01,
-                        font: { size: 16 }
-                    },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: Line_bearet01,
-                                yMax: Line_bearet01,
-                                borderColor: '#ffffff',
-                                borderWidth: 2
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: '#222831', font: { size: 10 } },
-                        grid: { display: false },
-                        stepSize: 1.0
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#222831',
-                            font: { size: 10 },
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateStat_bearet01(selectedStat) {
-        currentStat_bearet01 = selectedStat;
-        chart_bearet01.data.datasets[0].data = allData_bearet01.map(d => d[selectedStat] || 0.0);
-        chart_bearet01.data.datasets[0].label = selectedStat;
-        chart_bearet01.options.plugins.title.text = selectedStat;
-
-        chart_bearet01.data.datasets[0].backgroundColor = allData_bearet01.map(d => d[selectedStat] === 0 ? '#c01616' : (d[selectedStat] >= Line_bearet01 ? '#16c049' : '#c01616'));
-        chart_bearet01.update();
-    }
-
-    function updateLine_bearet01(newLine) {
-        Line_bearet01 = parseFloat(newLine);
-        document.getElementById('lineValue_bearet01').innerText = newLine;
-
-        chart_bearet01.options.plugins.annotation.annotations.line1.yMin = Line_bearet01;
-        chart_bearet01.options.plugins.annotation.annotations.line1.yMax = Line_bearet01;
-
-        chart_bearet01.data.datasets[0].backgroundColor = allData_bearet01.map(d => d[currentStat_bearet01] === 0 ? '#c01616' : (d[currentStat_bearet01] >= Line_bearet01 ? '#16c049' : '#c01616'));
-        chart_bearet01.update();
-    }
-
-    function applyFilters_bearet01() {
-        const teamFilter = document.getElementById('teamFilter_bearet01').value;
-        const homeAwayFilter = document.getElementById('homeAwayFilter_bearet01').value;
-        const startDate = document.getElementById('startDate_bearet01').value;
-        const endDate = document.getElementById('endDate_bearet01').value;
-
-        const filteredData = allData_bearet01.filter(d => {
-            const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
-            const isLocationMatch = (homeAwayFilter === 'all') || 
-                                    (homeAwayFilter === 'home' && d.location === 'home') || 
-                                    (homeAwayFilter === 'away' && d.location === 'away');
-            const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
-                                  (!endDate || new Date(d.date) <= new Date(endDate));
-            return isTeamMatch && isLocationMatch && isDateInRange;
-        });
-
-        chart_bearet01.data.labels = filteredData.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`);
-        chart_bearet01.data.datasets[0].data = filteredData.map(d => d[currentStat_bearet01] || 0.0);
-        chart_bearet01.update();
-    }
-
-    function clearFilters_bearet01() {
-        document.getElementById('teamFilter_bearet01').value = "all";
-        document.getElementById('homeAwayFilter_bearet01').value = "all";
-        document.getElementById('startDate_bearet01').value = "";
-        document.getElementById('endDate_bearet01').value = "";
-        applyFilters_bearet01();
-        updateLine_bearet01(0.5);
-    }
-
-    initChart_bearet01();
-    </script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("bearet01", [{'date': '2022-11-01', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 18.02}, {'date': '2022-11-03', 'opponent': 'ANA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 5, 'TOI': 20.93}, {'date': '2022-11-05', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 4, 'TOI': 21.33}, {'date': '2022-11-08', 'opponent': 'OTT', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 2, 'TOI': 19.72}, {'date': '2022-11-09', 'opponent': 'MTL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 19.55}, {'date': '2022-11-12', 'opponent': 'TOR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 16.18}, {'date': '2022-11-13', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 4, 'TOI': 17.7}, {'date': '2022-11-15', 'opponent': 'BUF', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 2, 'HIT': 1, 'BLK': 1, 'TOI': 18.68}, {'date': '2022-11-18', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 3, 'TOI': 20.33}, {'date': '2022-11-21', 'opponent': 'VEG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 16.15}, {'date': '2022-11-23', 'opponent': 'COL', 'location': 'away', 'G': 1, 'A': 1, 'PTS': 2, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 20.02}, {'date': '2022-11-26', 'opponent': 'VEG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 4, 'TOI': 16.47}, {'date': '2022-11-27', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 17.37}, {'date': '2022-11-29', 'opponent': 'WSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 19.58}, {'date': '2022-12-01', 'opponent': 'FLA', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 4, 'TOI': 17.52}, {'date': '2022-12-03', 'opponent': 'ARI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 15.3}, {'date': '2022-12-05', 'opponent': 'MTL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 19.98}, {'date': '2022-12-07', 'opponent': 'SJS', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 20.53}, {'date': '2022-12-10', 'opponent': 'MIN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 18.08}, {'date': '2022-12-14', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 3, 'BLK': 0, 'TOI': 20.52}, {'date': '2022-12-17', 'opponent': 'WPG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 18.3}, {'date': '2022-12-19', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 15.83}, {'date': '2022-12-23', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 21.5}, {'date': '2022-12-27', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 19.47}, {'date': '2022-12-29', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 18.62}, {'date': '2022-12-31', 'opponent': 'CGY', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 18.47}, {'date': '2023-01-03', 'opponent': 'NYI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 16.87}, {'date': '2023-01-05', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 15.15}, {'date': '2023-01-08', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 20.15}, {'date': '2023-01-10', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 17.9}, {'date': '2023-01-12', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 1, 'TOI': 17.6}, {'date': '2023-01-14', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 15.68}, {'date': '2023-01-15', 'opponent': 'CAR', 'location': 'away', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 1, 'TOI': 17.18}, {'date': '2023-01-18', 'opponent': 'TBL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 16.48}, {'date': '2023-01-20', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 15.22}, {'date': '2023-01-27', 'opponent': 'CBJ', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 2, 'TOI': 19.95}, {'date': '2023-02-06', 'opponent': 'NJD', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 21.17}, {'date': '2023-02-08', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 2, 'TOI': 21.2}, {'date': '2023-02-09', 'opponent': 'NYI', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 17.87}, {'date': '2023-02-11', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 16.45}, {'date': '2023-02-13', 'opponent': 'DET', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 2, 'TOI': 17.42}, {'date': '2023-02-15', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 18.38}, {'date': '2023-02-18', 'opponent': 'PHI', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 3, 'TOI': 19.92}, {'date': '2023-02-21', 'opponent': 'NSH', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 5, 'HIT': 0, 'BLK': 1, 'TOI': 24.33}, {'date': '2023-02-23', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 24.55}, {'date': '2023-02-25', 'opponent': 'BOS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 0.28}, {'date': '2023-03-18', 'opponent': 'LAK', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 4, 'TOI': 23.77}, {'date': '2023-03-19', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 19.65}, {'date': '2023-03-21', 'opponent': 'VEG', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 2, 'TOI': 20.4}, {'date': '2023-03-23', 'opponent': 'SJS', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 23.77}, {'date': '2023-03-25', 'opponent': 'DAL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 17.72}, {'date': '2023-03-26', 'opponent': 'CHI', 'location': 'away', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 18.6}, {'date': '2023-03-28', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.02}, {'date': '2023-03-31', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 21.02}, {'date': '2023-04-02', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.17}, {'date': '2023-04-04', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 15.22}, {'date': '2023-04-06', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 16.98}, {'date': '2023-04-08', 'opponent': 'CGY', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 3, 'TOI': 21.25}, {'date': '2023-04-10', 'opponent': 'LAK', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 6, 'TOI': 21.25}, {'date': '2023-04-11', 'opponent': 'ANA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 20.43}, {'date': '2023-04-13', 'opponent': 'ARI', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 20.03}, {'date': '2023-12-30', 'opponent': 'NSH', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 3, 'TOI': 20.08}, {'date': '2024-01-02', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 18.57}, {'date': '2024-01-03', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 2, 'TOI': 15.7}, {'date': '2024-01-05', 'opponent': 'CAR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 18.93}, {'date': '2024-01-07', 'opponent': 'LAK', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 15.08}, {'date': '2024-01-11', 'opponent': 'SEA', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 1, 'BLK': 4, 'TOI': 17.05}, {'date': '2024-01-13', 'opponent': 'NYR', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 1, 'TOI': 17.78}, {'date': '2024-01-14', 'opponent': 'NYR', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 12.48}, {'date': '2024-01-16', 'opponent': 'ANA', 'location': 'home', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 1, 'BLK': 0, 'TOI': 16.12}, {'date': '2024-01-18', 'opponent': 'STL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 12.97}, {'date': '2024-01-20', 'opponent': 'STL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 2, 'TOI': 17.08}, {'date': '2024-01-24', 'opponent': 'COL', 'location': 'away', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 16.2}, {'date': '2024-02-08', 'opponent': 'FLA', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 2, 'TOI': 15.85}, {'date': '2024-02-10', 'opponent': 'BOS', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 11.8}, {'date': '2024-02-11', 'opponent': 'VAN', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 3, 'TOI': 12.23}, {'date': '2024-02-13', 'opponent': 'COL', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 13.03}, {'date': '2024-02-20', 'opponent': 'NJD', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.2}, {'date': '2024-02-22', 'opponent': 'TBL', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 8.55}, {'date': '2024-02-26', 'opponent': 'OTT', 'location': 'home', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 15.4}, {'date': '2024-02-27', 'opponent': 'DET', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 15.97}, {'date': '2024-03-07', 'opponent': 'PIT', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 12.72}, {'date': '2024-03-09', 'opponent': 'CHI', 'location': 'home', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 12.82}, {'date': '2024-03-11', 'opponent': 'WPG', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 14.7}, {'date': '2024-03-13', 'opponent': 'EDM', 'location': 'away', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 3, 'TOI': 14.42}], 0.5, "G");
+</script>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

@@ -186,8 +186,9 @@
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->
-<div class="stat-selection">
-<label for="statSelector_mangian01">Select Stat:</label>
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_mangian01">Stat:</label>
 <select id="statSelector_mangian01" onchange="updateStat_mangian01(this.value)">
 <option value="G">G</option>
 <option value="A">A</option>
@@ -198,11 +199,6 @@
 <option value="TOI">TOI</option>
 </select>
 </div>
-<canvas class="player-barChart" id="chart_mangian01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-<!-- Filter Controls -->
-<div class="barChart-filters">
 <div class="barChartFilter">
 <label for="teamFilter_mangian01">Opponent:</label>
 <select id="teamFilter_mangian01" onchange="applyFilters_mangian01()">
@@ -249,24 +245,27 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="startDate_mangian01">Start Date:</label>
+<label for="startDate_mangian01">Start:</label>
 <input id="startDate_mangian01" onchange="applyFilters_mangian01()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="endDate_mangian01">End Date:</label>
+<label for="endDate_mangian01">End:</label>
 <input id="endDate_mangian01" onchange="applyFilters_mangian01()" type="date"/>
 </div>
 </div>
-<!-- Slider for betting line adjustment -->
+<canvas class="player-barChart" id="chart_mangian01"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
-<div class="line-slider">
+<div id="line-slider">
 <label for="lineSlider_mangian01">Change Line:</label>
-<input class="line-slider" id="lineSlider_mangian01" max="30" min="0" oninput="updateLine_mangian01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_mangian01" max="30" min="0" oninput="updateLine_mangian01(this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_mangian01">0.5</span>
 </div>
 <div class="chartButtons">
 <button class="reset-line-btn" id="reset-line-btn_mangian01" onclick="resetLine_mangian01()">Reset Line</button>
 <button class="clear-chart-filters" id="clearFiltersBtn_mangian01" onclick="clearFilters_mangian01()">Clear Filters</button>
+</div>
 </div>
 </div>
 <script>
@@ -280,7 +279,7 @@
         chart_mangian01 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_mangian01.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_mangian01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
                 datasets: [{
                     label: currentStat_mangian01,
                     data: allData_mangian01.map(d => d[currentStat_mangian01] || 0.0),
@@ -319,7 +318,10 @@
                         stepSize: 1.0
                     },
                     x: {
-                        ticks: { color: '#222831', font: { size: 10 } },
+                        ticks: { 
+                            color: '#222831',
+                            font: { size: 10 },
+                        },
                         grid: { display: false }
                     }
                 }
@@ -380,7 +382,6 @@
 
     initChart_mangian01();
     </script>
-</div>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

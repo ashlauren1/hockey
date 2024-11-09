@@ -14,10 +14,6 @@ gamelogs_df = pd.read_csv(gamelogs_path)
 # Chart.js template for bar chart with betting line overlay and filter controls
 chart_script_template = """
 <div class="chart-container">
-    <canvas id="{stat}_{game_id}_{betting_line_id}_chart" class="barChart"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-
     <!-- Filter Controls -->
     <div class="barChart-filters">
         <div class="barChartFilter">
@@ -47,8 +43,11 @@ chart_script_template = """
         <input type="date" id="{stat}_{game_id}_{betting_line_id}_endDate" onchange="applyFilters_{stat}_{game_id}_{betting_line_id}()">
         </div>
     </div>
-
-    <!-- Slider for betting line adjustment -->
+    
+    <canvas id="{stat}_{game_id}_{betting_line_id}_chart" class="barChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+    
     <div class="slider-container">
     <div class="line-slider">
         <label for="{stat}_{game_id}_{betting_line_id}_lineSlider">Change Line:</label>
@@ -60,6 +59,8 @@ chart_script_template = """
     <button id="clear-filters-btn-{stat}_{game_id}_{betting_line_id}" onclick="clearFilters_{stat}_{game_id}_{betting_line_id}()" class="clear-chart-filters">Clear Filters</button>
     </div>
     </div>
+</div>
+    
 
     <script>
     const allData_{stat}_{game_id}_{betting_line_id} = {chart_data};  // Full data for player

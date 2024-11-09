@@ -186,8 +186,9 @@
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->
-<div class="stat-selection">
-<label for="statSelector_watsoau01">Select Stat:</label>
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_watsoau01">Stat:</label>
 <select id="statSelector_watsoau01" onchange="updateStat_watsoau01(this.value)">
 <option value="G">G</option>
 <option value="A">A</option>
@@ -198,11 +199,6 @@
 <option value="TOI">TOI</option>
 </select>
 </div>
-<canvas class="player-barChart" id="chart_watsoau01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-<!-- Filter Controls -->
-<div class="barChart-filters">
 <div class="barChartFilter">
 <label for="teamFilter_watsoau01">Opponent:</label>
 <select id="teamFilter_watsoau01" onchange="applyFilters_watsoau01()">
@@ -250,24 +246,27 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="startDate_watsoau01">Start Date:</label>
+<label for="startDate_watsoau01">Start:</label>
 <input id="startDate_watsoau01" onchange="applyFilters_watsoau01()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="endDate_watsoau01">End Date:</label>
+<label for="endDate_watsoau01">End:</label>
 <input id="endDate_watsoau01" onchange="applyFilters_watsoau01()" type="date"/>
 </div>
 </div>
-<!-- Slider for betting line adjustment -->
+<canvas class="player-barChart" id="chart_watsoau01"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
-<div class="line-slider">
+<div id="line-slider">
 <label for="lineSlider_watsoau01">Change Line:</label>
-<input class="line-slider" id="lineSlider_watsoau01" max="30" min="0" oninput="updateLine_watsoau01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_watsoau01" max="30" min="0" oninput="updateLine_watsoau01(this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_watsoau01">0.5</span>
 </div>
 <div class="chartButtons">
 <button class="reset-line-btn" id="reset-line-btn_watsoau01" onclick="resetLine_watsoau01()">Reset Line</button>
 <button class="clear-chart-filters" id="clearFiltersBtn_watsoau01" onclick="clearFilters_watsoau01()">Clear Filters</button>
+</div>
 </div>
 </div>
 <script>
@@ -281,7 +280,7 @@
         chart_watsoau01 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_watsoau01.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_watsoau01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
                 datasets: [{
                     label: currentStat_watsoau01,
                     data: allData_watsoau01.map(d => d[currentStat_watsoau01] || 0.0),
@@ -320,7 +319,10 @@
                         stepSize: 1.0
                     },
                     x: {
-                        ticks: { color: '#222831', font: { size: 10 } },
+                        ticks: { 
+                            color: '#222831',
+                            font: { size: 10 },
+                        },
                         grid: { display: false }
                     }
                 }
@@ -381,7 +383,6 @@
 
     initChart_watsoau01();
     </script>
-</div>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

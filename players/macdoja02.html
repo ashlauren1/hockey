@@ -186,8 +186,9 @@
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->
-<div class="stat-selection">
-<label for="statSelector_macdoja02">Select Stat:</label>
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_macdoja02">Stat:</label>
 <select id="statSelector_macdoja02" onchange="updateStat_macdoja02(this.value)">
 <option value="G">G</option>
 <option value="A">A</option>
@@ -198,11 +199,6 @@
 <option value="TOI">TOI</option>
 </select>
 </div>
-<canvas class="player-barChart" id="chart_macdoja02"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-<!-- Filter Controls -->
-<div class="barChart-filters">
 <div class="barChartFilter">
 <label for="teamFilter_macdoja02">Opponent:</label>
 <select id="teamFilter_macdoja02" onchange="applyFilters_macdoja02()">
@@ -248,24 +244,27 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="startDate_macdoja02">Start Date:</label>
+<label for="startDate_macdoja02">Start:</label>
 <input id="startDate_macdoja02" onchange="applyFilters_macdoja02()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="endDate_macdoja02">End Date:</label>
+<label for="endDate_macdoja02">End:</label>
 <input id="endDate_macdoja02" onchange="applyFilters_macdoja02()" type="date"/>
 </div>
 </div>
-<!-- Slider for betting line adjustment -->
+<canvas class="player-barChart" id="chart_macdoja02"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
-<div class="line-slider">
+<div id="line-slider">
 <label for="lineSlider_macdoja02">Change Line:</label>
-<input class="line-slider" id="lineSlider_macdoja02" max="30" min="0" oninput="updateLine_macdoja02(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_macdoja02" max="30" min="0" oninput="updateLine_macdoja02(this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_macdoja02">0.5</span>
 </div>
 <div class="chartButtons">
 <button class="reset-line-btn" id="reset-line-btn_macdoja02" onclick="resetLine_macdoja02()">Reset Line</button>
 <button class="clear-chart-filters" id="clearFiltersBtn_macdoja02" onclick="clearFilters_macdoja02()">Clear Filters</button>
+</div>
 </div>
 </div>
 <script>
@@ -279,7 +278,7 @@
         chart_macdoja02 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_macdoja02.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_macdoja02.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
                 datasets: [{
                     label: currentStat_macdoja02,
                     data: allData_macdoja02.map(d => d[currentStat_macdoja02] || 0.0),
@@ -318,7 +317,10 @@
                         stepSize: 1.0
                     },
                     x: {
-                        ticks: { color: '#222831', font: { size: 10 } },
+                        ticks: { 
+                            color: '#222831',
+                            font: { size: 10 },
+                        },
                         grid: { display: false }
                     }
                 }
@@ -379,7 +381,6 @@
 
     initChart_macdoja02();
     </script>
-</div>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

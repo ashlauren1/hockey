@@ -22,19 +22,13 @@ default_stat = "G"
 chart_script_template = """
 <div class="player-chart-container">
     <!-- Stat Selection Dropdown -->
-    <div class="stat-selection">
-        <label for="statSelector_{player_id}">Select Stat:</label>
-        <select id="statSelector_{player_id}" onchange="updateStat_{player_id}(this.value)">
-            {stat_options}
-        </select>
-    </div>
-
-    <canvas id="chart_{player_id}" class="player-barChart"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-
-    <!-- Filter Controls -->
     <div class="barChart-filters">
+        <div class="barChartFilter">
+            <label for="statSelector_{player_id}">Stat:</label>
+            <select id="statSelector_{player_id}" onchange="updateStat_{player_id}(this.value)">
+                {stat_options}
+            </select>
+        </div>  
         <div class="barChartFilter">
             <label for="teamFilter_{player_id}">Opponent:</label>
             <select id="teamFilter_{player_id}" onchange="applyFilters_{player_id}()">
@@ -51,28 +45,30 @@ chart_script_template = """
             </select>
         </div>
         <div class="barChartFilter">
-            <label for="startDate_{player_id}">Start Date:</label>
+            <label for="startDate_{player_id}">Start:</label>
             <input type="date" id="startDate_{player_id}" onchange="applyFilters_{player_id}()">
         </div>
         <div class="barChartFilter">
-            <label for="endDate_{player_id}">End Date:</label>
+            <label for="endDate_{player_id}">End:</label>
             <input type="date" id="endDate_{player_id}" onchange="applyFilters_{player_id}()">
         </div>
-        
     </div>
-
-    <!-- Slider for betting line adjustment -->
+    <canvas id="chart_{player_id}" class="player-barChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
     <div class="slider-container">
-        <div class="line-slider">
+        <div id="line-slider">
             <label for="lineSlider_{player_id}">Change Line:</label>
-            <input type="range" id="lineSlider_{player_id}" min="0" max="30" step="0.5" value="{betting_line}" oninput="updateLine_{player_id}(this.value)" class="line-slider">
+            <input type="range" id="lineSlider_{player_id}" min="0" max="30" step="0.5" value="{betting_line}" oninput="updateLine_{player_id}(this.value)">
             <span id="lineValue_{player_id}">{betting_line}</span>
         </div>
         <div class="chartButtons">
             <button id="reset-line-btn_{player_id}" onclick="resetLine_{player_id}()" class="reset-line-btn">Reset Line</button>
-        <button id="clearFiltersBtn_{player_id}" onclick="clearFilters_{player_id}()" class="clear-chart-filters">Clear Filters</button>
+            <button id="clearFiltersBtn_{player_id}" onclick="clearFilters_{player_id}()" class="clear-chart-filters">Clear Filters</button>
         </div>
     </div>
+</div>
+
 
     <script>
     const allData_{player_id} = {chart_data};  // Full data for player
@@ -85,7 +81,7 @@ chart_script_template = """
         chart_{player_id} = new Chart(ctx, {{
             type: 'bar',
             data: {{
-                labels: allData_{player_id}.map(d => `${{d.date}} ${{d.location === 'home' ? 'vs' : '@'}} ${{d.opponent}}`),
+                labels: allData_{player_id}.map(d => `${{d.location === 'home' ? 'vs' : '@'}} ${{d.opponent}}\\n${{new Date(d.date).toLocaleDateString('en-US', {{ year: '2-digit', month: 'numeric', day: 'numeric' }})}}`),
                 datasets: [{{
                     label: currentStat_{player_id},
                     data: allData_{player_id}.map(d => d[currentStat_{player_id}] || 0.0),
@@ -124,7 +120,10 @@ chart_script_template = """
                         stepSize: 1.0
                     }},
                     x: {{
-                        ticks: {{ color: '#222831', font: {{ size: 10 }} }},
+                        ticks: {{ 
+                            color: '#222831',
+                            font: {{ size: 10 }},
+                        }},
                         grid: {{ display: false }}
                     }}
                 }}
@@ -185,7 +184,6 @@ chart_script_template = """
 
     initChart_{player_id}();
     </script>
-</div>
 """
 
 # Process each HTML file

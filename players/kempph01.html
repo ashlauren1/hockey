@@ -186,8 +186,9 @@
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->
-<div class="stat-selection">
-<label for="statSelector_kempph01">Select Stat:</label>
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_kempph01">Stat:</label>
 <select id="statSelector_kempph01" onchange="updateStat_kempph01(this.value)">
 <option value="G">G</option>
 <option value="A">A</option>
@@ -198,11 +199,6 @@
 <option value="TOI">TOI</option>
 </select>
 </div>
-<canvas class="player-barChart" id="chart_kempph01"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-<!-- Filter Controls -->
-<div class="barChart-filters">
 <div class="barChartFilter">
 <label for="teamFilter_kempph01">Opponent:</label>
 <select id="teamFilter_kempph01" onchange="applyFilters_kempph01()">
@@ -219,24 +215,27 @@
 </select>
 </div>
 <div class="barChartFilter">
-<label for="startDate_kempph01">Start Date:</label>
+<label for="startDate_kempph01">Start:</label>
 <input id="startDate_kempph01" onchange="applyFilters_kempph01()" type="date"/>
 </div>
 <div class="barChartFilter">
-<label for="endDate_kempph01">End Date:</label>
+<label for="endDate_kempph01">End:</label>
 <input id="endDate_kempph01" onchange="applyFilters_kempph01()" type="date"/>
 </div>
 </div>
-<!-- Slider for betting line adjustment -->
+<canvas class="player-barChart" id="chart_kempph01"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
 <div class="slider-container">
-<div class="line-slider">
+<div id="line-slider">
 <label for="lineSlider_kempph01">Change Line:</label>
-<input class="line-slider" id="lineSlider_kempph01" max="30" min="0" oninput="updateLine_kempph01(this.value)" step="0.5" type="range" value="0.5"/>
+<input id="lineSlider_kempph01" max="30" min="0" oninput="updateLine_kempph01(this.value)" step="0.5" type="range" value="0.5"/>
 <span id="lineValue_kempph01">0.5</span>
 </div>
 <div class="chartButtons">
 <button class="reset-line-btn" id="reset-line-btn_kempph01" onclick="resetLine_kempph01()">Reset Line</button>
 <button class="clear-chart-filters" id="clearFiltersBtn_kempph01" onclick="clearFilters_kempph01()">Clear Filters</button>
+</div>
 </div>
 </div>
 <script>
@@ -250,7 +249,7 @@
         chart_kempph01 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: allData_kempph01.map(d => `${d.date} ${d.location === 'home' ? 'vs' : '@'} ${d.opponent}`),
+                labels: allData_kempph01.map(d => `${d.location === 'home' ? 'vs' : '@'} ${d.opponent}\n${new Date(d.date).toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })}`),
                 datasets: [{
                     label: currentStat_kempph01,
                     data: allData_kempph01.map(d => d[currentStat_kempph01] || 0.0),
@@ -289,7 +288,10 @@
                         stepSize: 1.0
                     },
                     x: {
-                        ticks: { color: '#222831', font: { size: 10 } },
+                        ticks: { 
+                            color: '#222831',
+                            font: { size: 10 },
+                        },
                         grid: { display: false }
                     }
                 }
@@ -350,7 +352,6 @@
 
     initChart_kempph01();
     </script>
-</div>
 <div id="table-container">
 <span class="table-button-container">
 <span class="caption">Gamelog</span>

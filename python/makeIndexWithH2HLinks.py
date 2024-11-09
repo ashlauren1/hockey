@@ -214,6 +214,7 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
     </div>
     <div id="H2H-container">
         <table id="H2H-table">
+        <caption>H2H Results</caption>
         <thead>
             <tr>
                 <th>Date</th>
@@ -278,7 +279,6 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
         </tbody>
         </table>
     </div>
-    <div class="footer"></div>
 </body>
 </html>
         '''

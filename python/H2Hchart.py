@@ -262,8 +262,9 @@ for filename in os.listdir(html_dir):
                 team_options=team_options
             )
             
-            # Append the chart script to the HTML body
-            soup.body.append(BeautifulSoup(chart_script, "html.parser"))
+            player_table = soup.select_one("#H2H-table")
+            chart_soup = BeautifulSoup(chart_script, "html.parser")
+            player_table.insert_after(chart_soup) 
 
         # Save modified HTML file
         with open(file_path, "w", encoding="utf-8") as file:

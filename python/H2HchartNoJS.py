@@ -46,9 +46,9 @@ chart_script_template = """
     <canvas id="{stat}_{game_id}_{betting_line_id}_chart" class="barChart"></canvas>
     
     <div class="slider-container">
-        <div class="line-slider">
+        <div id="line-slider">
             <label for="{stat}_{game_id}_{betting_line_id}_lineSlider">Change Line:</label>
-            <input type="range" id="{stat}_{game_id}_{betting_line_id}_lineSlider" min="0" max="30" step="0.5" value="{betting_line}" oninput="updateLine('{stat}', '{game_id}', '{betting_line_id}', this.value)" class="line-slider">
+            <input type="range" id="{stat}_{game_id}_{betting_line_id}_lineSlider" min="0" max="30" step="0.25" value="{betting_line}" oninput="updateLine('{stat}', '{game_id}', '{betting_line_id}', this.value)">
             <span id="{stat}_{game_id}_{betting_line_id}_lineValue">{betting_line}</span>
         </div>
         <div class="chartButtons">
@@ -124,7 +124,7 @@ for filename in os.listdir(html_dir):
                 team_options=team_options
             )
             
-            player_table = soup.select_one("#H2H-table")
+            player_table = soup.select_one("#table-container")
             chart_soup = BeautifulSoup(chart_script, "html.parser")
             player_table.insert_after(chart_soup) 
 

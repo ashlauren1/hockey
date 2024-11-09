@@ -213,6 +213,8 @@ def create_game_boxscores(gamelogs_data, output_dir):
 
     for game_id, game_data in grouped_data:
         game_name = game_data.iloc[0]['Game']
+        date = game_data.iloc[0]['Date']
+        team_name = game_data.iloc[0]['Team']
         home_data = game_data[game_data['Is_Home'] == 1]
         away_data = game_data[game_data['Is_Home'] == 0]
         game_filename = f'{output_dir}/{game_id}.html'
@@ -383,21 +385,22 @@ def create_game_boxscores(gamelogs_data, output_dir):
             <a href="/hockey/teams/">Teams</a>
         </div>
         <div class="header">
-        <h1>{game_name}</h1>
-        </div>
-        <div class="button-container" style="margin-left:12px; width:95%">
-            <button id="toggle-selection-btn">Show Selected Only</button>
-            <button id="clear-filters-btn">Remove Filters</button>
-            <button id="clear-all-btn">Clear All</button>
+        <h1>{game_name} - {date}</h1>
         </div>
         <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
         <div id="boxscore-container">
+        <div id="table-container">
         '''
 
         def create_team_table(team_data, team_name, totals, table_id):
             team_table = f'''
+            <span class="table-button-container">
+                <span class="caption">{team_name}</span>
+                <button id="toggle-selection-btn">Show Selected Only</button>
+                <button id="clear-filters-btn">Remove Filters</button>
+                <button id="clear-all-btn">Clear All</button>
+            </span>
             <table id="{table_id}">
-            <caption>{team_name} Skaters</caption>
             <colgroup>
                 <col style="width:136px">
                 <col span="15" style="width:48px">
@@ -429,7 +432,7 @@ def create_game_boxscores(gamelogs_data, output_dir):
                 team_table += f'''
                     <tr>
                         <td style="text-align:left"><a href="/hockey/players/{row['PlayerID']}.html" target="_blank">{row['Player']}</a></td>
-                        <td style="text-align:left"><a href="/hockey/teams/{row['Team']}.html" target="_blank">{row['Team']}</a></td>
+                        <td style="text-align:left"><a href="/hockey/teams/{row['TeamID']}.html" target="_blank">{row['TeamID']}</a></td>
                         <td>{row['G']}</td>
                         <td>{row['A']}</td>
                         <td>{row['PTS']}</td>
@@ -472,11 +475,12 @@ def create_game_boxscores(gamelogs_data, output_dir):
             '''
             return team_table
 
-        html_content += create_team_table(home_data, home_data.iloc[0]['Team'] + " (Home)", home_totals, "home-boxscore")
-        html_content += create_team_table(away_data, away_data.iloc[0]['Team'] + " (Away)", away_totals, "away-boxscore")
+        html_content += create_team_table(home_data, home_data.iloc[0]['Team'] + " - Home", home_totals, "home-boxscore")
+        html_content += create_team_table(away_data, away_data.iloc[0]['Team'] + " - Away", away_totals, "away-boxscore")
 
         # Close HTML content
         html_content += '''
+            </div>
             </div>
         <div class="footer"></div>
         </body>
@@ -488,7 +492,6 @@ def create_game_boxscores(gamelogs_data, output_dir):
 
     print("Game boxscore pages created successfully.")
 
-# **Run the Functions**
 # Create game directory
 output_file_path = os.path.join(output_dir_games, "index.html")
 create_game_directory(game_index_data, output_file_path)

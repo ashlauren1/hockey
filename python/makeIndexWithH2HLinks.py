@@ -212,9 +212,12 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
     <div class="header">
         <h1>{player_name} vs {opp_name} - Previous Matchups</h1>
     </div>
+    
     <div id="H2H-container">
+    
+    <div id="table-container">
         <table id="H2H-table">
-        <caption>H2H Results</caption>
+        <caption class="caption"><a href="/hockey/players/{player_id}.html" target="_blank">{player_name}</a> H2H Results</caption>
         <thead>
             <tr>
                 <th>Date</th>
@@ -278,6 +281,7 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
         html_content += '''
         </tbody>
         </table>
+    </div>
     </div>
 </body>
 </html>

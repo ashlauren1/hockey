@@ -57,7 +57,7 @@ chart_html_template = """
     <div class="slider-container">
         <div id="line-slider">
             <label for="lineSlider_{player_id}">Change Line:</label>
-            <input type="range" id="lineSlider_{player_id}" min="0" max="30" step="0.5" value="{betting_line}" oninput="updateLine('{player_id}', this.value)">
+            <input type="range" id="lineSlider_{player_id}" min="0" max="30" step="0.25" value="{betting_line}" oninput="updateLine('{player_id}', this.value)">
             <span id="lineValue_{player_id}">{betting_line}</span>
         </div>
         <div class="chartButtons">

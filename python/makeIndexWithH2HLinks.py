@@ -224,10 +224,11 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
 </head>
 <body>
     <div class="topnav">
-        <a href="/hockey/">Projections</a>
-        <a href="/hockey/players/">Players</a>
-        <a href="/hockey/boxscores/">Box Scores</a>
-        <a href="/hockey/teams/">Teams</a>
+        <a href="/hockey/" target="_blank">Projections</a>
+        <a href="/hockey/players/" target="_blank">Players</a>
+        <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
+        <a href="/hockey/teams/" target="_blank">Teams</a>
+        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
     </div>
     <div id="search-container">
         <input type="text" id="search-bar" placeholder="Search players and teams">
@@ -685,10 +686,11 @@ document.addEventListener("DOMContentLoaded", function () {
 </head>
 <body>
     <div class="topnav">
-        <a href="/hockey/">Projections</a>
-        <a href="/hockey/players/">Players</a>
-        <a href="/hockey/boxscores/">Box Scores</a>
-        <a href="/hockey/teams/">Teams</a>
+        <a href="/hockey/" target="_blank">Projections</a>
+        <a href="/hockey/players/" target="_blank">Players</a>
+        <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
+        <a href="/hockey/teams/" target="_blank">Teams</a>
+        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
     </div>
     <div id="search-container">
         <input type="text" id="search-bar" placeholder="Search for a player or team...">

@@ -205,10 +205,11 @@ def create_game_directory(game_data, output_file_path):
     </head>
     <body>
         <div class="topnav">
-            <a href="/hockey/">Projections</a>
-            <a href="/hockey/players/">Players</a>
-            <a href="/hockey/boxscores/">Box Scores</a>
-            <a href="/hockey/teams/">Teams</a>
+            <a href="/hockey/" target="_blank">Projections</a>
+            <a href="/hockey/players/" target="_blank">Players</a>
+            <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
+            <a href="/hockey/teams/" target="_blank">Teams</a>
+            <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         </div>
         <div id="search-container">
             <input type="text" id="search-bar" placeholder="Search for a player or team...">
@@ -512,10 +513,11 @@ def create_game_boxscores(gamelogs_data, output_dir):
         </head>
         <body>
         <div class="topnav">
-            <a href="/hockey/">Projections</a>
-            <a href="/hockey/players/">Players</a>
-            <a href="/hockey/boxscores/">Box Scores</a>
-            <a href="/hockey/teams/">Teams</a>
+            <a href="/hockey/" target="_blank">Projections</a>
+            <a href="/hockey/players/" target="_blank">Players</a>
+            <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
+            <a href="/hockey/teams/" target="_blank">Teams</a>
+            <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         </div>
         <div id="search-container">
             <input type="text" id="search-bar" placeholder="Search for a player or team...">

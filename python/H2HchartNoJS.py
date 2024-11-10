@@ -10,6 +10,8 @@ html_dir = r"C:\Users\ashle\Documents\Projects\hockey\h2h"
 # Load the data
 lines_df = pd.read_csv(lines_path)
 gamelogs_df = pd.read_csv(gamelogs_path)
+gamelogs_df['Date'] = pd.to_datetime(gamelogs_df['Date'])
+gamelogs_df = gamelogs_df.sort_values(by='Date')
 
 # Chart.js template for bar chart with betting line overlay and filter controls
 chart_script_template = """
@@ -104,7 +106,12 @@ for filename in os.listdir(html_dir):
             
             # Format x-axis labels and values for JavaScript
             chart_data = [
-                {"date": row["Date"], "opponent": row["Opp"], "location": "home" if row["Is_Home"] == 1 else "away", "stat": row[stat]}
+                {
+                    "date": row["Date"].strftime("%Y-%m-%d"),
+                    "opponent": row["Opp"], 
+                    "location": "home" if row["Is_Home"] == 1 else "away", 
+                    "stat": row[stat]
+                }
                 for _, row in stat_data.iterrows()
             ]
             

@@ -111,7 +111,7 @@ for filename in os.listdir(html_dir):
             chart_data.sort(key=lambda x: x["date"])
             
             # Generate unique team options for the dropdown
-            unique_teams = stat_data['Opp'].unique()
+            unique_teams = sorted(player_gamelogs['Opp'].unique(), key=lambda x: x.lower())
             team_options = "\n".join([f'<option value="{team}">{team}</option>' for team in unique_teams])
             
             # Generate the chart script

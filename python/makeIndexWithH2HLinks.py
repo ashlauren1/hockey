@@ -3,17 +3,37 @@ import os
 import re
 from datetime import datetime
 from tqdm import tqdm
+import json
 
 # File paths
 metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\gamelogs.csv"
 upcoming_games_path = r"C:\Users\ashle\Documents\Projects\hockey\data\games_thisWeek.csv"
 lines_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\todayLines.csv"
 output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\index.html"
+rosters_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\rosters.csv"
+rosters_data = pd.read_csv(rosters_file_path)
 
 # Load data
 metrics_data = pd.read_csv(metrics_file_path,  parse_dates=["Date"], low_memory=False)
 upcoming_games_data = pd.read_csv(upcoming_games_path, low_memory=False)
 lines_data = pd.read_csv(lines_file_path)
+
+player_links = {f"{row['Player']} ({row['PlayerID']})".lower(): f"/hockey/players/{row['PlayerID']}.html" 
+                for _, row in rosters_data.iterrows()}
+
+
+team_links = {row['Team'].lower(): f"/hockey/teams/{row['TeamID']}.html" 
+              for _, row in rosters_data.drop_duplicates('TeamID').iterrows()}
+
+# Write out to JSON with proper formatting
+with open("players.json", "w") as f:
+    json.dump(player_links, f, indent=4)
+
+with open("teams.json", "w") as f:
+    json.dump(team_links, f)
+
+print("players.json and teams.json created successfully!")
+
 
 # Convert relevant columns to numeric types to avoid type errors
 metrics_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']] = metrics_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']].apply(pd.to_numeric, errors='coerce')
@@ -209,6 +229,11 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
         <a href="/hockey/boxscores/">Box Scores</a>
         <a href="/hockey/teams/">Teams</a>
     </div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search players and teams">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
     <div class="header">
         <h1>{player_name} vs {opp_name} - Previous Matchups</h1>
     </div>
@@ -309,6 +334,8 @@ with open(output_file_path, 'w') as f:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <script src="players.json"></script>
+    <script src="teams.json"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -590,7 +617,71 @@ document.addEventListener("DOMContentLoaded", function () {
         return `rgb(${red}, ${green}, ${blue})`;
     }
 });
-</script>
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        const searchBar = document.getElementById("search-bar");
+        const searchResults = document.getElementById("search-results");
+
+        let playerLinks = {};
+        let teamLinks = {};
+
+        // Load players and teams data from JSON files
+        async function loadLinks() {
+            playerLinks = await fetch('players.json').then(response => response.json());
+            teamLinks = await fetch('teams.json').then(response => response.json());
+        }
+
+        await loadLinks();  // Ensure links are loaded before searching
+
+        // Filter data and show suggestions based on input
+        function updateSuggestions() {
+            const query = searchBar.value.trim().toLowerCase();
+            searchResults.innerHTML = ""; // Clear previous results
+
+            if (query === "") return;
+
+            // Combine players and teams for search
+            const combinedLinks = { ...playerLinks, ...teamLinks };
+            const matchingEntries = Object.entries(combinedLinks)
+                .filter(([name]) => name.includes(query))  // Matches on both name and ID
+                .slice(0, 5); // Limit to top 5
+
+            matchingEntries.forEach(([name, url]) => {
+                const resultItem = document.createElement("div");
+                resultItem.classList.add("suggestion");
+
+                // Proper case for names
+                resultItem.textContent = name.split(" ")
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+
+                resultItem.addEventListener("click", () => {
+                    window.open(url, "_blank");
+                });
+                searchResults.appendChild(resultItem);
+            });
+
+            if (matchingEntries.length > 0) {
+                searchResults.style.display = "block"; // Show results if matches are found
+            } else {
+                const noResultItem = document.createElement("div");
+                noResultItem.classList.add("no-result");
+                noResultItem.textContent = "No results found.";
+                searchResults.appendChild(noResultItem);
+                searchResults.style.display = "block";
+            }
+        }
+        
+        document.addEventListener("click", function(event) {
+            if (!searchContainer.contains(event.target)) {
+                searchResults.style.display = "none";
+            }
+        });
+
+        // Add event listener to search bar
+        searchBar.addEventListener("input", updateSuggestions);
+    });
+    </script>
 </head>
 <body>
     <div class="topnav">
@@ -598,7 +689,14 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="/hockey/players/">Players</a>
         <a href="/hockey/boxscores/">Box Scores</a>
         <a href="/hockey/teams/">Teams</a>
-    </div>    
+    </div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
+
+    
     <div class="header">
         <h1>Today's Probabilities and Projections</h1>
     </div>

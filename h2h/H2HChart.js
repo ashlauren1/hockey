@@ -179,3 +179,29 @@ function resetLine(stat, gameId, bettingLineId) {
     // Reset the current line and update the chart
     updateLine(stat, gameId, bettingLineId, originalLine);
 }
+
+function filterGames(stat, gameId, bettingLineId, numGames) {
+    const chart = window[`chart_${stat}_${gameId}_${bettingLineId}`];
+    const originalData = window[`allData_${stat}_${gameId}_${bettingLineId}`];
+
+    const filteredData = originalData.slice(-numGames);
+    const line = window[`Line_${stat}_${gameId}_${bettingLineId}`];
+
+    chart.data.labels = filteredData.map(d => formatLabel(d));
+    chart.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);
+    chart.data.datasets[0].backgroundColor = filteredData.map(d => (d.stat >= line ? '#16c049' : '#c01616'));
+    chart.update();
+}
+
+function filterBySeason(stat, gameId, bettingLineId, season) {
+    const chart = window[`chart_${stat}_${gameId}_${bettingLineId}`];
+    const originalData = window[`allData_${stat}_${gameId}_${bettingLineId}`];
+
+    const filteredData = originalData.filter(d => d.season === season);
+    const line = window[`Line_${stat}_${gameId}_${bettingLineId}`];
+
+    chart.data.labels = filteredData.map(d => formatLabel(d));
+    chart.data.datasets[0].data = filteredData.map(d => d.stat || 0.02);
+    chart.data.datasets[0].backgroundColor = filteredData.map(d => (d.stat >= line ? '#16c049' : '#c01616'));
+    chart.update();
+}

@@ -70,7 +70,7 @@ chart_html_template = """
             <span id="lineValue_{player_id}">{betting_line}</span>
         </div>
         <div class="chartButtons">
-            <button id="reset-line-btn_{player_id}" onclick="updateLine('{player_id}', {betting_line})" class="reset-line-btn">Reset Line</button>
+            <button id="reset-line-btn_{player_id}" onclick="resetLine('{player_id}', {default_betting_line})" class="reset-line-btn">Reset Line</button>
         </div>
     </div>
 </div>
@@ -140,7 +140,8 @@ for filename in os.listdir(html_dir):
             chart_data=chart_data,
             betting_line=default_betting_line,
             default_stat=default_stat,
-            team_options=team_options
+            team_options=team_options,
+            default_betting_line=default_betting_line
         )
         chart_soup = BeautifulSoup(chart_html, "html.parser")
         player_table.insert_before(chart_soup)

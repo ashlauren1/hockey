@@ -7,7 +7,6 @@ import json
 
 # File paths
 metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\gamelogs.csv"
-upcoming_games_path = r"C:\Users\ashle\Documents\Projects\hockey\data\games_thisWeek.csv"
 lines_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\todayLines.csv"
 output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\index.html"
 rosters_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\rosters.csv"
@@ -15,7 +14,6 @@ rosters_data = pd.read_csv(rosters_file_path)
 
 # Load data
 metrics_data = pd.read_csv(metrics_file_path,  parse_dates=["Date"], low_memory=False)
-upcoming_games_data = pd.read_csv(upcoming_games_path, low_memory=False)
 lines_data = pd.read_csv(lines_file_path)
 
 player_links = {f"{row['Player']} ({row['PlayerID']})".lower(): f"/hockey/players/{row['PlayerID']}.html" 
@@ -40,12 +38,11 @@ metrics_data[['G', 'A', 'PTS', 'SOG', 'HIT', 'BLK']] = metrics_data[['G', 'A', '
 metrics_data['TOI'] = pd.to_numeric(metrics_data['TOI'], errors='coerce')
 
 # Create a dictionary mapping GameID to Game
-game_mapping = upcoming_games_data.set_index('GameID')['Game'].to_dict()
+game_mapping = lines_data.set_index('GameID')['Game'].to_dict()
 
 # Filter for players in lines.csv
 lines_players = lines_data['PlayerID'].unique()
 metrics_data = metrics_data[metrics_data['PlayerID'].isin(lines_players)]
-upcoming_games_data = upcoming_games_data[upcoming_games_data['PlayerID'].isin(lines_players)]
 
 # Functions to calculate averages and ratios
 def calculate_average_stats(group):
@@ -57,13 +54,13 @@ def calculate_over_ratio(filtered_data, line, stat):
     return f"{over_count}/{total_games}" if total_games > 0 else "0/0"
 
 # Aggregated stats
-player_home_stats = metrics_data[metrics_data['Is_Home'] == 1].groupby('PlayerID').apply(calculate_average_stats).to_dict()
-player_away_stats = metrics_data[metrics_data['Is_Home'] == 0].groupby('PlayerID').apply(calculate_average_stats).to_dict()
-player_vs_opp_stats = metrics_data.groupby(['PlayerID', 'Opp']).apply(calculate_average_stats).to_dict()
+player_home_stats = metrics_data[metrics_data['Is_Home'] == 1].groupby('PlayerID').apply(calculate_average_stats, include_groups=False).to_dict()
+player_away_stats = metrics_data[metrics_data['Is_Home'] == 0].groupby('PlayerID').apply(calculate_average_stats, include_groups=False).to_dict()
+player_vs_opp_stats = metrics_data.groupby(['PlayerID', 'Opp']).apply(calculate_average_stats, include_groups=False).to_dict()
 
-team_home_stats = metrics_data[metrics_data['Is_Home'] == 1].groupby('Team').apply(calculate_average_stats).to_dict()
-team_away_stats = metrics_data[metrics_data['Is_Home'] == 0].groupby('Team').apply(calculate_average_stats).to_dict()
-team_vs_opp_stats = metrics_data.groupby(['Team', 'Opp']).apply(calculate_average_stats).to_dict()
+team_home_stats = metrics_data[metrics_data['Is_Home'] == 1].groupby('Team').apply(calculate_average_stats, include_groups=False).to_dict()
+team_away_stats = metrics_data[metrics_data['Is_Home'] == 0].groupby('Team').apply(calculate_average_stats, include_groups=False).to_dict()
+team_vs_opp_stats = metrics_data.groupby(['Team', 'Opp']).apply(calculate_average_stats, include_groups=False).to_dict()
 
 # Projections function
 def get_projected_stats(player_id, team, opp, is_home):
@@ -105,13 +102,13 @@ final_results = []
 columns = ['Game', 'Team', 'Player', 'Type', 'Stat', 'Line', 'Proj.', 'Diff.', 'Prob.', '2024-25', 'H2H', 'L5', 'L10', 'L20', '2023-24', 'All']
 
 # Process each game
-for _, game in tqdm(upcoming_games_data.iterrows(), total=upcoming_games_data.shape[0]):
+for _, game in tqdm(lines_data.iterrows(), total=lines_data.shape[0]):
     player_id = game['PlayerID']
     team = game['Team']
     is_home = game['Is_Home']
     opp = game['Opp']
     game_id = game['GameID']
-    game_display = game_mapping.get(game_id, game_id)
+    game_display = game_mapping.get(game['GameID'], game['GameID'])
     
     # Add the player-opponent pair to the set
     h2h_pairs.add((player_id, opp))
@@ -295,7 +292,6 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
         <a href="/hockey/players/" target="_blank">Players</a>
         <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
         <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/stats/" target="_blank">All Stats</a>
         <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
     </div>
     <div id="search-container">
@@ -545,6 +541,26 @@ document.addEventListener("DOMContentLoaded", function () {
             // For each value, create a checkbox
             const filterDiv = document.getElementById(`${colName.toLowerCase()}-filters`);
             if (filterDiv) {
+                filterDiv.innerHTML = "";
+                const allLabel = document.createElement('label');
+                const allCheckbox = document.createElement('input');
+                allCheckbox.type = 'checkbox';
+                allCheckbox.classList.add(`${colName.toLowerCase()}-filter-all`);
+                allCheckbox.checked = true;
+                allLabel.appendChild(allCheckbox);
+                allLabel.appendChild(document.createTextNode("All"));
+                filterDiv.appendChild(allLabel);
+
+            // Event listener to check/uncheck all checkboxes in this category
+            allCheckbox.addEventListener('change', function () {
+                const isChecked = allCheckbox.checked;
+                document.querySelectorAll(`.${colName.toLowerCase()}-filter`).forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                });
+                filterTable(); // Update table display based on new filter states
+            });
+
+                
                 values.forEach(value => {
                     const label = document.createElement('label');
                     const checkbox = document.createElement('input');
@@ -557,11 +573,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     filterDiv.appendChild(label);
 
                     // Add event listener to the checkbox
-                    checkbox.addEventListener('change', filterTable);
+                    checkbox.addEventListener('change', () => {
+                    // If any checkbox in the group is unchecked, uncheck the "All" checkbox
+                    if (!checkbox.checked) {
+                        allCheckbox.checked = false;
+                    } else {
+                        // Check if all individual boxes are selected to set "All" checkbox
+                        const allSelected = Array.from(document.querySelectorAll(`.${colName.toLowerCase()}-filter`))
+                            .every(cb => cb.checked);
+                        allCheckbox.checked = allSelected;
+                    }
+                    filterTable();
                 });
-            }
-        });
-    }
+            });
+        } else {
+            console.error(`Filter div with ID ${colName.toLowerCase()}-filters not found.`);
+        }
+    });
+}
+        
 
     // Filter table based on selected filters
     function filterTable() {
@@ -758,7 +788,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="/hockey/players/" target="_blank">Players</a>
         <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
         <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/stats/" target="_blank">All Stats</a>
         <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
     </div>
     <div id="search-container">
@@ -782,7 +811,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <tr><td style="width:8%;font-weight:700">Stats:</td><td><div id="stat-filters"></div></td></tr>
         </table>
     </div>
-    
+   
     <div><p style="width:95%; margin:auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
         <div id="result-container">
             <div id="result">Combined Probability:</div>

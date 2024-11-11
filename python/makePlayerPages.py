@@ -150,7 +150,6 @@ def create_player_directory(roster_data, output_file_path):
         <a href="/hockey/players/" target="_blank">Players</a>
         <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
         <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/stats/" target="_blank">All Stats</a>
         <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
     </div>
     <div id="search-container">
@@ -460,7 +459,6 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
         <a href="/hockey/players/" target="_blank">Players</a>
         <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
         <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/stats/" target="_blank">All Stats</a>
         <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
     </div>
         <div id="search-container">

@@ -1,13 +1,14 @@
 
-<!DOCTYPE html>
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <title>MACKENZIE MACEACHERN</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
 
-<html>
-<head>
-<title>MACKENZIE MACEACHERN</title>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="stylesheet.css" rel="stylesheet"/>
-<link href="/hockey/images/favicon.ico" rel="icon" type="image/x-icon"/>
-<script>
+
+        <script>
         document.addEventListener("DOMContentLoaded", function () {
             const table = document.getElementById("player-table");
             const headerRow = table.querySelector("thead tr:first-child");
@@ -234,311 +235,248 @@
     });
         
         </script>
-</head>
-<body>
-<div class="topnav">
-<a href="/hockey/" target="_blank">Projections</a>
-<a href="/hockey/players/" target="_blank">Players</a>
-<a href="/hockey/boxscores/" target="_blank">Box Scores</a>
-<a href="/hockey/teams/" target="_blank">Teams</a>
-<a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-</div>
-<div id="search-container">
-<input id="search-bar" placeholder="Search for a player or team..." type="text"/>
-<button id="search-button">Search</button>
-<div id="search-results"></div>
-</div>
-<div class="header">
-<h1>MACKENZIE MACEACHERN</h1>
-</div>
-<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
-<div id="player-container">
+        </head>
+        <body>
+    <div class="topnav">
+        <a href="/hockey/" target="_blank">Projections</a>
+        <a href="/hockey/players/" target="_blank">Players</a>
+        <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
+        <a href="/hockey/teams/" target="_blank">Teams</a>
+        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+    </div>
+        <div id="search-container">
+            <input type="text" id="search-bar" placeholder="Search for a player or team...">
+            <button id="search-button">Search</button>
+        <div id="search-results"></div>
+        </div>        
+        <div class="header">
+        <h1>MACKENZIE MACEACHERN</h1>
+        </div>
+        <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
 
-<div class="player-chart-container">
-<!-- Stat Selection Dropdown -->
-<div class="barChart-filters">
-<div class="barChartFilter">
-<label for="statSelector_maceama01">Stat:</label>
-<select id="statSelector_maceama01" onchange="updateStat('maceama01', this.value)">
-<option value="G">Goals</option>
-<option value="A">Assists</option>
-<option value="PTS">Points</option>
-<option value="SOG">Shots on Goal</option>
-<option value="HIT">Hits</option>
-<option value="BLK">Blocked Shots</option>
-<option value="TOI">Time on Ice</option>
-</select>
-</div>
-<div class="barChartFilter">
-<label for="teamFilter_maceama01">Opponent:</label>
-<select id="teamFilter_maceama01" onchange="applyFilters('maceama01')">
-<option value="all">All</option>
-<option value="CHI">CHI</option>
-<option value="COL">COL</option>
-<option value="DAL">DAL</option>
-<option value="FLA">FLA</option>
-<option value="OTT">OTT</option>
-<option value="PIT">PIT</option>
-<option value="TBL">TBL</option>
-</select>
-</div>
-<div class="barChartFilter">
-<label for="homeAwayFilter_maceama01">Home/Away:</label>
-<select id="homeAwayFilter_maceama01" onchange="applyFilters('maceama01')">
-<option value="all">All</option>
-<option value="home">Home</option>
-<option value="away">Away</option>
-</select>
-</div>
-<div class="barChartFilter">
-<label for="startDate_maceama01">Start:</label>
-<input id="startDate_maceama01" onchange="applyFilters('maceama01')" type="date"/>
-</div>
-<div class="barChartFilter">
-<label for="endDate_maceama01">End:</label>
-<input id="endDate_maceama01" onchange="applyFilters('maceama01')" type="date"/>
-</div>
-</div>
-<canvas class="player-barChart" id="chart_maceama01"></canvas>
-<div class="filter-buttons">
-<button id="L5_maceama01" onclick="showRecentGames('maceama01', 5)">L5</button>
-<button id="L10_maceama01" onclick="showRecentGames('maceama01', 10)">L10</button>
-<button id="L20_maceama01" onclick="showRecentGames('maceama01', 20)">L20</button>
-<button id="202324_maceama01" onclick="filterBySeason('maceama01', '2023-24')">2023-24</button>
-<button id="202425_maceama01" onclick="filterBySeason('maceama01', '2024-25')">2024-25</button>
-<button id="showAll_maceama01" onclick="showAllGames('maceama01')">All</button>
-<button id="TOI_maceama01" onclick="toggleTOIOverlay('maceama01')">Toggle TOI</button>
-<button class="clear-chart-filters" id="clearFiltersBtn_maceama01" onclick="clearFilters('maceama01')">Clear Filters</button>
-</div>
-<div class="slider-container">
-<div id="line-slider">
-<label for="lineSlider_maceama01">Change Line:</label>
-<input id="lineSlider_maceama01" max="30" min="0" oninput="updateLine('maceama01', this.value)" step="0.25" type="range" value="0.5"/>
-<span id="lineValue_maceama01">0.5</span>
-</div>
-<div class="chartButtons">
-<button class="reset-line-btn" id="reset-line-btn_maceama01" onclick="resetLine('maceama01', 0.5)">Reset Line</button>
-</div>
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
-<script src="chartScript.js"></script>
-<script>
-    // Initialize the chart with player-specific data by calling a function from chart_logic.js
-    initializeChart("maceama01", [{'date': '2023-12-14', 'opponent': 'OTT', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.8}, {'date': '2023-12-16', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-12-19', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.7}, {'date': '2023-12-21', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.68}, {'date': '2023-12-23', 'opponent': 'CHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.22}, {'date': '2023-12-27', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.5}, {'date': '2023-12-29', 'opponent': 'COL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 5.12}, {'date': '2023-12-30', 'opponent': 'PIT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 5.98}], 0.5, "G");
-</script>
-<div id="table-container">
-<span class="table-button-container">
-<span class="caption">Gamelog</span>
-<button id="toggle-selection-btn">Show Selected Only</button>
-<button id="clear-filters-btn">Remove Filters</button>
-<button id="clear-all-btn">Clear All</button>
-</span>
-<table id="player-table">
-<colgroup>
-<col style="width:70px"/>
-<col style="width:94px"/>
-<col span="17" style="width:48px"/>
-</colgroup>
-<thead>
-<tr>
-<th>Season</th>
-<th>Date</th>
-<th>Team</th>
-<th></th>
-<th>Opp</th>
-<th>G</th>
-<th>A</th>
-<th>PTS</th>
-<th>SOG</th>
-<th>HIT</th>
-<th>BLK</th>
-<th>TOI</th>
-<th>PIM</th>
-<th>EVG</th>
-<th>PPG</th>
-<th>SHG</th>
-<th>EVA</th>
-<th>PPA</th>
-<th>SHA</th>
-</tr>
-<tr id="filter-row">
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312300PIT.html" target="_blank">12/30/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>5.98</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312290STL.html" target="_blank">12/29/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>5.12</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312270STL.html" target="_blank">12/27/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/DAL.html" target="_blank">DAL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>0</td>
-<td>6.50</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312230STL.html" target="_blank">12/23/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/CHI.html" target="_blank">CHI</a></td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>7.22</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312210FLA.html" target="_blank">12/21/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/FLA.html" target="_blank">FLA</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>9.68</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312190TBL.html" target="_blank">12/19/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/TBL.html" target="_blank">TBL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>11.70</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312160STL.html" target="_blank">12/16/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/DAL.html" target="_blank">DAL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>0</td>
-<td>7.95</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312140STL.html" target="_blank">12/14/2023</a></td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>4</td>
-<td>0</td>
-<td>8.80</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="footer"></div>
-</body>
-</html>
+        <div id="player-container">
+        
+        <div id="table-container">
+        <span class="table-button-container">
+		<span class="caption">Gamelog</span>
+            <button id="toggle-selection-btn">Show Selected Only</button>
+            <button id="clear-filters-btn">Remove Filters</button>
+            <button id="clear-all-btn">Clear All</button>
+        </span>
+            <table id="player-table">
+            <colgroup>
+            <col style="width:70px">
+            <col style="width:94px">
+            <col span="17" style="width:48px">
+            </colgroup>
+                <thead>
+                    <tr>
+                        <th>Season</th>
+                        <th>Date</th>
+                        <th>Team</th>
+                        <th></th>
+                        <th>Opp</th>
+                        <th>G</th>
+                        <th>A</th>
+                        <th>PTS</th>
+                        <th>SOG</th>
+                        <th>HIT</th>
+                        <th>BLK</th>
+                        <th>TOI</th>
+                        <th>PIM</th>
+                        <th>EVG</th>
+                        <th>PPG</th>
+                        <th>SHG</th>
+                        <th>EVA</th>
+                        <th>PPA</th>
+                        <th>SHA</th>
+                    </tr>
+                <tr id="filter-row">
+                </tr>
+            </thead>
+            <tbody>
+        
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312300PIT.html" target="_blank">12/30/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>@</td>
+                    <td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>5.98</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312290STL.html" target="_blank">12/29/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>vs</td>
+                    <td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>5.12</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312270STL.html" target="_blank">12/27/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>vs</td>
+                    <td><a href="/hockey/teams/DAL.html" target="_blank">DAL</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>6.50</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312230STL.html" target="_blank">12/23/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>vs</td>
+                    <td><a href="/hockey/teams/CHI.html" target="_blank">CHI</a></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>7.22</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312210FLA.html" target="_blank">12/21/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>@</td>
+                    <td><a href="/hockey/teams/FLA.html" target="_blank">FLA</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>9.68</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312190TBL.html" target="_blank">12/19/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>@</td>
+                    <td><a href="/hockey/teams/TBL.html" target="_blank">TBL</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>11.70</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312160STL.html" target="_blank">12/16/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>vs</td>
+                    <td><a href="/hockey/teams/DAL.html" target="_blank">DAL</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>7.95</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                <tr>
+                    <td style="text-align:left">2023-24</td>
+                    <td style="text-align:left"><a href="/hockey/boxscores/202312140STL.html" target="_blank">12/14/2023</a></td>
+                    <td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+                    <td>vs</td>
+                    <td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>4</td>
+                    <td>0</td>
+                    <td>8.80</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            
+                </tbody>
+            </table>
+            </div>
+            </div>
+            <div class="footer"></div>
+        </body>
+        </html>
+        

@@ -47,15 +47,16 @@ chart_script_template = """
     
     <canvas id="{stat}_{game_id}_{betting_line_id}_chart" class="barChart"></canvas>
     
-    <div class="filter-buttons">
-        <button onclick="filterGames('{stat}', '{game_id}', '{betting_line_id}', 5)">L5</button>
-        <button onclick="filterGames('{stat}', '{game_id}', '{betting_line_id}', 10)">L10 Games</button>
-        <button onclick="filterGames('{stat}', '{game_id}', '{betting_line_id}', 20)">L20 Games</button>
-        <button onclick="filterBySeason('{stat}', '{game_id}', '{betting_line_id}', '2023-24')">2023-24</button>
-        <button onclick="filterBySeason('{stat}', '{game_id}', '{betting_line_id}', '2024-25')">2024-25</button>
-        <button onclick="filterAll('{stat}', '{game_id}', '{betting_line_id}')">All</button>
-        <button onclick="clearFilters('{stat}', '{game_id}', '{betting_line_id}')" class="clear-chart-filters">Clear Filters</button>
-    </div>
+<div class="filter-buttons">
+    <button onclick="filterGames('{stat}', '{game_id}', '{betting_line_id}', 5)">L5</button>
+    <button onclick="filterGames('{stat}', '{game_id}', '{betting_line_id}', 10)">L10 Games</button>
+    <button onclick="filterGames('{stat}', '{game_id}', '{betting_line_id}', 20)">L20 Games</button>
+    <button onclick="filterBySeason('{stat}', '{game_id}', '{betting_line_id}', '2023-24')">2023-24</button>
+    <button onclick="filterBySeason('{stat}', '{game_id}', '{betting_line_id}', '2024-25')">2024-25</button>
+    <button onclick="filterAll('{stat}', '{game_id}', '{betting_line_id}')">All</button>
+    <button onclick="clearFilters('{stat}', '{game_id}', '{betting_line_id}')" class="clear-chart-filters">Clear Filters</button>
+</div>
+
     
     <div class="slider-container">
         <div id="line-slider">

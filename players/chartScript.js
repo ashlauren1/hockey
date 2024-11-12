@@ -22,12 +22,15 @@ function initializeChart(playerId, chartData, bettingLine, defaultStat) {
                 borderColor: getBorderColors(processedData, defaultStat, bettingLine, playerId),
                 borderWidth: 0.15,
                 barPercentage: 1.0,
-                categoryPercentage: 1.0
+                categoryPercentage: 1.0,
+				yAxisID: 'y',
+				stack: 'combined'
             }]
         },
         options: getChartOptions(playerId, bettingLine, defaultStat)
     });
 }
+
 
 function formatLabel(data) {
     const opponentText = data.location === 'home' ? 'vs' : '@';
@@ -84,7 +87,18 @@ function getChartOptions(playerId, line, stat) {
 				beginAtZero: true, 
                 stepSize: 1.0 
             },
-            
+            y1: { 
+				display: false, // Hidden by default until TOI is toggled on
+                position: 'right',
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'TOI'
+                },
+                grid: {
+                    drawOnChartArea: false // Avoids overlapping grid lines
+                }
+			},
 			x: { 
                 grid: { 
                     display: false 
@@ -154,6 +168,7 @@ function updateLine(playerId, newLine) {
 
 // Apply filters (team, home/away, date range) to the chart
 // Modified applyFilters function
+// Modified applyFilters function
 function applyFilters(playerId) {
     const originalData = window[`allData_${playerId}`]; // Use the original data as the base
     const stat = window[`currentStat_${playerId}`];
@@ -176,16 +191,16 @@ function applyFilters(playerId) {
                                 (homeAwayFilter === 'away' && d.location === 'away');
         const isDateInRange = (!startDate || new Date(d.date) >= new Date(startDate)) &&
                               (!endDate || new Date(d.date) <= new Date(endDate));
-        const isSeasonMatch = !seasonFilter || d.season === seasonFilter;
-
-        return isTeamMatch && isLocationMatch && isDateInRange && isSeasonMatch;
+        return isTeamMatch && isLocationMatch && isDateInRange;
     });
 
     // If recent games filter is active, slice the data to the last N games after other filters
     if (recentGamesFilter) {
         filteredData = filteredData.slice(-recentGamesFilter);
+    } else if (seasonFilter) {
+        filteredData = filteredData.filter(d => d.season === seasonFilter);
     }
-
+	
     // Update chart with the filtered data and reset the colors
     const chart = window[`chart_${playerId}`];
     chart.data.labels = filteredData.map(d => formatLabel(d));
@@ -197,12 +212,14 @@ function applyFilters(playerId) {
 // Modified showRecentGames to work with the main applyFilters function
 function showRecentGames(playerId, numGames) {
     window[`recentGames_${playerId}`] = numGames; // Store recent games filter
+	window[`seasonFilter_${playerId}`] = null;
     applyFilters(playerId); // Apply all filters together
 }
 
 // Modified filterBySeason to work with the main applyFilters function
 function filterBySeason(playerId, season) {
     window[`seasonFilter_${playerId}`] = season; // Store season filter
+	window[`recentGames_${playerId}`] = null;
     applyFilters(playerId); // Apply all filters together
 }
 
@@ -212,6 +229,7 @@ function showAllGames(playerId) {
     window[`seasonFilter_${playerId}`] = null; // Clear season filter
     applyFilters(playerId); // Apply all filters with no recent or season constraints
 }
+
 
 
 // Reset the filters and the betting line
@@ -277,4 +295,41 @@ function resetLine(playerId, defaultLine) {
     
     // Set the slider's position to the default value
     document.getElementById(`lineSlider_${playerId}`).value = defaultLine;
+}
+
+function toggleTOIOverlay(playerId) {
+    const chart = window[`chart_${playerId}`];
+    const data = window[`allData_${playerId}`];
+
+    // Check if the TOI overlay already exists
+    const toiDatasetIndex = chart.data.datasets.findIndex(dataset => dataset.label === "TOI Overlay");
+
+    if (toiDatasetIndex === -1) {
+        // Add TOI overlay as a transparent line behind the bars
+        chart.data.datasets.push({
+            label: "TOI Overlay",
+            data: data.map(d => d.TOI || 0),
+            type: 'bar',                                  // Use line type for TOI overlay
+            backgroundColor: "rgba(128, 128, 128, 0.1)",   // Light grey for TOI
+            borderColor: "rgba(128, 128, 128, 0.4)",       // Darker grey line
+            pointRadius: 0,
+            fill: true, 
+            yAxisID: 'y1',
+            order: 0,
+			borderWidth: 0.15,
+            barPercentage: 1.0,
+            categoryPercentage: 1.0,
+			stack: 'combined'
+        });
+        chart.options.scales.y1.display = true; // Show the secondary Y-axis for TOI
+        console.log("TOI overlay added as a transparent line for player", playerId);
+    } else {
+        // Remove TOI overlay if it exists
+        chart.data.datasets.splice(toiDatasetIndex, 1);
+        chart.options.scales.y1.display = false; // Hide the secondary Y-axis when TOI is removed
+        console.log("TOI overlay removed for player", playerId);
+    }
+
+    // Update chart to reflect changes
+    chart.update();
 }

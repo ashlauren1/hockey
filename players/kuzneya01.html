@@ -1,14 +1,13 @@
 
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <title>YAN KUZNETSOV</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="stylesheet.css">
-        <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+<!DOCTYPE html>
 
-
-        <script>
+<html>
+<head>
+<title>YAN KUZNETSOV</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="stylesheet.css" rel="stylesheet"/>
+<link href="/hockey/images/favicon.ico" rel="icon" type="image/x-icon"/>
+<script>
         document.addEventListener("DOMContentLoaded", function () {
             const table = document.getElementById("player-table");
             const headerRow = table.querySelector("thead tr:first-child");
@@ -235,94 +234,158 @@
     });
         
         </script>
-        </head>
-        <body>
-    <div class="topnav">
-        <a href="/hockey/" target="_blank">Projections</a>
-        <a href="/hockey/players/" target="_blank">Players</a>
-        <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
-        <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-    </div>
-        <div id="search-container">
-            <input type="text" id="search-bar" placeholder="Search for a player or team...">
-            <button id="search-button">Search</button>
-        <div id="search-results"></div>
-        </div>        
-        <div class="header">
-        <h1>YAN KUZNETSOV</h1>
-        </div>
-        <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
+</head>
+<body>
+<div class="topnav">
+<a href="/hockey/" target="_blank">Projections</a>
+<a href="/hockey/players/" target="_blank">Players</a>
+<a href="/hockey/boxscores/" target="_blank">Box Scores</a>
+<a href="/hockey/teams/" target="_blank">Teams</a>
+<a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+</div>
+<div id="search-container">
+<input id="search-bar" placeholder="Search for a player or team..." type="text"/>
+<button id="search-button">Search</button>
+<div id="search-results"></div>
+</div>
+<div class="header">
+<h1>YAN KUZNETSOV</h1>
+</div>
+<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
+<div id="player-container">
 
-        <div id="player-container">
-        
-        <div id="table-container">
-        <span class="table-button-container">
-		<span class="caption">Gamelog</span>
-            <button id="toggle-selection-btn">Show Selected Only</button>
-            <button id="clear-filters-btn">Remove Filters</button>
-            <button id="clear-all-btn">Clear All</button>
-        </span>
-            <table id="player-table">
-            <colgroup>
-            <col style="width:70px">
-            <col style="width:94px">
-            <col span="17" style="width:48px">
-            </colgroup>
-                <thead>
-                    <tr>
-                        <th>Season</th>
-                        <th>Date</th>
-                        <th>Team</th>
-                        <th></th>
-                        <th>Opp</th>
-                        <th>G</th>
-                        <th>A</th>
-                        <th>PTS</th>
-                        <th>SOG</th>
-                        <th>HIT</th>
-                        <th>BLK</th>
-                        <th>TOI</th>
-                        <th>PIM</th>
-                        <th>EVG</th>
-                        <th>PPG</th>
-                        <th>SHG</th>
-                        <th>EVA</th>
-                        <th>PPA</th>
-                        <th>SHA</th>
-                    </tr>
-                <tr id="filter-row">
-                </tr>
-            </thead>
-            <tbody>
-        
-                <tr>
-                    <td style="text-align:left">2023-24</td>
-                    <td style="text-align:left"><a href="/hockey/boxscores/202401090CGY.html" target="_blank">1/9/2024</a></td>
-                    <td><a href="/hockey/teams/CGY.html" target="_blank">CGY</a></td>
-                    <td>vs</td>
-                    <td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>11.97</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-            
-                </tbody>
-            </table>
-            </div>
-            </div>
-            <div class="footer"></div>
-        </body>
-        </html>
-        
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_kuzneya01">Stat:</label>
+<select id="statSelector_kuzneya01" onchange="updateStat('kuzneya01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_kuzneya01">Opponent:</label>
+<select id="teamFilter_kuzneya01" onchange="applyFilters('kuzneya01')">
+<option value="all">All</option>
+<option value="OTT">OTT</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_kuzneya01">Home/Away:</label>
+<select id="homeAwayFilter_kuzneya01" onchange="applyFilters('kuzneya01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_kuzneya01">Start:</label>
+<input id="startDate_kuzneya01" onchange="applyFilters('kuzneya01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_kuzneya01">End:</label>
+<input id="endDate_kuzneya01" onchange="applyFilters('kuzneya01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_kuzneya01"></canvas>
+<div class="filter-buttons">
+<button id="L5_kuzneya01" onclick="showRecentGames('kuzneya01', 5)">L5</button>
+<button id="L10_kuzneya01" onclick="showRecentGames('kuzneya01', 10)">L10</button>
+<button id="L20_kuzneya01" onclick="showRecentGames('kuzneya01', 20)">L20</button>
+<button id="202324_kuzneya01" onclick="filterBySeason('kuzneya01', '2023-24')">2023-24</button>
+<button id="202425_kuzneya01" onclick="filterBySeason('kuzneya01', '2024-25')">2024-25</button>
+<button id="showAll_kuzneya01" onclick="showAllGames('kuzneya01')">All</button>
+<button id="TOI_kuzneya01" onclick="toggleTOIOverlay('kuzneya01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_kuzneya01" onclick="clearFilters('kuzneya01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_kuzneya01">Change Line:</label>
+<input id="lineSlider_kuzneya01" max="30" min="0" oninput="updateLine('kuzneya01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_kuzneya01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_kuzneya01" onclick="resetLine('kuzneya01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("kuzneya01", [{'date': '2024-01-09', 'opponent': 'OTT', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 11.97}], 0.5, "G");
+</script>
+<div id="table-container">
+<span class="table-button-container">
+<span class="caption">Gamelog</span>
+<button id="toggle-selection-btn">Show Selected Only</button>
+<button id="clear-filters-btn">Remove Filters</button>
+<button id="clear-all-btn">Clear All</button>
+</span>
+<table id="player-table">
+<colgroup>
+<col style="width:70px"/>
+<col style="width:94px"/>
+<col span="17" style="width:48px"/>
+</colgroup>
+<thead>
+<tr>
+<th>Season</th>
+<th>Date</th>
+<th>Team</th>
+<th></th>
+<th>Opp</th>
+<th>G</th>
+<th>A</th>
+<th>PTS</th>
+<th>SOG</th>
+<th>HIT</th>
+<th>BLK</th>
+<th>TOI</th>
+<th>PIM</th>
+<th>EVG</th>
+<th>PPG</th>
+<th>SHG</th>
+<th>EVA</th>
+<th>PPA</th>
+<th>SHA</th>
+</tr>
+<tr id="filter-row">
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202401090CGY.html" target="_blank">1/9/2024</a></td>
+<td><a href="/hockey/teams/CGY.html" target="_blank">CGY</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>11.97</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="footer"></div>
+</body>
+</html>

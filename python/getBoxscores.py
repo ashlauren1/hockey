@@ -19,13 +19,11 @@ def fetch_webpage(url):
 
 # Define the game IDs, home teams, and away teams
 games_info = { 
-    "202411120TOR": ("TOR", "OTT"),
-    "202411120FLA": ("FLA", "NJD"),
-    "202411120NYR": ("NYR", "WPG"),
-    "202411120STL": ("STL", "BOS"),
-    "202411120EDM": ("EDM", "NYI"),
-    "202411120VAN": ("VAN", "CGY"),
-    "202411120SEA": ("SEA", "CBJ")
+    "202411130PIT": ("PIT", "DET"),
+    "202411130WSH": ("WSH", "TOR"),
+    "202411130UTA": ("UTA", "CAR"),
+    "202411130COL": ("COL", "LAK"),
+    "202411130ANA": ("ANA", "VEG")
 }
 
 
@@ -88,7 +86,7 @@ for game_id, (home_team, away_team) in games_info.items():
                 df.insert(2, "Away Team", away_team)
 
                 # Extract Player IDs from 'data-append-csv' attribute in <td> tags
-                player_ids = [cell.get("data-append-csv") for cell in table.select("tbody tr td[data-append-csv]")]
+                player_ids = [cell.get("data-append-csv") for cell in table.select("tbody tr th[data-append-csv]")]
                 df["Player ID"] = player_ids + [None] * (len(df) - len(player_ids))  # Handle rows without Player IDs
 
                 adv_skaters_data.append(df)

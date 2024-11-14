@@ -303,6 +303,7 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
         <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
         <a href="/hockey/teams/" target="_blank">Teams</a>
         <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
     <div id="search-container">
         <input type="text" id="search-bar" placeholder="Search players and teams">
@@ -827,6 +828,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
         <a href="/hockey/teams/" target="_blank">Teams</a>
         <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
     <div id="search-container">
         <input type="text" id="search-bar" placeholder="Search for a player or team...">

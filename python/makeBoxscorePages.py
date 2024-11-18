@@ -141,6 +141,7 @@ def create_game_directory(game_data, output_file_path):
         document.addEventListener("DOMContentLoaded", async function () {
         const searchBar = document.getElementById("search-bar");
         const searchResults = document.getElementById("search-results");
+        const searchButton = document.getElementById("search-button");
 
         let playerLinks = {};
         let teamLinks = {};
@@ -163,17 +164,16 @@ def create_game_directory(game_data, output_file_path):
             // Combine players and teams for search
             const combinedLinks = { ...playerLinks, ...teamLinks };
             const matchingEntries = Object.entries(combinedLinks)
-                .filter(([name]) => name.includes(query))  // Matches on both name and ID
-                .slice(0, 5); // Limit to top 5
+                .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
+                .slice(0, 10); // Limit to top 10
+
 
             matchingEntries.forEach(([name, url]) => {
                 const resultItem = document.createElement("div");
                 resultItem.classList.add("suggestion");
 
                 // Proper case for names
-                resultItem.textContent = name.split(" ")
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ");
+                resultItem.textContent = name;
 
                 resultItem.addEventListener("click", () => {
                     window.open(url, "_self");
@@ -181,26 +181,42 @@ def create_game_directory(game_data, output_file_path):
                 searchResults.appendChild(resultItem);
             });
 
-            if (matchingEntries.length > 0) {
-                searchResults.style.display = "block"; // Show results if matches are found
-            } else {
-                const noResultItem = document.createElement("div");
-                noResultItem.classList.add("no-result");
-                noResultItem.textContent = "No results found.";
-                searchResults.appendChild(noResultItem);
-                searchResults.style.display = "block";
-            }
+        if (matchingEntries.length > 0) {
+            searchResults.style.display = "block"; // Show results if matches are found
+        } else {
+            const noResultItem = document.createElement("div");
+            noResultItem.classList.add("no-result");
+            noResultItem.textContent = "No results found.";
+            searchResults.appendChild(noResultItem);
+            searchResults.style.display = "block";
         }
-        
-        document.addEventListener("click", function(event) {
-            if (!searchContainer.contains(event.target)) {
-                searchResults.style.display = "none";
-            }
-        });
-
-        // Add event listener to search bar
-        searchBar.addEventListener("input", updateSuggestions);
+    }
+    
+    document.addEventListener("click", function(event) {
+        if (!searchResults.contains(event.target) && event.target !== searchBar) {
+            searchResults.style.display = "none";
+        }
     });
+
+    // Add event listener to search bar
+    searchBar.addEventListener("input", updateSuggestions);
+    
+    function redirectToSearchResults() {
+        const query = searchBar.value.trim().toLowerCase();;
+        if (query) {
+            window.location.href = `/hockey/search_results.html?query=${encodeURIComponent(query)}`;
+        }
+    }
+
+    // Add event listeners for search
+    searchBar.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            redirectToSearchResults();
+        }
+    });
+
+    searchButton.addEventListener("click", redirectToSearchResults);
+});
         </script>
     </head>
     <body>
@@ -446,9 +462,10 @@ def create_game_boxscores(gamelogs_data, output_dir):
                 }}
             }}
         }});
-            document.addEventListener("DOMContentLoaded", async function () {{
+        document.addEventListener("DOMContentLoaded", async function () {{
             const searchBar = document.getElementById("search-bar");
             const searchResults = document.getElementById("search-results");
+            const searchButton = document.getElementById("search-button");
 
             let playerLinks = {{}};
             let teamLinks = {{}};
@@ -471,17 +488,15 @@ def create_game_boxscores(gamelogs_data, output_dir):
                 // Combine players and teams for search
                 const combinedLinks = {{ ...playerLinks, ...teamLinks }};
                 const matchingEntries = Object.entries(combinedLinks)
-                    .filter(([name]) => name.includes(query))  // Matches on both name and ID
-                    .slice(0, 5); // Limit to top 5
+                    .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
+                    .slice(0, 10); // Limit to top 10
 
                 matchingEntries.forEach(([name, url]) => {{
                     const resultItem = document.createElement("div");
                     resultItem.classList.add("suggestion");
 
                     // Proper case for names
-                    resultItem.textContent = name.split(" ")
-                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(" ");
+                    resultItem.textContent = name;
 
                     resultItem.addEventListener("click", () => {{
                         window.open(url, "_self");
@@ -501,13 +516,29 @@ def create_game_boxscores(gamelogs_data, output_dir):
             }}
             
             document.addEventListener("click", function(event) {{
-                if (!searchContainer.contains(event.target)) {{
+                if (!searchResults.contains(event.target) && event.target !== searchBar) {{
                     searchResults.style.display = "none";
                 }}
             }});
 
             // Add event listener to search bar
             searchBar.addEventListener("input", updateSuggestions);
+            
+            function redirectToSearchResults() {{
+            const query = searchBar.value.trim().toLowerCase();;
+            if (query) {{
+                window.location.href = `/hockey/search_results.html?query=${{encodeURIComponent(query)}}`;
+            }}
+        }}
+
+        // Add event listeners for search
+        searchBar.addEventListener("keypress", function (e) {{
+            if (e.key === "Enter") {{
+                redirectToSearchResults();
+            }}
+        }});
+
+        searchButton.addEventListener("click", redirectToSearchResults);
     }});
         
         </script>

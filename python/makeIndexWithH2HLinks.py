@@ -10,18 +10,17 @@ metrics_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\gamelogs.csv
 lines_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\todayLines.csv"
 output_file_path = r"C:\Users\ashle\Documents\Projects\hockey\index.html"
 rosters_file_path = r"C:\Users\ashle\Documents\Projects\hockey\data\rosters.csv"
-rosters_data = pd.read_csv(rosters_file_path)
 
-# Load data
+rosters_data = pd.read_csv(rosters_file_path)
 metrics_data = pd.read_csv(metrics_file_path,  parse_dates=["Date"], low_memory=False)
 lines_data = pd.read_csv(lines_file_path)
 
-player_links = {f"{row['Player']} ({row['PlayerID']})".lower(): f"/hockey/players/{row['PlayerID']}.html" 
+player_links = {f"{row['Player']} ({row['PlayerID']})": f"/hockey/players/{row['PlayerID']}.html" 
                 for _, row in rosters_data.iterrows()}
 
-
-team_links = {row['Team'].lower(): f"/hockey/teams/{row['TeamID']}.html" 
+team_links = {row['Team']: f"/hockey/teams/{row['TeamID']}.html" 
               for _, row in rosters_data.drop_duplicates('TeamID').iterrows()}
+
 
 # Write out to JSON with proper formatting
 with open("players.json", "w") as f:
@@ -232,6 +231,7 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
     document.addEventListener("DOMContentLoaded", async function () {{
         const searchBar = document.getElementById("search-bar");
         const searchResults = document.getElementById("search-results");
+        const searchButton = document.getElementById("search-button");
 
         let playerLinks = {{}};
         let teamLinks = {{}};
@@ -254,17 +254,15 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
             // Combine players and teams for search
             const combinedLinks = {{ ...playerLinks, ...teamLinks }};
             const matchingEntries = Object.entries(combinedLinks)
-                .filter(([name]) => name.includes(query))  // Matches on both name and ID
-                .slice(0, 5); // Limit to top 5
+                .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
+                .slice(0, 10); // Limit to top 10
 
             matchingEntries.forEach(([name, url]) => {{
                 const resultItem = document.createElement("div");
                 resultItem.classList.add("suggestion");
 
                 // Proper case for names
-                resultItem.textContent = name.split(" ")
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ");
+                resultItem.textContent = name;
 
                 resultItem.addEventListener("click", () => {{
                     window.open(url, "_self");
@@ -284,13 +282,29 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
         }}
         
         document.addEventListener("click", function(event) {{
-            if (!searchContainer.contains(event.target)) {{
+            if (!searchResults.contains(event.target) && event.target !== searchBar) {{
                 searchResults.style.display = "none";
             }}
         }});
 
         // Add event listener to search bar
         searchBar.addEventListener("input", updateSuggestions);
+        
+        function redirectToSearchResults() {{
+        const query = searchBar.value.trim().toLowerCase();;
+        if (query) {{
+            window.location.href = `/hockey/search_results.html?query=${{encodeURIComponent(query)}}`;
+        }}
+    }}
+
+    // Add event listeners for search
+    searchBar.addEventListener("keypress", function (e) {{
+        if (e.key === "Enter") {{
+            redirectToSearchResults();
+        }}
+    }});
+
+    searchButton.addEventListener("click", redirectToSearchResults);
 }});
     </script>
     
@@ -759,6 +773,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("DOMContentLoaded", async function () {
         const searchBar = document.getElementById("search-bar");
         const searchResults = document.getElementById("search-results");
+        const searchButton = document.getElementById("search-button");
 
         let playerLinks = {};
         let teamLinks = {};
@@ -781,17 +796,16 @@ document.addEventListener("DOMContentLoaded", function () {
             // Combine players and teams for search
             const combinedLinks = { ...playerLinks, ...teamLinks };
             const matchingEntries = Object.entries(combinedLinks)
-                .filter(([name]) => name.includes(query))  // Matches on both name and ID
-                .slice(0, 5); // Limit to top 5
+                .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
+                .slice(0, 10); // Limit to top 10
+
 
             matchingEntries.forEach(([name, url]) => {
                 const resultItem = document.createElement("div");
                 resultItem.classList.add("suggestion");
 
                 // Proper case for names
-                resultItem.textContent = name.split(" ")
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ");
+                resultItem.textContent = name;
 
                 resultItem.addEventListener("click", () => {
                     window.open(url, "_self");
@@ -799,26 +813,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 searchResults.appendChild(resultItem);
             });
 
-            if (matchingEntries.length > 0) {
-                searchResults.style.display = "block"; // Show results if matches are found
-            } else {
-                const noResultItem = document.createElement("div");
-                noResultItem.classList.add("no-result");
-                noResultItem.textContent = "No results found.";
-                searchResults.appendChild(noResultItem);
-                searchResults.style.display = "block";
-            }
+        if (matchingEntries.length > 0) {
+            searchResults.style.display = "block"; // Show results if matches are found
+        } else {
+            const noResultItem = document.createElement("div");
+            noResultItem.classList.add("no-result");
+            noResultItem.textContent = "No results found.";
+            searchResults.appendChild(noResultItem);
+            searchResults.style.display = "block";
         }
-        
-        document.addEventListener("click", function(event) {
-            if (!searchContainer.contains(event.target)) {
-                searchResults.style.display = "none";
-            }
-        });
-
-        // Add event listener to search bar
-        searchBar.addEventListener("input", updateSuggestions);
+    }
+    
+    document.addEventListener("click", function(event) {
+        if (!searchResults.contains(event.target) && event.target !== searchBar) {
+            searchResults.style.display = "none";
+        }
     });
+
+    // Add event listener to search bar
+    searchBar.addEventListener("input", updateSuggestions);
+    
+    function redirectToSearchResults() {
+        const query = searchBar.value.trim().toLowerCase();;
+        if (query) {
+            window.location.href = `/hockey/search_results.html?query=${encodeURIComponent(query)}`;
+        }
+    }
+
+    // Add event listeners for search
+    searchBar.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            redirectToSearchResults();
+        }
+    });
+
+    searchButton.addEventListener("click", redirectToSearchResults);
+});
     </script>
 </head>
 <body>

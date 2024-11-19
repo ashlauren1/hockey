@@ -898,6 +898,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div id="result-container">
             <div id="result">Combined Probability:</div>
         </div>
+        <p style="font-size:11px" class="secret"><a href="https://ashlauren1.github.io/rings/" target="_blank">rings</a></p>
         <div class="button-container">
             <button id="toggle-selection-btn">Show Selected Only</button>
             <button id="clear-filters-btn">Remove Filters</button>

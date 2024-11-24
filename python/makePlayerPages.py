@@ -504,10 +504,11 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
         <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-	<div id="search-container">
-		<input type="text" id="search-bar" placeholder="Search for a player or team...">
-		<button id="search-button">Search</button>
-	</div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
 	<div class="header">
         <h1>{player_name}</h1>
     </div>

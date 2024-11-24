@@ -269,6 +269,7 @@
 <div id="search-container">
 <input id="search-bar" placeholder="Search for a player or team..." type="text"/>
 <button id="search-button">Search</button>
+<div id="search-results"></div>
 </div>
 <div class="header">
 <h1>WILL SMITH</h1>
@@ -325,6 +326,7 @@
 <select id="teamFilter_smithwi01" onchange="applyFilters('smithwi01')">
 <option value="all">All</option>
 <option value="ANA">ANA</option>
+<option value="BUF">BUF</option>
 <option value="CBJ">CBJ</option>
 <option value="CHI">CHI</option>
 <option value="COL">COL</option>
@@ -384,7 +386,7 @@
 <script src="chartScript.js"></script>
 <script>
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
-    initializeChart("smithwi01", [{'date': '2024-10-10', 'opponent': 'STL', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 13.68}, {'date': '2024-10-12', 'opponent': 'ANA', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 13.08}, {'date': '2024-10-15', 'opponent': 'DAL', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 10.17}, {'date': '2024-10-17', 'opponent': 'CHI', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 19.15}, {'date': '2024-10-20', 'opponent': 'COL', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 14.72}, {'date': '2024-10-22', 'opponent': 'ANA', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 12.93}, {'date': '2024-10-26', 'opponent': 'VEG', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 13.07}, {'date': '2024-10-29', 'opponent': 'LAK', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.77}, {'date': '2024-10-31', 'opponent': 'CHI', 'location': 'home', 'season': '2024-25', 'G': 2, 'A': 0, 'PTS': 2, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 13.23}, {'date': '2024-11-02', 'opponent': 'VAN', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.95}, {'date': '2024-11-05', 'opponent': 'CBJ', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 15.97}, {'date': '2024-11-07', 'opponent': 'MIN', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.27}, {'date': '2024-11-11', 'opponent': 'PHI', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 12.98}, {'date': '2024-11-14', 'opponent': 'NYR', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 15.05}, {'date': '2024-11-16', 'opponent': 'PIT', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.45}, {'date': '2024-11-18', 'opponent': 'DET', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.7}, {'date': '2024-11-20', 'opponent': 'DAL', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 15.86666667}], 0.5, "G");
+    initializeChart("smithwi01", [{'date': '2024-10-10', 'opponent': 'STL', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 13.68}, {'date': '2024-10-12', 'opponent': 'ANA', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 13.08}, {'date': '2024-10-15', 'opponent': 'DAL', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 10.17}, {'date': '2024-10-17', 'opponent': 'CHI', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 19.15}, {'date': '2024-10-20', 'opponent': 'COL', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 14.72}, {'date': '2024-10-22', 'opponent': 'ANA', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 12.93}, {'date': '2024-10-26', 'opponent': 'VEG', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 13.07}, {'date': '2024-10-29', 'opponent': 'LAK', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 11.77}, {'date': '2024-10-31', 'opponent': 'CHI', 'location': 'home', 'season': '2024-25', 'G': 2, 'A': 0, 'PTS': 2, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 13.23}, {'date': '2024-11-02', 'opponent': 'VAN', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.95}, {'date': '2024-11-05', 'opponent': 'CBJ', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 15.97}, {'date': '2024-11-07', 'opponent': 'MIN', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.27}, {'date': '2024-11-11', 'opponent': 'PHI', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 12.98}, {'date': '2024-11-14', 'opponent': 'NYR', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 15.05}, {'date': '2024-11-16', 'opponent': 'PIT', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.45}, {'date': '2024-11-18', 'opponent': 'DET', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.7}, {'date': '2024-11-20', 'opponent': 'DAL', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 0, 'BLK': 0, 'TOI': 15.86666667}, {'date': '2024-11-23', 'opponent': 'BUF', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 14.2}], 0.5, "G");
 </script>
 <div id="table-container">
 <div class="groupedProbAndButtons">
@@ -770,6 +772,27 @@
 <td>0</td>
 <td>0</td>
 <td>15.87</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411230SJS.html" target="_blank">11/23/2024</a></td>
+<td><a href="/hockey/teams/SJS.html" target="_blank">SJS</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>14.20</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>

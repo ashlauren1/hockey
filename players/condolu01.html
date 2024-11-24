@@ -269,6 +269,7 @@
 <div id="search-container">
 <input id="search-bar" placeholder="Search for a player or team..." type="text"/>
 <button id="search-button">Search</button>
+<div id="search-results"></div>
 </div>
 <div class="header">
 <h1>LUCAS CONDOTTA</h1>
@@ -333,6 +334,7 @@
 <option value="NYI">NYI</option>
 <option value="PIT">PIT</option>
 <option value="TOR">TOR</option>
+<option value="VEG">VEG</option>
 <option value="WSH">WSH</option>
 </select>
 </div>
@@ -380,7 +382,7 @@
 <script src="chartScript.js"></script>
 <script>
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
-    initializeChart("condolu01", [{'date': '2023-04-13', 'opponent': 'BOS', 'location': 'home', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 5, 'HIT': 3, 'BLK': 0, 'TOI': 11.03}, {'date': '2024-01-25', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 6.6}, {'date': '2024-01-27', 'opponent': 'PIT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 5.33}, {'date': '2024-02-06', 'opponent': 'WSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 10.57}, {'date': '2024-11-07', 'opponent': 'NJD', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 7.47}, {'date': '2024-11-09', 'opponent': 'TOR', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 8.32}, {'date': '2024-11-11', 'opponent': 'BUF', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 8.17}, {'date': '2024-11-14', 'opponent': 'MIN', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 9.05}, {'date': '2024-11-16', 'opponent': 'CBJ', 'location': 'home', 'season': '2024-25', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 6.12}, {'date': '2024-11-18', 'opponent': 'EDM', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.7}], 0.5, "G");
+    initializeChart("condolu01", [{'date': '2023-04-13', 'opponent': 'BOS', 'location': 'home', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 5, 'HIT': 3, 'BLK': 0, 'TOI': 11.03}, {'date': '2024-01-25', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 6.6}, {'date': '2024-01-27', 'opponent': 'PIT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 5.33}, {'date': '2024-02-06', 'opponent': 'WSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 10.57}, {'date': '2024-11-07', 'opponent': 'NJD', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 7.47}, {'date': '2024-11-09', 'opponent': 'TOR', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 8.32}, {'date': '2024-11-11', 'opponent': 'BUF', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 8.17}, {'date': '2024-11-14', 'opponent': 'MIN', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 9.05}, {'date': '2024-11-16', 'opponent': 'CBJ', 'location': 'home', 'season': '2024-25', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 6.12}, {'date': '2024-11-18', 'opponent': 'EDM', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 8.7}, {'date': '2024-11-23', 'opponent': 'VEG', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.6}], 0.5, "G");
 </script>
 <div id="table-container">
 <div class="groupedProbAndButtons">
@@ -619,6 +621,27 @@
 <td>1</td>
 <td>0</td>
 <td>8.70</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411230MTL.html" target="_blank">11/23/2024</a></td>
+<td><a href="/hockey/teams/MTL.html" target="_blank">MTL</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/VEG.html" target="_blank">VEG</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+<td>9.60</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>

@@ -269,6 +269,7 @@
 <div id="search-container">
 <input id="search-bar" placeholder="Search for a player or team..." type="text"/>
 <button id="search-button">Search</button>
+<div id="search-results"></div>
 </div>
 <div class="header">
 <h1>GAGE GONCALVES</h1>
@@ -326,6 +327,7 @@
 <option value="all">All</option>
 <option value="ANA">ANA</option>
 <option value="CBJ">CBJ</option>
+<option value="DAL">DAL</option>
 <option value="NJD">NJD</option>
 <option value="PHI">PHI</option>
 <option value="PIT">PIT</option>
@@ -377,7 +379,7 @@
 <script src="chartScript.js"></script>
 <script>
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
-    initializeChart("goncaga01", [{'date': '2024-01-11', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.0}, {'date': '2024-01-13', 'opponent': 'ANA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 10.92}, {'date': '2024-11-05', 'opponent': 'STL', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 10.57}, {'date': '2024-11-07', 'opponent': 'PHI', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.82}, {'date': '2024-11-14', 'opponent': 'WPG', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.02}, {'date': '2024-11-16', 'opponent': 'NJD', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 15.53}, {'date': '2024-11-19', 'opponent': 'PIT', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.97}, {'date': '2024-11-21', 'opponent': 'CBJ', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 14.4}], 0.5, "G");
+    initializeChart("goncaga01", [{'date': '2024-01-11', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.0}, {'date': '2024-01-13', 'opponent': 'ANA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 10.92}, {'date': '2024-11-05', 'opponent': 'STL', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 10.57}, {'date': '2024-11-07', 'opponent': 'PHI', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.82}, {'date': '2024-11-14', 'opponent': 'WPG', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 11.02}, {'date': '2024-11-16', 'opponent': 'NJD', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 15.53}, {'date': '2024-11-19', 'opponent': 'PIT', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 12.97}, {'date': '2024-11-21', 'opponent': 'CBJ', 'location': 'away', 'season': '2024-25', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 14.4}, {'date': '2024-11-23', 'opponent': 'DAL', 'location': 'home', 'season': '2024-25', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 15.26666667}], 0.5, "G");
 </script>
 <div id="table-container">
 <div class="groupedProbAndButtons">
@@ -580,6 +582,27 @@
 <td>0</td>
 <td>0</td>
 <td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411230TBL.html" target="_blank">11/23/2024</a></td>
+<td><a href="/hockey/teams/TBL.html" target="_blank">TBL</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/DAL.html" target="_blank">DAL</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>15.27</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 <td>0</td>
 </tr>
 </tbody>

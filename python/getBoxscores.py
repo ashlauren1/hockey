@@ -19,21 +19,23 @@ def fetch_webpage(url):
 
 # Define the game IDs, home teams, and away teams
 games_info = {
-    "202411200TOR": ("TOR", "VEG"),
-    "202411200PHI": ("PHI", "CAR"),
-    "202411200DAL": ("DAL", "SJS"),
-    "202411200SEA": ("SEA", "NSH"),
-    "202411200LAK": ("LAK", "BUF"),
-    "202411210BOS": ("BOS", "UTA"),
-    "202411210OTT": ("OTT", "VEG"),
-    "202411210DET": ("DET", "NYI"),
-    "202411210NJD": ("NJD", "CAR"),
-    "202411210WSH": ("WSH", "COL"),
-    "202411210CBJ": ("CBJ", "TBL"),
-    "202411210STL": ("STL", "SJS"),
-    "202411210CHI": ("CHI", "FLA"),
-    "202411210CGY": ("CGY", "NYR"),
-    "202411210EDM": ("EDM", "MIN")
+    "202411220PIT": ("PIT", "WPG"),
+    "202411220ANA": ("ANA", "BUF"),
+    "202411230PHI": ("PHI", "CHI"),
+    "202411230CGY": ("CGY", "MIN"),
+    "202411230LAK": ("LAK", "SEA"),
+    "202411230FLA": ("FLA", "COL"),
+    "202411230MTL": ("MTL", "VEG"),
+    "202411230OTT": ("OTT", "VAN"),
+    "202411230DET": ("DET", "BOS"),
+    "202411230TBL": ("TBL", "DAL"),
+    "202411230PIT": ("PIT", "UTA"),
+    "202411230WSH": ("WSH", "NJD"),
+    "202411230CBJ": ("CBJ", "CAR"),
+    "202411230NSH": ("NSH", "WPG"),
+    "202411230NYI": ("NYI", "STL"),
+    "202411230SJS": ("SJS", "BUF"),
+    "202411230EDM": ("EDM", "NYR")
 }
 
 

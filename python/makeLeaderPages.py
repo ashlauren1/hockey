@@ -309,10 +309,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-	<div id="search-container">
-		<input type="text" id="search-bar" placeholder="Search for a player or team...">
-		<button id="search-button">Search</button>
-	</div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
 	<div class="header">
 		<h1>2024-25 Leaders</h1>
 	</div>
@@ -856,10 +857,11 @@ document.addEventListener("DOMContentLoaded", function () {{
         <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-	<div id="search-container">
-		<input type="text" id="search-bar" placeholder="Search for a player or team...">
-		<button id="search-button">Search</button>
-	</div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
 	<div class="header">
 		<h1>2024-25 Standings</h1>
 	</div>
@@ -895,7 +897,11 @@ document.addEventListener("DOMContentLoaded", function () {{
             <span class="closeGlossary">&times;</span>
             <ul class="tiebreaker-modal-list" type="none">
                 <li>GP:&nbsp;&nbsp;Games Played</li>
-                <li>GF:&nbsp;&nbsp;Goals</li>
+                <li>OTL:&nbsp;&nbsp;Overtime and Shootout Losses</li>
+                <li>Points %:&nbsp;&nbsp;Points / Possible Points</li>
+                <li>RW:&nbsp;&nbsp;Regulation Wins</li>
+                <li>ROW:&nbsp;&nbsp;Regulation and Overtime Wins (Excluding Shootouts)</li>
+                <li>GF:&nbsp;&nbsp;Goals For</li>
                 <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
                 <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
                 <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
@@ -1000,6 +1006,7 @@ def generate_html_table(data, title, table_id, division_table=False):
                 <th data-tip="Points">Pts</th>
                 <th data-tip="Points % (Pts / Max Pts)">Pts%</th>
                 <th data-tip="Regulation Wins">RW</th>
+                <th data-tip="Regulation and Overtime Wins (Excluding Shootouts)">ROW</th>
                 <th data-tip="Goals For">GF</th>
                 <th data-tip="Goals Against">GA</th>
                 <th data-tip="Goal Differential">Diff.</th>
@@ -1058,6 +1065,7 @@ def generate_html_table(data, title, table_id, division_table=False):
                 <td>{row['Points']}</td>
                 <td>{row['PtsPct']:.1f}%</td>
                 <td>{row['RW']}</td>
+                <td>{row['ROW']}</td>
                 <td>{row['GF']}</td>
                 <td>{row['GA']}</td>
                 <td>{gdiff}</td>

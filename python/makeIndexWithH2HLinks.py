@@ -15,7 +15,7 @@ rosters_data = pd.read_csv(rosters_file_path)
 metrics_data = pd.read_csv(metrics_file_path,  parse_dates=["Date"], low_memory=False)
 lines_data = pd.read_csv(lines_file_path)
 
-player_links = {f"{row['Player']} ({row['PlayerID']})": f"/hockey/players/{row['PlayerID']}.html" 
+player_links = {f"{row['Player']} ({row['TeamID']})": f"/hockey/players/{row['PlayerID']}.html" 
                 for _, row in rosters_data.iterrows()}
 
 team_links = {row['Team']: f"/hockey/teams/{row['TeamID']}.html" 
@@ -381,10 +381,11 @@ document.addEventListener("DOMContentLoaded", function () {{
         <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-	<div id="search-container">
-		<input type="text" id="search-bar" placeholder="Search for a player or team...">
-		<button id="search-button">Search</button>
-	</div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
 	<div class="header">
 		<h1>{player_name} vs {opp_name} - Previous Matchups</h1>
 	</div>
@@ -538,10 +539,13 @@ document.addEventListener("DOMContentLoaded", function () {
     headerRow.prepend(checkboxHeader);
 
     // Add checkboxes to each row in the table
+    
     rows.forEach(row => {
         const checkboxCell = document.createElement("td");
+		const checkboxDiv = document.createElement("div");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
+		checkboxDiv.classList.add("checkboxDiv");
         checkbox.classList.add("eventCheckbox");
 
         // Get probability from "Prob." column and store it as a data attribute
@@ -549,7 +553,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const probValue = parseFloat(probText);
         checkbox.dataset.prob = probValue;
 
-        checkboxCell.appendChild(checkbox);
+        checkboxCell.appendChild(checkboxDiv);
+		checkboxDiv.appendChild(checkbox);
         row.prepend(checkboxCell);
 
         // Recalculate combined probability when a checkbox is checked or unchecked
@@ -1041,10 +1046,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-	<div id="search-container">
-		<input type="text" id="search-bar" placeholder="Search for a player or team...">
-		<button id="search-button">Search</button>
-	</div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
 	<div class="header">
 		<h1>Today's Probabilities and Projections</h1>
 	</div>
@@ -1071,8 +1077,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			</tr>
         </table>
     </div>
-   
-    <div class="groupedProbAndButtons"><span class="combinedProbLabel">Click the Checkboxes Below to Calculate the Combined Probability</span><span class="secret"><a href="https://ashlauren1.github.io/rings/" target="_blank">rings</a></span>
+    <div class="groupedProbAndButtons" style="width:95%"><span class="combinedProbLabel">Click the Checkboxes Below to Calculate the Combined Probability</span><span class="secret"><a href="https://ashlauren1.github.io/rings/" target="_blank">rings</a></span>
         <div id="result-container">
             <div id="result">Combined Probability:</div>
         </div>

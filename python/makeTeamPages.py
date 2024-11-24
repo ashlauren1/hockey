@@ -118,10 +118,11 @@ def create_team_pages(data, output_dir):
         <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
         <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-	<div id="search-container">
-		<input type="text" id="search-bar" placeholder="Search for a player or team...">
-		<button id="search-button">Search</button>
-	</div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
 	<div class="header">
         <h1>{team_name} Gamelog</h1>
     </div>

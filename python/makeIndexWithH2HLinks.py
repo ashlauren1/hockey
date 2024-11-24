@@ -225,8 +225,8 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
     <link rel=Stylesheet href=stylesheet.css>
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <script>
     document.addEventListener("DOMContentLoaded", async function () {{
         const searchBar = document.getElementById("search-bar");
@@ -306,33 +306,122 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
 
     searchButton.addEventListener("click", redirectToSearchResults);
 }});
-    </script>
-    
-    
+
+document.addEventListener("DOMContentLoaded", function () {{
+    var glossaryModal = document.getElementById("glossaryModal");
+    var glossaryModalButton = document.getElementById("glossaryButton");
+    var glossaryModalContent = document.getElementById("glossary-modal-content");
+    var closeGlossaryModal = document.getElementsByClassName("closeGlossary")[0];
+
+    glossaryModalButton.onclick = function() {{
+        glossaryModal.classList.add("open");
+        glossaryModal.style.display = "block";
+    }}
+
+    closeGlossaryModal.onclick = function() {{
+        glossaryModal.classList.remove("open");
+        glossaryModal.style.display = "none";
+    }}
+
+    window.onclick = function(event) {{
+        if (event.target === glossaryModal) {{
+            glossaryModal.style.display = "none";
+        }}
+    }}
+}})
+        
+document.addEventListener("DOMContentLoaded", function () {{
+    const container = document.getElementById("table-container");
+
+    const glossaryButton = document.createElement("button");
+    glossaryButton.id = "glossaryButton";
+    glossaryButton.innerText = "Glossary";
+    container.querySelector(".title-caption").appendChild(glossaryButton);
+
+    function setupModal(modalId, buttonId, closeClass) {{
+        const modal = document.getElementById(modalId);
+        const button = document.getElementById(buttonId);
+        const closeButton = modal.querySelector(`.${{closeClass}}`);
+
+        // Toggle modal visibility when button is clicked
+        button.onclick = function () {{
+            const isOpen = modal.classList.contains("open");
+            modal.style.display = isOpen ? "none" : "block";
+            modal.classList.toggle("open", !isOpen);
+        }};
+
+        // Close modal when the close button is clicked
+        closeButton.onclick = function () {{
+            modal.style.display = "none";
+            modal.classList.remove("open");
+        }};
+
+        // Close modal when clicking outside the modal content
+        window.onclick = function (event) {{
+            if (event.target === modal) {{
+                modal.style.display = "none";
+                modal.classList.remove("open");
+            }}
+        }};
+    }}
+
+    setupModal("glossaryModal", "glossaryButton", "closeGlossary");
+}});
+</script>
 </head>
 <body>
-    <div class="topnav">
-        <a href="/hockey/" target="_blank">Projections</a>
-        <a href="/hockey/players/" target="_blank">Players</a>
-        <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
-        <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+<div id="page-heading">
+	<div class="topnav">
+        <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
+        <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
+        <a class="topnav-item" href="/hockey/teams/" target="_blank">Teams</a>
+        <a class="topnav-item" href="/hockey/leaders/" target="_blank">Leaders</a>
+        <a class="topnav-item" href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+        <a class="topnav-item" href="/hockey/boxscores/" target="_blank">Scores</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-    <div id="search-container">
-        <input type="text" id="search-bar" placeholder="Search players and teams">
-        <button id="search-button">Search</button>
-        <div id="search-results"></div>
-    </div>
-    <div class="header">
-        <h1>{player_name} vs {opp_name} - Previous Matchups</h1>
-    </div>
-    
-    <div id="H2H-container">
-    
+	<div id="search-container">
+		<input type="text" id="search-bar" placeholder="Search for a player or team...">
+		<button id="search-button">Search</button>
+	</div>
+	<div class="header">
+		<h1>{player_name} vs {opp_name} - Previous Matchups</h1>
+	</div>
+</div>
+    <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+<div id="H2H-container">
     <div id="table-container">
+        <div id="glossaryModal" class="modal">
+            <div id="glossary-modal-content">
+                <span class="closeGlossary">&times;</span>
+                <ul class="tiebreaker-modal-list" type="none">
+                    <li>GP:&nbsp;&nbsp;Games Played</li>
+                    <li>GF:&nbsp;&nbsp;Goals</li>
+                    <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
+                    <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
+                    <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
+                    <li>PPO:&nbsp;&nbsp;Power Play Opportunities</li>
+                    <li>SHG:&nbsp;&nbsp;Short-Handed Goals</li>
+                    <li>SOGA:&nbsp;&nbsp;Shots Against</li>
+                    <li>PIMA:&nbsp;&nbsp;Opponent Penalties in Minutes</li>
+                    <li>PPGA:&nbsp;&nbsp;Power Play Goals Against</li>
+                    <li>PPOA:&nbsp;&nbsp;Power Play Opportunities Against</li>
+                    <li>SHGA:&nbsp;&nbsp;Short-Handed Goals Against</li>
+                    <li>CF:&nbsp;&nbsp;Corsi For at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
+                    <li>CA:&nbsp;&nbsp;Corsi Against at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
+                    <li>CF%:&nbsp;&nbsp;Corsi For % at Even Strength -- CF / (CF + CA)</li>
+                    <li>FF:&nbsp;&nbsp;Fenwick For at Even Strength -- Shots + Misses</li>
+                    <li>FA:&nbsp;&nbsp;Fenwick Against at Even Strength -- Shots + Misses</li>
+                    <li>FF%:&nbsp;&nbsp;Fenwick For % at Even Strength -- FF / (FF + FA)</li>
+                    <li>FOW:&nbsp;&nbsp;Faceoff Wins</li>
+                    <li>FOL:&nbsp;&nbsp;Faceoff Losses</li>
+                    <li>FO%:&nbsp;&nbsp;Faceoff Win Percentage</li>
+                </ul>
+            </div>
+        </div>
         <table id="H2H-table">
-        <caption class="caption"><a href="/hockey/players/{player_id}.html" target="_blank">{player_name}</a> H2H Results</caption>
+        <caption class="title-caption"><a href="/hockey/players/{player_id}.html" target="_blank">{player_name}</a> H2H Results</caption>
         <thead>
             <tr>
                 <th>Date</th>
@@ -422,12 +511,13 @@ with open(output_file_path, 'w') as f:
     <link rel=Stylesheet href=stylesheet.css>
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <script src="players.json"></script>
     <script src="teams.json"></script>
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("data-table");
     const headerRow = table.querySelector("thead tr:first-child");
@@ -443,17 +533,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add checkboxes to the header row
     const checkboxHeader = document.createElement("th");
-    checkboxHeader.style.width = "38px";
+    checkboxHeader.classList.add("checkboxHeader");
     checkboxHeader.textContent = "";
     headerRow.prepend(checkboxHeader);
 
     // Add checkboxes to each row in the table
     rows.forEach(row => {
         const checkboxCell = document.createElement("td");
-        checkboxCell.style.width = "38px";
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.classList.add("event-checkbox");
+        checkbox.classList.add("eventCheckbox");
 
         // Get probability from "Prob." column and store it as a data attribute
         const probText = row.cells[probColumnIndex].textContent.trim();
@@ -849,64 +938,181 @@ document.addEventListener("DOMContentLoaded", function () {
 
     searchButton.addEventListener("click", redirectToSearchResults);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const headers = document.querySelectorAll("thead th[data-tip]");
+
+    headers.forEach(header => {
+        const tooltip = document.createElement("span");
+        tooltip.className = "tooltip inactive"; // Add both classes initially
+        tooltip.textContent = header.getAttribute("data-tip");
+        document.body.appendChild(tooltip);
+
+        // Show tooltip on mouseover
+        header.addEventListener("mouseover", () => {
+            tooltip.classList.add("active");
+            tooltip.classList.remove("inactive");
+
+            const rect = header.getBoundingClientRect();
+            tooltip.style.left = rect.left + "px"; // Align with header
+            tooltip.style.top = (rect.top + window.scrollY - tooltip.offsetHeight + 6) + "px"; // Above header, add a small gap
+        });
+
+        // Hide tooltip on mouseout
+        header.addEventListener("mouseout", () => {
+            tooltip.classList.remove("active");
+            tooltip.classList.add("inactive");
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var glossaryModal = document.getElementById("glossaryModal");
+    var glossaryModalButton = document.getElementById("glossaryButton");
+    var glossaryModalContent = document.getElementById("glossary-modal-content");
+    var closeGlossaryModal = document.getElementsByClassName("closeGlossary")[0];
+
+    glossaryModalButton.onclick = function() {
+        glossaryModal.classList.add("open");
+        glossaryModal.style.display = "block";
+    }
+
+    closeGlossaryModal.onclick = function() {
+        glossaryModal.classList.remove("open");
+        glossaryModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === glossaryModal) {
+            glossaryModal.style.display = "none";
+        }
+    }
+})
+        
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.querySelector(".button-container");
+
+    const glossaryButton = document.createElement("button");
+    glossaryButton.id = "glossaryButton";
+    glossaryButton.innerText = "Glossary";
+    container.appendChild(glossaryButton);
+
+    function setupModal(modalId, buttonId, closeClass) {
+        const modal = document.getElementById(modalId);
+        const button = document.getElementById(buttonId);
+        const closeButton = modal.querySelector(`.${closeClass}`);
+
+        // Toggle modal visibility when button is clicked
+        button.onclick = function () {
+            const isOpen = modal.classList.contains("open");
+            modal.style.display = isOpen ? "none" : "block";
+            modal.classList.toggle("open", !isOpen);
+        };
+
+        // Close modal when the close button is clicked
+        closeButton.onclick = function () {
+            modal.style.display = "none";
+            modal.classList.remove("open");
+        };
+
+        // Close modal when clicking outside the modal content
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                modal.classList.remove("open");
+            }
+        };
+    }
+
+    setupModal("glossaryModal", "glossaryButton", "closeGlossary");
+});
+
     </script>
 </head>
 <body>
-    <div class="topnav">
-        <a href="/hockey/" target="_blank">Projections</a>
-        <a href="/hockey/players/" target="_blank">Players</a>
-        <a href="/hockey/boxscores/" target="_blank">Box Scores</a>
-        <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+<div id="page-heading">
+	<div class="topnav">
+        <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
+        <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
+        <a class="topnav-item" href="/hockey/teams/" target="_blank">Teams</a>
+        <a class="topnav-item" href="/hockey/leaders/" target="_blank">Leaders</a>
+        <a class="topnav-item" href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+        <a class="topnav-item" href="/hockey/boxscores/" target="_blank">Scores</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
-    <div id="search-container">
-        <input type="text" id="search-bar" placeholder="Search for a player or team...">
-        <button id="search-button">Search</button>
-        <div id="search-results"></div>
-    </div>
-
-    
-    <div class="header">
-        <h1>Today's Probabilities and Projections</h1>
-    </div>
-
+	<div id="search-container">
+		<input type="text" id="search-bar" placeholder="Search for a player or team...">
+		<button id="search-button">Search</button>
+	</div>
+	<div class="header">
+		<h1>Today's Probabilities and Projections</h1>
+	</div>
+</div>
 	<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
     
     <div id="multi-filters">
         <table class="multi-filters">
-            <tr><td style="width:8%;font-weight:700">Games:</td><td><div id="game-filters"></div></td></tr>
-            <tr><td style="width:8%;font-weight:700">Teams:</td><td><div id="team-filters"></div></td></tr>
-            <tr><td style="width:8%;font-weight:700">Types:</td><td><div id="type-filters"></div></td></tr>
-            <tr><td style="width:8%;font-weight:700">Stats:</td><td><div id="stat-filters"></div></td></tr>
+            <tr><td class="multiFilterLabel">Games:</td><td><div id="game-filters"></div></td></tr>
+            <tr><td class="multiFilterLabel">Teams:</td><td><div id="team-filters"></div></td></tr>
+            <tr><td class="multiFilterLabel">Types:</td><td><div id="type-filters"></div></td></tr>
+            <tr><td class="multiFilterLabel">Stats:</td><td><div id="stat-filters"></div></td></tr>
         </table>
-        <table class="multi-filters">
-			<tr><th colspan="7" style="font-weight:700">Set Minimum Values:</th></tr>
+        <table class="min-filters">
+			<tr><th colspan="7">Set Minimum Values:</th></tr>
             <tr>
-			<td>Diff:<input id="diff-filters" type="number" step="0.1" style="width:100%"></td>
-			<td>24-25:<input id="2425-filters" type="number" step="0.1" style="width:100%"></td>
-			<td>L5:<input id="l5-filters" type="number" step="0.1" style="width:100%"></td>
-			<td>L10:<input id="l10-filters" type="number" step="0.1" style="width:100%"></td>
-			<td>L20:<input id="l20-filters" type="number" step="0.1" style="width:100%"></td>
-			<td>23-24:<input id="2324-filters" type="number" step="0.1" style="width:100%"></td>
-			<td>All:<input id="all-filters" type="number" step="0.1" style="width:100%"></td>
+			<td class="minFilterLabel">Diff:</td><td><input id="diff-filters" type="number" step="0.1"></td>
+			<td class="minFilterLabel">24-25:</td><td><input id="2425-filters" type="number" step="0.1"></td>
+			<td class="minFilterLabel">L5:</td><td><input id="l5-filters" type="number" step="0.1"></td>
+			<td class="minFilterLabel">L10:</td><td><input id="l10-filters" type="number" step="0.1"></td>
+			<td class="minFilterLabel">L20:</td><td><input id="l20-filters" type="number" step="0.1"></td>
+			<td class="minFilterLabel">23-24:</td><td><input id="2324-filters" type="number" step="0.1"></td>
+			<td class="minFilterLabel">All:</td><td><input id="all-filters" type="number" step="0.1"></td>
 			</tr>
         </table>
     </div>
    
-    <div><p style="width:95%; margin:auto;">Click the Checkboxes Below to Calculate the Combined Probability</p>
+    <div class="groupedProbAndButtons"><span class="combinedProbLabel">Click the Checkboxes Below to Calculate the Combined Probability</span><span class="secret"><a href="https://ashlauren1.github.io/rings/" target="_blank">rings</a></span>
         <div id="result-container">
             <div id="result">Combined Probability:</div>
         </div>
-        <p style="font-size:11px" class="secret"><a href="https://ashlauren1.github.io/rings/" target="_blank">rings</a></p>
         <div class="button-container">
             <button id="toggle-selection-btn">Show Selected Only</button>
             <button id="clear-filters-btn">Remove Filters</button>
             <button id="clear-all-btn">Clear All</button>
         </div>
     </div>
-
+    
+    
     <div id="data-table-container">
+    <div id="glossaryModal" class="modal">
+        <div id="glossary-modal-content">
+            <span class="closeGlossary">&times;</span>
+            <ul class="tiebreaker-modal-list" type="none">
+                <li>GP:&nbsp;&nbsp;Games Played</li>
+                <li>GF:&nbsp;&nbsp;Goals</li>
+                <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
+                <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
+                <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
+                <li>PPO:&nbsp;&nbsp;Power Play Opportunities</li>
+                <li>SHG:&nbsp;&nbsp;Short-Handed Goals</li>
+                <li>SOGA:&nbsp;&nbsp;Shots Against</li>
+                <li>PIMA:&nbsp;&nbsp;Opponent Penalties in Minutes</li>
+                <li>PPGA:&nbsp;&nbsp;Power Play Goals Against</li>
+                <li>PPOA:&nbsp;&nbsp;Power Play Opportunities Against</li>
+                <li>SHGA:&nbsp;&nbsp;Short-Handed Goals Against</li>
+                <li>CF:&nbsp;&nbsp;Corsi For at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
+                <li>CA:&nbsp;&nbsp;Corsi Against at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
+                <li>CF%:&nbsp;&nbsp;Corsi For % at Even Strength -- CF / (CF + CA)</li>
+                <li>FF:&nbsp;&nbsp;Fenwick For at Even Strength -- Shots + Misses</li>
+                <li>FA:&nbsp;&nbsp;Fenwick Against at Even Strength -- Shots + Misses</li>
+                <li>FF%:&nbsp;&nbsp;Fenwick For % at Even Strength -- FF / (FF + FA)</li>
+                <li>FOW:&nbsp;&nbsp;Faceoff Wins</li>
+                <li>FOL:&nbsp;&nbsp;Faceoff Losses</li>
+                <li>FO%:&nbsp;&nbsp;Faceoff Win Percentage</li>
+            </ul>
+        </div>
+    </div>
         <table id="data-table">
         <thead>
             <tr>
@@ -916,16 +1122,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 <th>Type</th>
                 <th>Stat</th>
                 <th>Line</th>
-                <th>Proj.</th>
-                <th>Diff.</th>
-                <th>Prob.</th>
-                <th>24-25</th>
-                <th>H2H</th>
-                <th>L5</th>
-                <th>L10</th>
-                <th>L20</th>
-                <th>23-24</th>
-                <th>All</th>
+                <th data-tip="Projection">Proj.</th>
+                <th data-tip="Difference (Projection - Line)">Diff.</th>
+                <th data-tip="Probability of Going Over">Prob.</th>
+                <th data-tip="Percentage of games this season where the player went over the line">24-25</th>
+                <th data-tip="Percentage of games against the opposing team where the player went over the line">H2H</th>
+                <th data-tip="Percentage of this player's last 5 games where they went over the line">L5</th>
+                <th data-tip="Percentage of this player's last 10 games where they went over the line">L10</th>
+                <th data-tip="Percentage of this player's last 20 games where they went over the line">L20</th>
+                <th data-tip="Percentage of games in the 2023-24 season where the player went over the line">23-24</th>
+                <th data-tip="Percentage of all games since 2022 where the player went over the line">All</th>
             </tr>
         </thead>
         <tbody>

@@ -686,6 +686,234 @@
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
     initializeChart("smithty01", [{'date': '2022-12-30', 'opponent': 'NJD', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 4, 'BLK': 0, 'TOI': 22.23}, {'date': '2023-01-02', 'opponent': 'BOS', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.45}, {'date': '2023-01-05', 'opponent': 'VEG', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 2, 'BLK': 1, 'TOI': 23.6}, {'date': '2023-01-08', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 0, 'TOI': 20.53}, {'date': '2023-01-10', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 19.75}, {'date': '2023-01-13', 'opponent': 'WPG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 2, 'TOI': 22.5}, {'date': '2023-01-14', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 23.15}, {'date': '2023-01-16', 'opponent': 'ANA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 6, 'HIT': 2, 'BLK': 1, 'TOI': 22.75}, {'date': '2023-01-18', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 16.85}], 0.5, "G");
 </script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_smithty01">Stat:</label>
+<select id="statSelector_smithty01" onchange="updateStat('smithty01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_smithty01">Opponent:</label>
+<select id="teamFilter_smithty01" onchange="applyFilters('smithty01')">
+<option value="all">All</option>
+<option value="ANA">ANA</option>
+<option value="ARI">ARI</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="NJD">NJD</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_smithty01">Home/Away:</label>
+<select id="homeAwayFilter_smithty01" onchange="applyFilters('smithty01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_smithty01">Start:</label>
+<input id="startDate_smithty01" onchange="applyFilters('smithty01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_smithty01">End:</label>
+<input id="endDate_smithty01" onchange="applyFilters('smithty01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_smithty01"></canvas>
+<div class="filter-buttons">
+<button id="L5_smithty01" onclick="showRecentGames('smithty01', 5)">L5</button>
+<button id="L10_smithty01" onclick="showRecentGames('smithty01', 10)">L10</button>
+<button id="L20_smithty01" onclick="showRecentGames('smithty01', 20)">L20</button>
+<button id="202324_smithty01" onclick="filterBySeason('smithty01', '2023-24')">2023-24</button>
+<button id="202425_smithty01" onclick="filterBySeason('smithty01', '2024-25')">2024-25</button>
+<button id="showAll_smithty01" onclick="showAllGames('smithty01')">All</button>
+<button id="TOI_smithty01" onclick="toggleTOIOverlay('smithty01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_smithty01" onclick="clearFilters('smithty01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_smithty01">Change Line:</label>
+<input id="lineSlider_smithty01" max="30" min="0" oninput="updateLine('smithty01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_smithty01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_smithty01" onclick="resetLine('smithty01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("smithty01", [{'date': '2022-12-30', 'opponent': 'NJD', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 4, 'BLK': 0, 'TOI': 22.23}, {'date': '2023-01-02', 'opponent': 'BOS', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.45}, {'date': '2023-01-05', 'opponent': 'VEG', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 2, 'BLK': 1, 'TOI': 23.6}, {'date': '2023-01-08', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 0, 'TOI': 20.53}, {'date': '2023-01-10', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 19.75}, {'date': '2023-01-13', 'opponent': 'WPG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 2, 'TOI': 22.5}, {'date': '2023-01-14', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 23.15}, {'date': '2023-01-16', 'opponent': 'ANA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 6, 'HIT': 2, 'BLK': 1, 'TOI': 22.75}, {'date': '2023-01-18', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 16.85}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_smithty01">Stat:</label>
+<select id="statSelector_smithty01" onchange="updateStat('smithty01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_smithty01">Opponent:</label>
+<select id="teamFilter_smithty01" onchange="applyFilters('smithty01')">
+<option value="all">All</option>
+<option value="ANA">ANA</option>
+<option value="ARI">ARI</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="NJD">NJD</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_smithty01">Home/Away:</label>
+<select id="homeAwayFilter_smithty01" onchange="applyFilters('smithty01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_smithty01">Start:</label>
+<input id="startDate_smithty01" onchange="applyFilters('smithty01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_smithty01">End:</label>
+<input id="endDate_smithty01" onchange="applyFilters('smithty01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_smithty01"></canvas>
+<div class="filter-buttons">
+<button id="L5_smithty01" onclick="showRecentGames('smithty01', 5)">L5</button>
+<button id="L10_smithty01" onclick="showRecentGames('smithty01', 10)">L10</button>
+<button id="L20_smithty01" onclick="showRecentGames('smithty01', 20)">L20</button>
+<button id="202324_smithty01" onclick="filterBySeason('smithty01', '2023-24')">2023-24</button>
+<button id="202425_smithty01" onclick="filterBySeason('smithty01', '2024-25')">2024-25</button>
+<button id="showAll_smithty01" onclick="showAllGames('smithty01')">All</button>
+<button id="TOI_smithty01" onclick="toggleTOIOverlay('smithty01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_smithty01" onclick="clearFilters('smithty01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_smithty01">Change Line:</label>
+<input id="lineSlider_smithty01" max="30" min="0" oninput="updateLine('smithty01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_smithty01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_smithty01" onclick="resetLine('smithty01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("smithty01", [{'date': '2022-12-30', 'opponent': 'NJD', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 4, 'BLK': 0, 'TOI': 22.23}, {'date': '2023-01-02', 'opponent': 'BOS', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.45}, {'date': '2023-01-05', 'opponent': 'VEG', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 2, 'BLK': 1, 'TOI': 23.6}, {'date': '2023-01-08', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 0, 'TOI': 20.53}, {'date': '2023-01-10', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 19.75}, {'date': '2023-01-13', 'opponent': 'WPG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 2, 'TOI': 22.5}, {'date': '2023-01-14', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 23.15}, {'date': '2023-01-16', 'opponent': 'ANA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 6, 'HIT': 2, 'BLK': 1, 'TOI': 22.75}, {'date': '2023-01-18', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 16.85}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_smithty01">Stat:</label>
+<select id="statSelector_smithty01" onchange="updateStat('smithty01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_smithty01">Opponent:</label>
+<select id="teamFilter_smithty01" onchange="applyFilters('smithty01')">
+<option value="all">All</option>
+<option value="ANA">ANA</option>
+<option value="ARI">ARI</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="NJD">NJD</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_smithty01">Home/Away:</label>
+<select id="homeAwayFilter_smithty01" onchange="applyFilters('smithty01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_smithty01">Start:</label>
+<input id="startDate_smithty01" onchange="applyFilters('smithty01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_smithty01">End:</label>
+<input id="endDate_smithty01" onchange="applyFilters('smithty01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_smithty01"></canvas>
+<div class="filter-buttons">
+<button id="L5_smithty01" onclick="showRecentGames('smithty01', 5)">L5</button>
+<button id="L10_smithty01" onclick="showRecentGames('smithty01', 10)">L10</button>
+<button id="L20_smithty01" onclick="showRecentGames('smithty01', 20)">L20</button>
+<button id="202324_smithty01" onclick="filterBySeason('smithty01', '2023-24')">2023-24</button>
+<button id="202425_smithty01" onclick="filterBySeason('smithty01', '2024-25')">2024-25</button>
+<button id="showAll_smithty01" onclick="showAllGames('smithty01')">All</button>
+<button id="TOI_smithty01" onclick="toggleTOIOverlay('smithty01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_smithty01" onclick="clearFilters('smithty01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_smithty01">Change Line:</label>
+<input id="lineSlider_smithty01" max="30" min="0" oninput="updateLine('smithty01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_smithty01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_smithty01" onclick="resetLine('smithty01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("smithty01", [{'date': '2022-12-30', 'opponent': 'NJD', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 4, 'BLK': 0, 'TOI': 22.23}, {'date': '2023-01-02', 'opponent': 'BOS', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 10.45}, {'date': '2023-01-05', 'opponent': 'VEG', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 2, 'BLK': 1, 'TOI': 23.6}, {'date': '2023-01-08', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 0, 'TOI': 20.53}, {'date': '2023-01-10', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 19.75}, {'date': '2023-01-13', 'opponent': 'WPG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 2, 'BLK': 2, 'TOI': 22.5}, {'date': '2023-01-14', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 3, 'BLK': 0, 'TOI': 23.15}, {'date': '2023-01-16', 'opponent': 'ANA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 6, 'HIT': 2, 'BLK': 1, 'TOI': 22.75}, {'date': '2023-01-18', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 16.85}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

@@ -696,6 +696,240 @@
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
     initializeChart("imamabo01", [{'date': '2023-03-07', 'opponent': 'STL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 9.63}, {'date': '2023-03-12', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 4.1}, {'date': '2023-03-14', 'opponent': 'CGY', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.3}, {'date': '2023-03-16', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.52}, {'date': '2023-03-22', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.87}, {'date': '2024-04-06', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.8}, {'date': '2024-04-07', 'opponent': 'WSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.35}, {'date': '2024-04-09', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 6.22}, {'date': '2024-04-11', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 6.35}, {'date': '2024-04-13', 'opponent': 'MTL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 3.98}, {'date': '2024-04-15', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 3.82}], 0.5, "G");
 </script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_imamabo01">Stat:</label>
+<select id="statSelector_imamabo01" onchange="updateStat('imamabo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_imamabo01">Opponent:</label>
+<select id="teamFilter_imamabo01" onchange="applyFilters('imamabo01')">
+<option value="all">All</option>
+<option value="CGY">CGY</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="MIN">MIN</option>
+<option value="MTL">MTL</option>
+<option value="NJD">NJD</option>
+<option value="NYR">NYR</option>
+<option value="STL">STL</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
+<option value="WSH">WSH</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_imamabo01">Home/Away:</label>
+<select id="homeAwayFilter_imamabo01" onchange="applyFilters('imamabo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_imamabo01">Start:</label>
+<input id="startDate_imamabo01" onchange="applyFilters('imamabo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_imamabo01">End:</label>
+<input id="endDate_imamabo01" onchange="applyFilters('imamabo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_imamabo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_imamabo01" onclick="showRecentGames('imamabo01', 5)">L5</button>
+<button id="L10_imamabo01" onclick="showRecentGames('imamabo01', 10)">L10</button>
+<button id="L20_imamabo01" onclick="showRecentGames('imamabo01', 20)">L20</button>
+<button id="202324_imamabo01" onclick="filterBySeason('imamabo01', '2023-24')">2023-24</button>
+<button id="202425_imamabo01" onclick="filterBySeason('imamabo01', '2024-25')">2024-25</button>
+<button id="showAll_imamabo01" onclick="showAllGames('imamabo01')">All</button>
+<button id="TOI_imamabo01" onclick="toggleTOIOverlay('imamabo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_imamabo01" onclick="clearFilters('imamabo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_imamabo01">Change Line:</label>
+<input id="lineSlider_imamabo01" max="30" min="0" oninput="updateLine('imamabo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_imamabo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_imamabo01" onclick="resetLine('imamabo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("imamabo01", [{'date': '2023-03-07', 'opponent': 'STL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 9.63}, {'date': '2023-03-12', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 4.1}, {'date': '2023-03-14', 'opponent': 'CGY', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.3}, {'date': '2023-03-16', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.52}, {'date': '2023-03-22', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.87}, {'date': '2024-04-06', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.8}, {'date': '2024-04-07', 'opponent': 'WSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.35}, {'date': '2024-04-09', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 6.22}, {'date': '2024-04-11', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 6.35}, {'date': '2024-04-13', 'opponent': 'MTL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 3.98}, {'date': '2024-04-15', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 3.82}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_imamabo01">Stat:</label>
+<select id="statSelector_imamabo01" onchange="updateStat('imamabo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_imamabo01">Opponent:</label>
+<select id="teamFilter_imamabo01" onchange="applyFilters('imamabo01')">
+<option value="all">All</option>
+<option value="CGY">CGY</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="MIN">MIN</option>
+<option value="MTL">MTL</option>
+<option value="NJD">NJD</option>
+<option value="NYR">NYR</option>
+<option value="STL">STL</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
+<option value="WSH">WSH</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_imamabo01">Home/Away:</label>
+<select id="homeAwayFilter_imamabo01" onchange="applyFilters('imamabo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_imamabo01">Start:</label>
+<input id="startDate_imamabo01" onchange="applyFilters('imamabo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_imamabo01">End:</label>
+<input id="endDate_imamabo01" onchange="applyFilters('imamabo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_imamabo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_imamabo01" onclick="showRecentGames('imamabo01', 5)">L5</button>
+<button id="L10_imamabo01" onclick="showRecentGames('imamabo01', 10)">L10</button>
+<button id="L20_imamabo01" onclick="showRecentGames('imamabo01', 20)">L20</button>
+<button id="202324_imamabo01" onclick="filterBySeason('imamabo01', '2023-24')">2023-24</button>
+<button id="202425_imamabo01" onclick="filterBySeason('imamabo01', '2024-25')">2024-25</button>
+<button id="showAll_imamabo01" onclick="showAllGames('imamabo01')">All</button>
+<button id="TOI_imamabo01" onclick="toggleTOIOverlay('imamabo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_imamabo01" onclick="clearFilters('imamabo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_imamabo01">Change Line:</label>
+<input id="lineSlider_imamabo01" max="30" min="0" oninput="updateLine('imamabo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_imamabo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_imamabo01" onclick="resetLine('imamabo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("imamabo01", [{'date': '2023-03-07', 'opponent': 'STL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 9.63}, {'date': '2023-03-12', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 4.1}, {'date': '2023-03-14', 'opponent': 'CGY', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.3}, {'date': '2023-03-16', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.52}, {'date': '2023-03-22', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.87}, {'date': '2024-04-06', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.8}, {'date': '2024-04-07', 'opponent': 'WSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.35}, {'date': '2024-04-09', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 6.22}, {'date': '2024-04-11', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 6.35}, {'date': '2024-04-13', 'opponent': 'MTL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 3.98}, {'date': '2024-04-15', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 3.82}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_imamabo01">Stat:</label>
+<select id="statSelector_imamabo01" onchange="updateStat('imamabo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_imamabo01">Opponent:</label>
+<select id="teamFilter_imamabo01" onchange="applyFilters('imamabo01')">
+<option value="all">All</option>
+<option value="CGY">CGY</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="MIN">MIN</option>
+<option value="MTL">MTL</option>
+<option value="NJD">NJD</option>
+<option value="NYR">NYR</option>
+<option value="STL">STL</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
+<option value="WSH">WSH</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_imamabo01">Home/Away:</label>
+<select id="homeAwayFilter_imamabo01" onchange="applyFilters('imamabo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_imamabo01">Start:</label>
+<input id="startDate_imamabo01" onchange="applyFilters('imamabo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_imamabo01">End:</label>
+<input id="endDate_imamabo01" onchange="applyFilters('imamabo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_imamabo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_imamabo01" onclick="showRecentGames('imamabo01', 5)">L5</button>
+<button id="L10_imamabo01" onclick="showRecentGames('imamabo01', 10)">L10</button>
+<button id="L20_imamabo01" onclick="showRecentGames('imamabo01', 20)">L20</button>
+<button id="202324_imamabo01" onclick="filterBySeason('imamabo01', '2023-24')">2023-24</button>
+<button id="202425_imamabo01" onclick="filterBySeason('imamabo01', '2024-25')">2024-25</button>
+<button id="showAll_imamabo01" onclick="showAllGames('imamabo01')">All</button>
+<button id="TOI_imamabo01" onclick="toggleTOIOverlay('imamabo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_imamabo01" onclick="clearFilters('imamabo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_imamabo01">Change Line:</label>
+<input id="lineSlider_imamabo01" max="30" min="0" oninput="updateLine('imamabo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_imamabo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_imamabo01" onclick="resetLine('imamabo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("imamabo01", [{'date': '2023-03-07', 'opponent': 'STL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 1, 'TOI': 9.63}, {'date': '2023-03-12', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 4.1}, {'date': '2023-03-14', 'opponent': 'CGY', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 8.3}, {'date': '2023-03-16', 'opponent': 'VAN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.52}, {'date': '2023-03-22', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.87}, {'date': '2024-04-06', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.8}, {'date': '2024-04-07', 'opponent': 'WSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.35}, {'date': '2024-04-09', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 6.22}, {'date': '2024-04-11', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 6.35}, {'date': '2024-04-13', 'opponent': 'MTL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 6, 'BLK': 0, 'TOI': 3.98}, {'date': '2024-04-15', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 3.82}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

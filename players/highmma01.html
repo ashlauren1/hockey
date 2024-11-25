@@ -686,6 +686,234 @@
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
     initializeChart("highmma01", [{'date': '2023-02-19', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2023-02-21', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 9.42}, {'date': '2023-11-09', 'opponent': 'VAN', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 10.22}, {'date': '2023-11-11', 'opponent': 'CGY', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-11-16', 'opponent': 'DET', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 5.77}, {'date': '2023-11-24', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.87}, {'date': '2023-11-27', 'opponent': 'FLA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-12-01', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.07}, {'date': '2024-03-06', 'opponent': 'ANA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.1}], 0.5, "G");
 </script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_highmma01">Stat:</label>
+<select id="statSelector_highmma01" onchange="updateStat('highmma01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_highmma01">Opponent:</label>
+<select id="teamFilter_highmma01" onchange="applyFilters('highmma01')">
+<option value="all">All</option>
+<option value="ANA">ANA</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="NYI">NYI</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_highmma01">Home/Away:</label>
+<select id="homeAwayFilter_highmma01" onchange="applyFilters('highmma01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_highmma01">Start:</label>
+<input id="startDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_highmma01">End:</label>
+<input id="endDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_highmma01"></canvas>
+<div class="filter-buttons">
+<button id="L5_highmma01" onclick="showRecentGames('highmma01', 5)">L5</button>
+<button id="L10_highmma01" onclick="showRecentGames('highmma01', 10)">L10</button>
+<button id="L20_highmma01" onclick="showRecentGames('highmma01', 20)">L20</button>
+<button id="202324_highmma01" onclick="filterBySeason('highmma01', '2023-24')">2023-24</button>
+<button id="202425_highmma01" onclick="filterBySeason('highmma01', '2024-25')">2024-25</button>
+<button id="showAll_highmma01" onclick="showAllGames('highmma01')">All</button>
+<button id="TOI_highmma01" onclick="toggleTOIOverlay('highmma01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_highmma01" onclick="clearFilters('highmma01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_highmma01">Change Line:</label>
+<input id="lineSlider_highmma01" max="30" min="0" oninput="updateLine('highmma01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_highmma01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_highmma01" onclick="resetLine('highmma01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("highmma01", [{'date': '2023-02-19', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2023-02-21', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 9.42}, {'date': '2023-11-09', 'opponent': 'VAN', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 10.22}, {'date': '2023-11-11', 'opponent': 'CGY', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-11-16', 'opponent': 'DET', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 5.77}, {'date': '2023-11-24', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.87}, {'date': '2023-11-27', 'opponent': 'FLA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-12-01', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.07}, {'date': '2024-03-06', 'opponent': 'ANA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.1}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_highmma01">Stat:</label>
+<select id="statSelector_highmma01" onchange="updateStat('highmma01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_highmma01">Opponent:</label>
+<select id="teamFilter_highmma01" onchange="applyFilters('highmma01')">
+<option value="all">All</option>
+<option value="ANA">ANA</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="NYI">NYI</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_highmma01">Home/Away:</label>
+<select id="homeAwayFilter_highmma01" onchange="applyFilters('highmma01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_highmma01">Start:</label>
+<input id="startDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_highmma01">End:</label>
+<input id="endDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_highmma01"></canvas>
+<div class="filter-buttons">
+<button id="L5_highmma01" onclick="showRecentGames('highmma01', 5)">L5</button>
+<button id="L10_highmma01" onclick="showRecentGames('highmma01', 10)">L10</button>
+<button id="L20_highmma01" onclick="showRecentGames('highmma01', 20)">L20</button>
+<button id="202324_highmma01" onclick="filterBySeason('highmma01', '2023-24')">2023-24</button>
+<button id="202425_highmma01" onclick="filterBySeason('highmma01', '2024-25')">2024-25</button>
+<button id="showAll_highmma01" onclick="showAllGames('highmma01')">All</button>
+<button id="TOI_highmma01" onclick="toggleTOIOverlay('highmma01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_highmma01" onclick="clearFilters('highmma01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_highmma01">Change Line:</label>
+<input id="lineSlider_highmma01" max="30" min="0" oninput="updateLine('highmma01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_highmma01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_highmma01" onclick="resetLine('highmma01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("highmma01", [{'date': '2023-02-19', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2023-02-21', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 9.42}, {'date': '2023-11-09', 'opponent': 'VAN', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 10.22}, {'date': '2023-11-11', 'opponent': 'CGY', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-11-16', 'opponent': 'DET', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 5.77}, {'date': '2023-11-24', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.87}, {'date': '2023-11-27', 'opponent': 'FLA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-12-01', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.07}, {'date': '2024-03-06', 'opponent': 'ANA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.1}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_highmma01">Stat:</label>
+<select id="statSelector_highmma01" onchange="updateStat('highmma01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_highmma01">Opponent:</label>
+<select id="teamFilter_highmma01" onchange="applyFilters('highmma01')">
+<option value="all">All</option>
+<option value="ANA">ANA</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="NYI">NYI</option>
+<option value="OTT">OTT</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_highmma01">Home/Away:</label>
+<select id="homeAwayFilter_highmma01" onchange="applyFilters('highmma01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_highmma01">Start:</label>
+<input id="startDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_highmma01">End:</label>
+<input id="endDate_highmma01" onchange="applyFilters('highmma01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_highmma01"></canvas>
+<div class="filter-buttons">
+<button id="L5_highmma01" onclick="showRecentGames('highmma01', 5)">L5</button>
+<button id="L10_highmma01" onclick="showRecentGames('highmma01', 10)">L10</button>
+<button id="L20_highmma01" onclick="showRecentGames('highmma01', 20)">L20</button>
+<button id="202324_highmma01" onclick="filterBySeason('highmma01', '2023-24')">2023-24</button>
+<button id="202425_highmma01" onclick="filterBySeason('highmma01', '2024-25')">2024-25</button>
+<button id="showAll_highmma01" onclick="showAllGames('highmma01')">All</button>
+<button id="TOI_highmma01" onclick="toggleTOIOverlay('highmma01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_highmma01" onclick="clearFilters('highmma01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_highmma01">Change Line:</label>
+<input id="lineSlider_highmma01" max="30" min="0" oninput="updateLine('highmma01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_highmma01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_highmma01" onclick="resetLine('highmma01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("highmma01", [{'date': '2023-02-19', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 3, 'BLK': 0, 'TOI': 12.08}, {'date': '2023-02-21', 'opponent': 'CAR', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 9.42}, {'date': '2023-11-09', 'opponent': 'VAN', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 10.22}, {'date': '2023-11-11', 'opponent': 'CGY', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.95}, {'date': '2023-11-16', 'opponent': 'DET', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 5.77}, {'date': '2023-11-24', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 7.87}, {'date': '2023-11-27', 'opponent': 'FLA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 10.0}, {'date': '2023-12-01', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 6.07}, {'date': '2024-03-06', 'opponent': 'ANA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 6.1}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

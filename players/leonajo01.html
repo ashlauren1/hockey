@@ -691,6 +691,237 @@
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
     initializeChart("leonajo01", [{'date': '2023-03-02', 'opponent': 'FLA', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 14.62}, {'date': '2023-03-04', 'opponent': 'CHI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.63}, {'date': '2023-03-06', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.38}, {'date': '2023-03-09', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.42}, {'date': '2023-04-03', 'opponent': 'DAL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 9.47}, {'date': '2023-04-04', 'opponent': 'VEG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 2, 'TOI': 9.72}, {'date': '2024-03-12', 'opponent': 'MIN', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 5.37}, {'date': '2024-03-14', 'opponent': 'DET', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 6.53}, {'date': '2024-03-16', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 7.13}, {'date': '2024-03-20', 'opponent': 'DAL', 'location': 'away', 'season': '2023-24', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 10.32}, {'date': '2024-03-22', 'opponent': 'SEA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 6.9}, {'date': '2024-03-24', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 4.95}], 0.5, "G");
 </script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_leonajo01">Stat:</label>
+<select id="statSelector_leonajo01" onchange="updateStat('leonajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_leonajo01">Opponent:</label>
+<select id="teamFilter_leonajo01" onchange="applyFilters('leonajo01')">
+<option value="all">All</option>
+<option value="ARI">ARI</option>
+<option value="CHI">CHI</option>
+<option value="DAL">DAL</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="MIN">MIN</option>
+<option value="NJD">NJD</option>
+<option value="SEA">SEA</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_leonajo01">Home/Away:</label>
+<select id="homeAwayFilter_leonajo01" onchange="applyFilters('leonajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_leonajo01">Start:</label>
+<input id="startDate_leonajo01" onchange="applyFilters('leonajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_leonajo01">End:</label>
+<input id="endDate_leonajo01" onchange="applyFilters('leonajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_leonajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_leonajo01" onclick="showRecentGames('leonajo01', 5)">L5</button>
+<button id="L10_leonajo01" onclick="showRecentGames('leonajo01', 10)">L10</button>
+<button id="L20_leonajo01" onclick="showRecentGames('leonajo01', 20)">L20</button>
+<button id="202324_leonajo01" onclick="filterBySeason('leonajo01', '2023-24')">2023-24</button>
+<button id="202425_leonajo01" onclick="filterBySeason('leonajo01', '2024-25')">2024-25</button>
+<button id="showAll_leonajo01" onclick="showAllGames('leonajo01')">All</button>
+<button id="TOI_leonajo01" onclick="toggleTOIOverlay('leonajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_leonajo01" onclick="clearFilters('leonajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_leonajo01">Change Line:</label>
+<input id="lineSlider_leonajo01" max="30" min="0" oninput="updateLine('leonajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_leonajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_leonajo01" onclick="resetLine('leonajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("leonajo01", [{'date': '2023-03-02', 'opponent': 'FLA', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 14.62}, {'date': '2023-03-04', 'opponent': 'CHI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.63}, {'date': '2023-03-06', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.38}, {'date': '2023-03-09', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.42}, {'date': '2023-04-03', 'opponent': 'DAL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 9.47}, {'date': '2023-04-04', 'opponent': 'VEG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 2, 'TOI': 9.72}, {'date': '2024-03-12', 'opponent': 'MIN', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 5.37}, {'date': '2024-03-14', 'opponent': 'DET', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 6.53}, {'date': '2024-03-16', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 7.13}, {'date': '2024-03-20', 'opponent': 'DAL', 'location': 'away', 'season': '2023-24', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 10.32}, {'date': '2024-03-22', 'opponent': 'SEA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 6.9}, {'date': '2024-03-24', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 4.95}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_leonajo01">Stat:</label>
+<select id="statSelector_leonajo01" onchange="updateStat('leonajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_leonajo01">Opponent:</label>
+<select id="teamFilter_leonajo01" onchange="applyFilters('leonajo01')">
+<option value="all">All</option>
+<option value="ARI">ARI</option>
+<option value="CHI">CHI</option>
+<option value="DAL">DAL</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="MIN">MIN</option>
+<option value="NJD">NJD</option>
+<option value="SEA">SEA</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_leonajo01">Home/Away:</label>
+<select id="homeAwayFilter_leonajo01" onchange="applyFilters('leonajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_leonajo01">Start:</label>
+<input id="startDate_leonajo01" onchange="applyFilters('leonajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_leonajo01">End:</label>
+<input id="endDate_leonajo01" onchange="applyFilters('leonajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_leonajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_leonajo01" onclick="showRecentGames('leonajo01', 5)">L5</button>
+<button id="L10_leonajo01" onclick="showRecentGames('leonajo01', 10)">L10</button>
+<button id="L20_leonajo01" onclick="showRecentGames('leonajo01', 20)">L20</button>
+<button id="202324_leonajo01" onclick="filterBySeason('leonajo01', '2023-24')">2023-24</button>
+<button id="202425_leonajo01" onclick="filterBySeason('leonajo01', '2024-25')">2024-25</button>
+<button id="showAll_leonajo01" onclick="showAllGames('leonajo01')">All</button>
+<button id="TOI_leonajo01" onclick="toggleTOIOverlay('leonajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_leonajo01" onclick="clearFilters('leonajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_leonajo01">Change Line:</label>
+<input id="lineSlider_leonajo01" max="30" min="0" oninput="updateLine('leonajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_leonajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_leonajo01" onclick="resetLine('leonajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("leonajo01", [{'date': '2023-03-02', 'opponent': 'FLA', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 14.62}, {'date': '2023-03-04', 'opponent': 'CHI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.63}, {'date': '2023-03-06', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.38}, {'date': '2023-03-09', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.42}, {'date': '2023-04-03', 'opponent': 'DAL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 9.47}, {'date': '2023-04-04', 'opponent': 'VEG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 2, 'TOI': 9.72}, {'date': '2024-03-12', 'opponent': 'MIN', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 5.37}, {'date': '2024-03-14', 'opponent': 'DET', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 6.53}, {'date': '2024-03-16', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 7.13}, {'date': '2024-03-20', 'opponent': 'DAL', 'location': 'away', 'season': '2023-24', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 10.32}, {'date': '2024-03-22', 'opponent': 'SEA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 6.9}, {'date': '2024-03-24', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 4.95}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_leonajo01">Stat:</label>
+<select id="statSelector_leonajo01" onchange="updateStat('leonajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_leonajo01">Opponent:</label>
+<select id="teamFilter_leonajo01" onchange="applyFilters('leonajo01')">
+<option value="all">All</option>
+<option value="ARI">ARI</option>
+<option value="CHI">CHI</option>
+<option value="DAL">DAL</option>
+<option value="DET">DET</option>
+<option value="FLA">FLA</option>
+<option value="MIN">MIN</option>
+<option value="NJD">NJD</option>
+<option value="SEA">SEA</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_leonajo01">Home/Away:</label>
+<select id="homeAwayFilter_leonajo01" onchange="applyFilters('leonajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_leonajo01">Start:</label>
+<input id="startDate_leonajo01" onchange="applyFilters('leonajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_leonajo01">End:</label>
+<input id="endDate_leonajo01" onchange="applyFilters('leonajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_leonajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_leonajo01" onclick="showRecentGames('leonajo01', 5)">L5</button>
+<button id="L10_leonajo01" onclick="showRecentGames('leonajo01', 10)">L10</button>
+<button id="L20_leonajo01" onclick="showRecentGames('leonajo01', 20)">L20</button>
+<button id="202324_leonajo01" onclick="filterBySeason('leonajo01', '2023-24')">2023-24</button>
+<button id="202425_leonajo01" onclick="filterBySeason('leonajo01', '2024-25')">2024-25</button>
+<button id="showAll_leonajo01" onclick="showAllGames('leonajo01')">All</button>
+<button id="TOI_leonajo01" onclick="toggleTOIOverlay('leonajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_leonajo01" onclick="clearFilters('leonajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_leonajo01">Change Line:</label>
+<input id="lineSlider_leonajo01" max="30" min="0" oninput="updateLine('leonajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_leonajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_leonajo01" onclick="resetLine('leonajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("leonajo01", [{'date': '2023-03-02', 'opponent': 'FLA', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 14.62}, {'date': '2023-03-04', 'opponent': 'CHI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 14.63}, {'date': '2023-03-06', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 13.38}, {'date': '2023-03-09', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 7.42}, {'date': '2023-04-03', 'opponent': 'DAL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 9.47}, {'date': '2023-04-04', 'opponent': 'VEG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 2, 'TOI': 9.72}, {'date': '2024-03-12', 'opponent': 'MIN', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 5.37}, {'date': '2024-03-14', 'opponent': 'DET', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 6.53}, {'date': '2024-03-16', 'opponent': 'NJD', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 7.13}, {'date': '2024-03-20', 'opponent': 'DAL', 'location': 'away', 'season': '2023-24', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 10.32}, {'date': '2024-03-22', 'opponent': 'SEA', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 6.9}, {'date': '2024-03-24', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 4.95}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

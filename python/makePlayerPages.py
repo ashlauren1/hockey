@@ -182,16 +182,6 @@ def create_player_directory(roster_data, output_file_path):
 	<a href="javascript:void(0);" class="icon" onclick="myFunction()">
 		<i class="fa fa-bars"></i>
 	</a>
-	<div class="mobileSearch" id="search-container">
-        <input type="text" id="search-bar" placeholder="Search for a player or team...">
-        <button id="search-button">Search</button>
-        <div id="search-results"></div>
-    </div>
-	<div class="mobileHeader">
-		<h1>Today's Probabilities and Projections</h1>
-	</div>
-
-
 
 <script>
 function myFunction() {
@@ -656,17 +646,6 @@ document.addEventListener("DOMContentLoaded", function () {{
 	<a href="javascript:void(0);" class="icon" onclick="myFunction()">
 		<i class="fa fa-bars"></i>
 	</a>
-	<div class="mobileSearch" id="search-container">
-        <input type="text" id="search-bar" placeholder="Search for a player or team...">
-        <button id="search-button">Search</button>
-        <div id="search-results"></div>
-    </div>
-	<div class="mobileHeader">
-		<h1>Today's Probabilities and Projections</h1>
-	</div>
-
-
-
 <script>
 function myFunction() {{
   var x = document.getElementById("myLinks");

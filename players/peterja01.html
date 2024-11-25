@@ -622,6 +622,85 @@
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
     initializeChart("peterja01", [{'date': '2022-10-24', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 12.32}, {'date': '2023-03-23', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 12.07}, {'date': '2023-03-25', 'opponent': 'CGY', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 14.58}, {'date': '2023-03-28', 'opponent': 'WPG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.7}, {'date': '2023-03-30', 'opponent': 'VEG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 20.6}, {'date': '2023-04-01', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 0, 'BLK': 0, 'TOI': 17.83}, {'date': '2023-04-04', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 19.47}, {'date': '2023-04-06', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 19.25}, {'date': '2023-04-08', 'opponent': 'EDM', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 19.48}, {'date': '2023-04-10', 'opponent': 'WPG', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 2, 'BLK': 2, 'TOI': 18.53}, {'date': '2023-04-12', 'opponent': 'CGY', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 1, 'TOI': 17.37}, {'date': '2023-04-13', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 20.07}, {'date': '2023-10-14', 'opponent': 'COL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 2, 'TOI': 14.58}, {'date': '2023-10-17', 'opponent': 'CAR', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 3, 'TOI': 12.92}, {'date': '2023-10-21', 'opponent': 'NSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 13.23}, {'date': '2023-10-24', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 13.92}, {'date': '2023-10-26', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 14.88}, {'date': '2023-10-27', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.97}], 0.5, "G");
 </script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_peterja01">Stat:</label>
+<select id="statSelector_peterja01" onchange="updateStat('peterja01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_peterja01">Opponent:</label>
+<select id="teamFilter_peterja01" onchange="applyFilters('peterja01')">
+<option value="all">All</option>
+<option value="ARI">ARI</option>
+<option value="CAR">CAR</option>
+<option value="CGY">CGY</option>
+<option value="COL">COL</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="NSH">NSH</option>
+<option value="OTT">OTT</option>
+<option value="TBL">TBL</option>
+<option value="VAN">VAN</option>
+<option value="VEG">VEG</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_peterja01">Home/Away:</label>
+<select id="homeAwayFilter_peterja01" onchange="applyFilters('peterja01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_peterja01">Start:</label>
+<input id="startDate_peterja01" onchange="applyFilters('peterja01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_peterja01">End:</label>
+<input id="endDate_peterja01" onchange="applyFilters('peterja01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_peterja01"></canvas>
+<div class="filter-buttons">
+<button id="L5_peterja01" onclick="showRecentGames('peterja01', 5)">L5</button>
+<button id="L10_peterja01" onclick="showRecentGames('peterja01', 10)">L10</button>
+<button id="L20_peterja01" onclick="showRecentGames('peterja01', 20)">L20</button>
+<button id="202324_peterja01" onclick="filterBySeason('peterja01', '2023-24')">2023-24</button>
+<button id="202425_peterja01" onclick="filterBySeason('peterja01', '2024-25')">2024-25</button>
+<button id="showAll_peterja01" onclick="showAllGames('peterja01')">All</button>
+<button id="TOI_peterja01" onclick="toggleTOIOverlay('peterja01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_peterja01" onclick="clearFilters('peterja01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_peterja01">Change Line:</label>
+<input id="lineSlider_peterja01" max="30" min="0" oninput="updateLine('peterja01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_peterja01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_peterja01" onclick="resetLine('peterja01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("peterja01", [{'date': '2022-10-24', 'opponent': 'OTT', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 1, 'TOI': 12.32}, {'date': '2023-03-23', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 2, 'BLK': 0, 'TOI': 12.07}, {'date': '2023-03-25', 'opponent': 'CGY', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 14.58}, {'date': '2023-03-28', 'opponent': 'WPG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 0, 'BLK': 0, 'TOI': 17.7}, {'date': '2023-03-30', 'opponent': 'VEG', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 20.6}, {'date': '2023-04-01', 'opponent': 'ARI', 'location': 'away', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 4, 'HIT': 0, 'BLK': 0, 'TOI': 17.83}, {'date': '2023-04-04', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 1, 'A': 0, 'PTS': 1, 'SOG': 3, 'HIT': 2, 'BLK': 0, 'TOI': 19.47}, {'date': '2023-04-06', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 19.25}, {'date': '2023-04-08', 'opponent': 'EDM', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 19.48}, {'date': '2023-04-10', 'opponent': 'WPG', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 2, 'HIT': 2, 'BLK': 2, 'TOI': 18.53}, {'date': '2023-04-12', 'opponent': 'CGY', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 3, 'HIT': 2, 'BLK': 1, 'TOI': 17.37}, {'date': '2023-04-13', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 0, 'BLK': 1, 'TOI': 20.07}, {'date': '2023-10-14', 'opponent': 'COL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 2, 'TOI': 14.58}, {'date': '2023-10-17', 'opponent': 'CAR', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 3, 'TOI': 12.92}, {'date': '2023-10-21', 'opponent': 'NSH', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 13.23}, {'date': '2023-10-24', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 13.92}, {'date': '2023-10-26', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 14.88}, {'date': '2023-10-27', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 0, 'TOI': 9.97}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

@@ -594,6 +594,78 @@
     // Initialize the chart with player-specific data by calling a function from chart_logic.js
     initializeChart("studema01", [{'date': '2023-02-08', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 1, 'BLK': 0, 'TOI': 8.2}, {'date': '2023-02-11', 'opponent': 'TBL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.28}, {'date': '2023-02-14', 'opponent': 'BOS', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.58}, {'date': '2023-11-30', 'opponent': 'TOR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.88}, {'date': '2023-12-02', 'opponent': 'OTT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.33}], 0.5, "G");
 </script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_studema01">Stat:</label>
+<select id="statSelector_studema01" onchange="updateStat('studema01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_studema01">Opponent:</label>
+<select id="teamFilter_studema01" onchange="applyFilters('studema01')">
+<option value="all">All</option>
+<option value="BOS">BOS</option>
+<option value="MIN">MIN</option>
+<option value="OTT">OTT</option>
+<option value="TBL">TBL</option>
+<option value="TOR">TOR</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_studema01">Home/Away:</label>
+<select id="homeAwayFilter_studema01" onchange="applyFilters('studema01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_studema01">Start:</label>
+<input id="startDate_studema01" onchange="applyFilters('studema01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_studema01">End:</label>
+<input id="endDate_studema01" onchange="applyFilters('studema01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_studema01"></canvas>
+<div class="filter-buttons">
+<button id="L5_studema01" onclick="showRecentGames('studema01', 5)">L5</button>
+<button id="L10_studema01" onclick="showRecentGames('studema01', 10)">L10</button>
+<button id="L20_studema01" onclick="showRecentGames('studema01', 20)">L20</button>
+<button id="202324_studema01" onclick="filterBySeason('studema01', '2023-24')">2023-24</button>
+<button id="202425_studema01" onclick="filterBySeason('studema01', '2024-25')">2024-25</button>
+<button id="showAll_studema01" onclick="showAllGames('studema01')">All</button>
+<button id="TOI_studema01" onclick="toggleTOIOverlay('studema01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_studema01" onclick="clearFilters('studema01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_studema01">Change Line:</label>
+<input id="lineSlider_studema01" max="30" min="0" oninput="updateLine('studema01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_studema01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_studema01" onclick="resetLine('studema01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("studema01", [{'date': '2023-02-08', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 4, 'HIT': 1, 'BLK': 0, 'TOI': 8.2}, {'date': '2023-02-11', 'opponent': 'TBL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 8.28}, {'date': '2023-02-14', 'opponent': 'BOS', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 9.58}, {'date': '2023-11-30', 'opponent': 'TOR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 3, 'BLK': 0, 'TOI': 9.88}, {'date': '2023-12-02', 'opponent': 'OTT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 6.33}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

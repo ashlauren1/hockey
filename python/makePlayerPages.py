@@ -11,6 +11,7 @@ os.makedirs(output_dir, exist_ok=True)
 # **Load Data**
 roster_csv = os.path.join(data_dir, "rosters.csv")
 gamelogs_csv = os.path.join(data_dir, "gamelogs.csv")
+leaders_csv = os.path.join(data_dir, "leaders.csv")
 
 # Load roster data
 roster_data = pd.read_csv(roster_csv)
@@ -18,6 +19,9 @@ roster_data.sort_values(by=["Team", "Player"], inplace=True)
 
 # Load gamelogs data
 gamelogs_data = pd.read_csv(gamelogs_csv)
+
+# Load leader data
+leader_data = pd.read_csv(leaders_csv)
 
 # **Part 1: Generate Player Directory (index.html)**
 def create_player_directory(roster_data, output_file_path):
@@ -30,6 +34,7 @@ def create_player_directory(roster_data, output_file_path):
     <title>Player Directory</title>
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
@@ -163,6 +168,43 @@ def create_player_directory(roster_data, output_file_path):
 
     </head>
     <body>
+<div class="mobile">
+	<a class="activeMobile" href="/hockey/" target="_blank">Home</a>
+	<div id="myLinks">
+		<a href="/hockey/players/" target="_blank">Players</a>
+        <a href="/hockey/teams/" target="_blank">Teams</a>
+        <a href="/hockey/leaders/" target="_blank">Leaders</a>
+        <a href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+        <a href="/hockey/boxscores/" target="_blank">Scores</a>
+        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+	</div>
+	<a href="javascript:void(0);" class="icon" onclick="myFunction()">
+		<i class="fa fa-bars"></i>
+	</a>
+	<div class="mobileSearch" id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
+	<div class="mobileHeader">
+		<h1>Today's Probabilities and Projections</h1>
+	</div>
+
+
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+</div>
+    
     <div class="topnav">
         <a href="/hockey/" target="_blank">Projections</a>
         <a href="/hockey/players/" target="_blank">Players</a>
@@ -229,10 +271,36 @@ def create_player_directory(roster_data, output_file_path):
 # **Part 2: Generate Individual Player Gamelog Pages**
 def create_player_gamelog_pages(gamelogs_data, output_dir):
     grouped_data = gamelogs_data.groupby('PlayerID')
+    roster_data = pd.read_csv(roster_csv)
 
     for player_id, player_data in grouped_data:
+        player_info = roster_data[roster_data['PlayerID'] == player_id]
+        if player_info.empty:
+            continue
+        
         player_name = player_data.iloc[0]['Player']
-
+        team_id = player_info.iloc[0]["TeamID"]
+        team_name = player_info.iloc[0]["Team"]
+        position = player_info.iloc[0]["Position"]
+        
+        player_season = leader_data[leader_data['PlayerID'] == player_id]
+        if player_season.empty:
+            season_summary_rows = "<tr><td colspan='8'>No season stats available</td></tr>"
+        else:
+            season_summary_rows = ""
+            for _, row in player_season.iterrows():
+                season_summary_rows += f"""
+                <tr>
+                    <td>{int(row['GP'])}</td>
+                    <td>{int(row['G'])}</td>
+                    <td>{int(row['A'])}</td>
+                    <td>{int(row['PTS'])}</td>
+                    <td>{int(row['SOG'])}</td>
+                    <td>{int(row['HIT'])}</td>
+                    <td>{int(row['BLK'])}</td>
+                </tr>
+                """
+        
         player_filename = os.path.join(output_dir, f"{player_id}.html")
 
         # Start HTML content for the player's gamelog
@@ -245,6 +313,7 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
     <script src="playerScript.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
@@ -489,12 +558,130 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
     searchButton.addEventListener("click", redirectToSearchResults);
     }});
 
-    </script>
+document.addEventListener("DOMContentLoaded", function () {{
+    // Wait until all charts are initialized before handling images
+    initializeCharts(() => {{
+        const images = document.querySelectorAll(".playerPicture");
+        let validImageFound = false;
+
+        images.forEach((img) => {{
+            img.onload = function () {{
+                if (!validImageFound) {{
+                    validImageFound = true; // Mark the first valid image found
+                }} else {{
+                    img.style.display = "none"; // Hide any additional valid images
+                }}
+            }};
+
+            img.onerror = function () {{
+                img.style.display = "none"; // Hide the image if it fails to load
+            }};
+        }});
+    }});
+}});
+
+// Example function to initialize charts and ensure the callback runs after
+function initializeCharts(callback) {{
+    initializeChart("player_id", chartData, bettingLine, "G"); // Call your chart logic
+    if (callback) callback();
+}}
+
+document.addEventListener("DOMContentLoaded", function () {{
+    const images = document.querySelectorAll(".playerPicture");
+    let validImageFound = false;
+
+    images.forEach((img) => {{
+        img.onload = function () {{
+            console.log("Image loaded:", img.src); // Debug log
+            if (!validImageFound) {{
+                validImageFound = true; // Mark the first valid image found
+            }} else {{
+                img.style.display = "none"; // Hide any additional valid images
+            }}
+        }};
+
+        img.onerror = function () {{
+            console.log("Image failed to load:", img.src); // Debug log
+            img.style.display = "none"; // Hide the image if it fails to load
+        }};
+    }});
+}});
+
+
+</script>
 </head>
 <body>
 
+<style>
+#player_info {{
+    width: 95%;
+    margin: 24px auto 12px auto;
+    min-height: auto;
+}}
+
+.playerPictureContainer {{
+    margin: 0;
+}}
+
+.playerPicture {{
+    width: 92px;
+    display: inline-block;
+    float: left;
+    margin-left: 0;
+    margin-right: 10px
+}}
+
+.info p {{
+    display: block;
+}}
+
+.info h1 {{
+    text-align: left;
+    font-size: 18px;
+    font-family: "Roboto Slab"
+}}
+
+</style>
+<div class="mobile">
+	<a class="activeMobile" href="/hockey/" target="_blank">Home</a>
+	<div id="myLinks">
+		<a href="/hockey/players/" target="_blank">Players</a>
+        <a href="/hockey/teams/" target="_blank">Teams</a>
+        <a href="/hockey/leaders/" target="_blank">Leaders</a>
+        <a href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+        <a href="/hockey/boxscores/" target="_blank">Scores</a>
+        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+	</div>
+	<a href="javascript:void(0);" class="icon" onclick="myFunction()">
+		<i class="fa fa-bars"></i>
+	</a>
+	<div class="mobileSearch" id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
+	<div class="mobileHeader">
+		<h1>Today's Probabilities and Projections</h1>
+	</div>
+
+
+
+<script>
+function myFunction() {{
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {{
+    x.style.display = "none";
+  }} else {{
+    x.style.display = "block";
+  }}
+}}
+</script>
+</div>
+
+
 <div id="page-heading">
-	<div class="topnav">
+    <div class="topnav">
         <a class="topnav-item active" href="/hockey/" target="_blank">Projections</a>
         <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
         <a class="topnav-item" href="/hockey/teams/" target="_blank">Teams</a>
@@ -509,12 +696,45 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
         <button id="search-button">Search</button>
         <div id="search-results"></div>
     </div>
-	<div class="header">
+</div>
+
+    <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+
+<div id="player_info">
+    <div id="playerPictureContainer">
+        <img class="playerPicture" src="https://www.hockey-reference.com/req/202301051/images/headshots/{player_id}-2020.jpg" alt="{player_name}" onerror="this.style.display='none';">
+        <img class="playerPicture" src="https://www.hockey-reference.com/req/202301051/images/headshots/{player_id}-2021.jpg" alt="{player_name}" onerror="this.style.display='none';">
+        <img class="playerPicture" src="https://www.hockey-reference.com/req/202301051/images/headshots/{player_id}-2022.jpg" alt="{player_name}" onerror="this.style.display='none';">
+        <img class="playerPicture" src="https://www.hockey-reference.com/req/202301051/images/headshots/{player_id}-2023.jpg" alt="{player_name}" onerror="this.style.display='none';">
+        <img class="playerPicture" src="https://www.hockey-reference.com/req/202301051/images/headshots/{player_id}-2024.jpg" alt="{player_name}" onerror="this.style.display='none';">
+    </div>
+    <div class="info">
         <h1>{player_name}</h1>
+        <p>Team: {team_name}</p>
+        <p>Position: {position}</p>
+    </div>
+    <div id="seasonStats">
+        <table class="seasonSummary">
+        <thead>
+            <tr>
+                <th>GP</th>
+                <th>G</th>
+                <th>A</th>
+                <th>PTS</th>
+                <th>SOG</th>
+                <th>HIT</th>
+                <th>BLK</th>
+            </tr>
+        </thead>
+        <tbody>
+            {season_summary_rows}
+        </tbody>
+        </table>
     </div>
 </div>
-    <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+    
 <div id="player-container">
+<p class="title-caption">Gamelog</p>
     <div id="glossaryModal" class="modal">
         <div id="glossary-modal-content">
         <span class="closeGlossary">&times;</span>
@@ -545,7 +765,6 @@ def create_player_gamelog_pages(gamelogs_data, output_dir):
     </div>
     <div id="table-container">
         <div class="groupedProbAndButtons">
-            <span class="caption">Gamelog</span>
             <div class="button-container">
                 <button id="toggle-selection-btn">Show Selected Only</button>
                 <button id="clear-filters-btn">Remove Filters</button>

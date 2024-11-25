@@ -8,6 +8,7 @@
 <link href="stylesheet.css" rel="stylesheet"/>
 <link href="/hockey/images/favicon.ico" rel="icon" type="image/x-icon"/>
 <script src="playerScript.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&amp;family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=Montserrat:ital,wght@0,100..900;1,100..900&amp;family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;family=Roboto+Slab:wght@100..900&amp;display=swap" rel="stylesheet"/>
@@ -252,9 +253,122 @@
     searchButton.addEventListener("click", redirectToSearchResults);
     });
 
-    </script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Wait until all charts are initialized before handling images
+    initializeCharts(() => {
+        const images = document.querySelectorAll(".playerPicture");
+        let validImageFound = false;
+
+        images.forEach((img) => {
+            img.onload = function () {
+                if (!validImageFound) {
+                    validImageFound = true; // Mark the first valid image found
+                } else {
+                    img.style.display = "none"; // Hide any additional valid images
+                }
+            };
+
+            img.onerror = function () {
+                img.style.display = "none"; // Hide the image if it fails to load
+            };
+        });
+    });
+});
+
+// Example function to initialize charts and ensure the callback runs after
+function initializeCharts(callback) {
+    initializeChart("player_id", chartData, bettingLine, "G"); // Call your chart logic
+    if (callback) callback();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll(".playerPicture");
+    let validImageFound = false;
+
+    images.forEach((img) => {
+        img.onload = function () {
+            console.log("Image loaded:", img.src); // Debug log
+            if (!validImageFound) {
+                validImageFound = true; // Mark the first valid image found
+            } else {
+                img.style.display = "none"; // Hide any additional valid images
+            }
+        };
+
+        img.onerror = function () {
+            console.log("Image failed to load:", img.src); // Debug log
+            img.style.display = "none"; // Hide the image if it fails to load
+        };
+    });
+});
+
+
+</script>
 </head>
 <body>
+<style>
+#player_info {
+    width: 95%;
+    margin: 24px auto 12px auto;
+    min-height: auto;
+}
+
+.playerPictureContainer {
+    margin: 0;
+}
+
+.playerPicture {
+    width: 92px;
+    display: inline-block;
+    float: left;
+    margin-left: 0;
+    margin-right: 10px
+}
+
+.info p {
+    display: block;
+}
+
+.info h1 {
+    text-align: left;
+    font-size: 18px;
+    font-family: "Roboto Slab"
+}
+
+</style>
+<div class="mobile">
+<a class="activeMobile" href="/hockey/" target="_blank">Home</a>
+<div id="myLinks">
+<a href="/hockey/players/" target="_blank">Players</a>
+<a href="/hockey/teams/" target="_blank">Teams</a>
+<a href="/hockey/leaders/" target="_blank">Leaders</a>
+<a href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+<a href="/hockey/boxscores/" target="_blank">Scores</a>
+<a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+<a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+</div>
+<a class="icon" href="javascript:void(0);" onclick="myFunction()">
+<i class="fa fa-bars"></i>
+</a>
+<div class="mobileSearch" id="search-container">
+<input id="search-bar" placeholder="Search for a player or team..." type="text"/>
+<button id="search-button">Search</button>
+<div id="search-results"></div>
+</div>
+<div class="mobileHeader">
+<h1>Today's Probabilities and Projections</h1>
+</div>
+<script>
+function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+</div>
 <div id="page-heading">
 <div class="topnav">
 <a class="topnav-item active" href="/hockey/" target="_blank">Projections</a>
@@ -271,12 +385,50 @@
 <button id="search-button">Search</button>
 <div id="search-results"></div>
 </div>
-<div class="header">
-<h1>JAMIE OLEKSIAK</h1>
-</div>
 </div>
 <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
+<div id="player_info">
+<div id="playerPictureContainer">
+<img alt="JAMIE OLEKSIAK" class="playerPicture" onerror="this.style.display='none';" src="https://www.hockey-reference.com/req/202301051/images/headshots/oleksja01-2020.jpg"/>
+<img alt="JAMIE OLEKSIAK" class="playerPicture" onerror="this.style.display='none';" src="https://www.hockey-reference.com/req/202301051/images/headshots/oleksja01-2021.jpg"/>
+<img alt="JAMIE OLEKSIAK" class="playerPicture" onerror="this.style.display='none';" src="https://www.hockey-reference.com/req/202301051/images/headshots/oleksja01-2022.jpg"/>
+<img alt="JAMIE OLEKSIAK" class="playerPicture" onerror="this.style.display='none';" src="https://www.hockey-reference.com/req/202301051/images/headshots/oleksja01-2023.jpg"/>
+<img alt="JAMIE OLEKSIAK" class="playerPicture" onerror="this.style.display='none';" src="https://www.hockey-reference.com/req/202301051/images/headshots/oleksja01-2024.jpg"/>
+</div>
+<div class="info">
+<h1>JAMIE OLEKSIAK</h1>
+<p>Team: Seattle Kraken</p>
+<p>Position: D</p>
+</div>
+<div id="seasonStats">
+<table class="seasonSummary">
+<thead>
+<tr>
+<th>GP</th>
+<th>G</th>
+<th>A</th>
+<th>PTS</th>
+<th>SOG</th>
+<th>HIT</th>
+<th>BLK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21</td>
+<td>2</td>
+<td>3</td>
+<td>5</td>
+<td>24</td>
+<td>17</td>
+<td>49</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="player-container">
+<p class="title-caption">Gamelog</p>
 <div class="modal" id="glossaryModal">
 <div id="glossary-modal-content">
 <span class="closeGlossary">×</span>
@@ -406,7 +558,6 @@
 </script>
 <div id="table-container">
 <div class="groupedProbAndButtons">
-<span class="caption">Gamelog</span>
 <div class="button-container">
 <button id="toggle-selection-btn">Show Selected Only</button>
 <button id="clear-filters-btn">Remove Filters</button>

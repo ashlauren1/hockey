@@ -273,6 +273,7 @@
 </div>
 <div class="header">
 <h1>ADAM RASKA</h1>
+<div class="playerPicture"><img alt="ADAM RASKA" src="https://www.hockey-reference.com/req/202301051/images/headshots/raskaad01-2020.jpg"/></div>
 </div>
 </div>
 <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
@@ -305,6 +306,306 @@
 </ul>
 </div>
 </div>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_raskaad01">Stat:</label>
+<select id="statSelector_raskaad01" onchange="updateStat('raskaad01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_raskaad01">Opponent:</label>
+<select id="teamFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="PHI">PHI</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_raskaad01">Home/Away:</label>
+<select id="homeAwayFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_raskaad01">Start:</label>
+<input id="startDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_raskaad01">End:</label>
+<input id="endDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_raskaad01"></canvas>
+<div class="filter-buttons">
+<button id="L5_raskaad01" onclick="showRecentGames('raskaad01', 5)">L5</button>
+<button id="L10_raskaad01" onclick="showRecentGames('raskaad01', 10)">L10</button>
+<button id="L20_raskaad01" onclick="showRecentGames('raskaad01', 20)">L20</button>
+<button id="202324_raskaad01" onclick="filterBySeason('raskaad01', '2023-24')">2023-24</button>
+<button id="202425_raskaad01" onclick="filterBySeason('raskaad01', '2024-25')">2024-25</button>
+<button id="showAll_raskaad01" onclick="showAllGames('raskaad01')">All</button>
+<button id="TOI_raskaad01" onclick="toggleTOIOverlay('raskaad01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_raskaad01" onclick="clearFilters('raskaad01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_raskaad01">Change Line:</label>
+<input id="lineSlider_raskaad01" max="30" min="0" oninput="updateLine('raskaad01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_raskaad01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_raskaad01" onclick="resetLine('raskaad01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("raskaad01", [{'date': '2023-04-06', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 12.22}, {'date': '2023-04-08', 'opponent': 'EDM', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 2, 'TOI': 11.72}, {'date': '2023-04-10', 'opponent': 'WPG', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 11.82}, {'date': '2024-01-06', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.53}, {'date': '2024-01-08', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.77}, {'date': '2024-01-12', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.13}, {'date': '2024-01-19', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.22}, {'date': '2024-01-21', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 7.4}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_raskaad01">Stat:</label>
+<select id="statSelector_raskaad01" onchange="updateStat('raskaad01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_raskaad01">Opponent:</label>
+<select id="teamFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="PHI">PHI</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_raskaad01">Home/Away:</label>
+<select id="homeAwayFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_raskaad01">Start:</label>
+<input id="startDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_raskaad01">End:</label>
+<input id="endDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_raskaad01"></canvas>
+<div class="filter-buttons">
+<button id="L5_raskaad01" onclick="showRecentGames('raskaad01', 5)">L5</button>
+<button id="L10_raskaad01" onclick="showRecentGames('raskaad01', 10)">L10</button>
+<button id="L20_raskaad01" onclick="showRecentGames('raskaad01', 20)">L20</button>
+<button id="202324_raskaad01" onclick="filterBySeason('raskaad01', '2023-24')">2023-24</button>
+<button id="202425_raskaad01" onclick="filterBySeason('raskaad01', '2024-25')">2024-25</button>
+<button id="showAll_raskaad01" onclick="showAllGames('raskaad01')">All</button>
+<button id="TOI_raskaad01" onclick="toggleTOIOverlay('raskaad01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_raskaad01" onclick="clearFilters('raskaad01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_raskaad01">Change Line:</label>
+<input id="lineSlider_raskaad01" max="30" min="0" oninput="updateLine('raskaad01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_raskaad01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_raskaad01" onclick="resetLine('raskaad01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("raskaad01", [{'date': '2023-04-06', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 12.22}, {'date': '2023-04-08', 'opponent': 'EDM', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 2, 'TOI': 11.72}, {'date': '2023-04-10', 'opponent': 'WPG', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 11.82}, {'date': '2024-01-06', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.53}, {'date': '2024-01-08', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.77}, {'date': '2024-01-12', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.13}, {'date': '2024-01-19', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.22}, {'date': '2024-01-21', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 7.4}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_raskaad01">Stat:</label>
+<select id="statSelector_raskaad01" onchange="updateStat('raskaad01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_raskaad01">Opponent:</label>
+<select id="teamFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="PHI">PHI</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_raskaad01">Home/Away:</label>
+<select id="homeAwayFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_raskaad01">Start:</label>
+<input id="startDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_raskaad01">End:</label>
+<input id="endDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_raskaad01"></canvas>
+<div class="filter-buttons">
+<button id="L5_raskaad01" onclick="showRecentGames('raskaad01', 5)">L5</button>
+<button id="L10_raskaad01" onclick="showRecentGames('raskaad01', 10)">L10</button>
+<button id="L20_raskaad01" onclick="showRecentGames('raskaad01', 20)">L20</button>
+<button id="202324_raskaad01" onclick="filterBySeason('raskaad01', '2023-24')">2023-24</button>
+<button id="202425_raskaad01" onclick="filterBySeason('raskaad01', '2024-25')">2024-25</button>
+<button id="showAll_raskaad01" onclick="showAllGames('raskaad01')">All</button>
+<button id="TOI_raskaad01" onclick="toggleTOIOverlay('raskaad01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_raskaad01" onclick="clearFilters('raskaad01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_raskaad01">Change Line:</label>
+<input id="lineSlider_raskaad01" max="30" min="0" oninput="updateLine('raskaad01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_raskaad01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_raskaad01" onclick="resetLine('raskaad01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("raskaad01", [{'date': '2023-04-06', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 12.22}, {'date': '2023-04-08', 'opponent': 'EDM', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 2, 'TOI': 11.72}, {'date': '2023-04-10', 'opponent': 'WPG', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 11.82}, {'date': '2024-01-06', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.53}, {'date': '2024-01-08', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.77}, {'date': '2024-01-12', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.13}, {'date': '2024-01-19', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.22}, {'date': '2024-01-21', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 7.4}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_raskaad01">Stat:</label>
+<select id="statSelector_raskaad01" onchange="updateStat('raskaad01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_raskaad01">Opponent:</label>
+<select id="teamFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="DAL">DAL</option>
+<option value="EDM">EDM</option>
+<option value="FLA">FLA</option>
+<option value="PHI">PHI</option>
+<option value="WPG">WPG</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_raskaad01">Home/Away:</label>
+<select id="homeAwayFilter_raskaad01" onchange="applyFilters('raskaad01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_raskaad01">Start:</label>
+<input id="startDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_raskaad01">End:</label>
+<input id="endDate_raskaad01" onchange="applyFilters('raskaad01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_raskaad01"></canvas>
+<div class="filter-buttons">
+<button id="L5_raskaad01" onclick="showRecentGames('raskaad01', 5)">L5</button>
+<button id="L10_raskaad01" onclick="showRecentGames('raskaad01', 10)">L10</button>
+<button id="L20_raskaad01" onclick="showRecentGames('raskaad01', 20)">L20</button>
+<button id="202324_raskaad01" onclick="filterBySeason('raskaad01', '2023-24')">2023-24</button>
+<button id="202425_raskaad01" onclick="filterBySeason('raskaad01', '2024-25')">2024-25</button>
+<button id="showAll_raskaad01" onclick="showAllGames('raskaad01')">All</button>
+<button id="TOI_raskaad01" onclick="toggleTOIOverlay('raskaad01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_raskaad01" onclick="clearFilters('raskaad01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_raskaad01">Change Line:</label>
+<input id="lineSlider_raskaad01" max="30" min="0" oninput="updateLine('raskaad01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_raskaad01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_raskaad01" onclick="resetLine('raskaad01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("raskaad01", [{'date': '2023-04-06', 'opponent': 'COL', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 12.22}, {'date': '2023-04-08', 'opponent': 'EDM', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 4, 'BLK': 2, 'TOI': 11.72}, {'date': '2023-04-10', 'opponent': 'WPG', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 11.82}, {'date': '2024-01-06', 'opponent': 'CBJ', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 6.53}, {'date': '2024-01-08', 'opponent': 'DAL', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 1, 'TOI': 7.77}, {'date': '2024-01-12', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 8.13}, {'date': '2024-01-19', 'opponent': 'FLA', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 0, 'TOI': 4.22}, {'date': '2024-01-21', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 5, 'BLK': 0, 'TOI': 7.4}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

@@ -273,6 +273,7 @@
 </div>
 <div class="header">
 <h1>JOONA KOPPANEN</h1>
+<div class="playerPicture"><img alt="JOONA KOPPANEN" src="https://www.hockey-reference.com/req/202301051/images/headshots/koppajo01-2020.jpg"/></div>
 </div>
 </div>
 <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
@@ -305,6 +306,302 @@
 </ul>
 </div>
 </div>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_koppajo01">Stat:</label>
+<select id="statSelector_koppajo01" onchange="updateStat('koppajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_koppajo01">Opponent:</label>
+<select id="teamFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="CBJ">CBJ</option>
+<option value="MTL">MTL</option>
+<option value="NYI">NYI</option>
+<option value="PHI">PHI</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="TBL">TBL</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_koppajo01">Home/Away:</label>
+<select id="homeAwayFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_koppajo01">Start:</label>
+<input id="startDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_koppajo01">End:</label>
+<input id="endDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_koppajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_koppajo01" onclick="showRecentGames('koppajo01', 5)">L5</button>
+<button id="L10_koppajo01" onclick="showRecentGames('koppajo01', 10)">L10</button>
+<button id="L20_koppajo01" onclick="showRecentGames('koppajo01', 20)">L20</button>
+<button id="202324_koppajo01" onclick="filterBySeason('koppajo01', '2023-24')">2023-24</button>
+<button id="202425_koppajo01" onclick="filterBySeason('koppajo01', '2024-25')">2024-25</button>
+<button id="showAll_koppajo01" onclick="showAllGames('koppajo01')">All</button>
+<button id="TOI_koppajo01" onclick="toggleTOIOverlay('koppajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_koppajo01" onclick="clearFilters('koppajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_koppajo01">Change Line:</label>
+<input id="lineSlider_koppajo01" max="30" min="0" oninput="updateLine('koppajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_koppajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_koppajo01" onclick="resetLine('koppajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("koppajo01", [{'date': '2023-01-12', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.83}, {'date': '2023-01-18', 'opponent': 'NYI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 10.8}, {'date': '2023-01-22', 'opponent': 'SJS', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 13.58}, {'date': '2023-01-24', 'opponent': 'MTL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.03}, {'date': '2023-01-26', 'opponent': 'TBL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 12.88}, {'date': '2023-12-02', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 7.23}, {'date': '2023-12-04', 'opponent': 'PHI', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 9.53}, {'date': '2023-12-06', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.5}, {'date': '2024-03-05', 'opponent': 'CBJ', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 8.97}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_koppajo01">Stat:</label>
+<select id="statSelector_koppajo01" onchange="updateStat('koppajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_koppajo01">Opponent:</label>
+<select id="teamFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="CBJ">CBJ</option>
+<option value="MTL">MTL</option>
+<option value="NYI">NYI</option>
+<option value="PHI">PHI</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="TBL">TBL</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_koppajo01">Home/Away:</label>
+<select id="homeAwayFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_koppajo01">Start:</label>
+<input id="startDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_koppajo01">End:</label>
+<input id="endDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_koppajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_koppajo01" onclick="showRecentGames('koppajo01', 5)">L5</button>
+<button id="L10_koppajo01" onclick="showRecentGames('koppajo01', 10)">L10</button>
+<button id="L20_koppajo01" onclick="showRecentGames('koppajo01', 20)">L20</button>
+<button id="202324_koppajo01" onclick="filterBySeason('koppajo01', '2023-24')">2023-24</button>
+<button id="202425_koppajo01" onclick="filterBySeason('koppajo01', '2024-25')">2024-25</button>
+<button id="showAll_koppajo01" onclick="showAllGames('koppajo01')">All</button>
+<button id="TOI_koppajo01" onclick="toggleTOIOverlay('koppajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_koppajo01" onclick="clearFilters('koppajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_koppajo01">Change Line:</label>
+<input id="lineSlider_koppajo01" max="30" min="0" oninput="updateLine('koppajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_koppajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_koppajo01" onclick="resetLine('koppajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("koppajo01", [{'date': '2023-01-12', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.83}, {'date': '2023-01-18', 'opponent': 'NYI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 10.8}, {'date': '2023-01-22', 'opponent': 'SJS', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 13.58}, {'date': '2023-01-24', 'opponent': 'MTL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.03}, {'date': '2023-01-26', 'opponent': 'TBL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 12.88}, {'date': '2023-12-02', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 7.23}, {'date': '2023-12-04', 'opponent': 'PHI', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 9.53}, {'date': '2023-12-06', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.5}, {'date': '2024-03-05', 'opponent': 'CBJ', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 8.97}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_koppajo01">Stat:</label>
+<select id="statSelector_koppajo01" onchange="updateStat('koppajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_koppajo01">Opponent:</label>
+<select id="teamFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="CBJ">CBJ</option>
+<option value="MTL">MTL</option>
+<option value="NYI">NYI</option>
+<option value="PHI">PHI</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="TBL">TBL</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_koppajo01">Home/Away:</label>
+<select id="homeAwayFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_koppajo01">Start:</label>
+<input id="startDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_koppajo01">End:</label>
+<input id="endDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_koppajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_koppajo01" onclick="showRecentGames('koppajo01', 5)">L5</button>
+<button id="L10_koppajo01" onclick="showRecentGames('koppajo01', 10)">L10</button>
+<button id="L20_koppajo01" onclick="showRecentGames('koppajo01', 20)">L20</button>
+<button id="202324_koppajo01" onclick="filterBySeason('koppajo01', '2023-24')">2023-24</button>
+<button id="202425_koppajo01" onclick="filterBySeason('koppajo01', '2024-25')">2024-25</button>
+<button id="showAll_koppajo01" onclick="showAllGames('koppajo01')">All</button>
+<button id="TOI_koppajo01" onclick="toggleTOIOverlay('koppajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_koppajo01" onclick="clearFilters('koppajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_koppajo01">Change Line:</label>
+<input id="lineSlider_koppajo01" max="30" min="0" oninput="updateLine('koppajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_koppajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_koppajo01" onclick="resetLine('koppajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("koppajo01", [{'date': '2023-01-12', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.83}, {'date': '2023-01-18', 'opponent': 'NYI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 10.8}, {'date': '2023-01-22', 'opponent': 'SJS', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 13.58}, {'date': '2023-01-24', 'opponent': 'MTL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.03}, {'date': '2023-01-26', 'opponent': 'TBL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 12.88}, {'date': '2023-12-02', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 7.23}, {'date': '2023-12-04', 'opponent': 'PHI', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 9.53}, {'date': '2023-12-06', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.5}, {'date': '2024-03-05', 'opponent': 'CBJ', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 8.97}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_koppajo01">Stat:</label>
+<select id="statSelector_koppajo01" onchange="updateStat('koppajo01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_koppajo01">Opponent:</label>
+<select id="teamFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="CBJ">CBJ</option>
+<option value="MTL">MTL</option>
+<option value="NYI">NYI</option>
+<option value="PHI">PHI</option>
+<option value="SEA">SEA</option>
+<option value="SJS">SJS</option>
+<option value="TBL">TBL</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_koppajo01">Home/Away:</label>
+<select id="homeAwayFilter_koppajo01" onchange="applyFilters('koppajo01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_koppajo01">Start:</label>
+<input id="startDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_koppajo01">End:</label>
+<input id="endDate_koppajo01" onchange="applyFilters('koppajo01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_koppajo01"></canvas>
+<div class="filter-buttons">
+<button id="L5_koppajo01" onclick="showRecentGames('koppajo01', 5)">L5</button>
+<button id="L10_koppajo01" onclick="showRecentGames('koppajo01', 10)">L10</button>
+<button id="L20_koppajo01" onclick="showRecentGames('koppajo01', 20)">L20</button>
+<button id="202324_koppajo01" onclick="filterBySeason('koppajo01', '2023-24')">2023-24</button>
+<button id="202425_koppajo01" onclick="filterBySeason('koppajo01', '2024-25')">2024-25</button>
+<button id="showAll_koppajo01" onclick="showAllGames('koppajo01')">All</button>
+<button id="TOI_koppajo01" onclick="toggleTOIOverlay('koppajo01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_koppajo01" onclick="clearFilters('koppajo01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_koppajo01">Change Line:</label>
+<input id="lineSlider_koppajo01" max="30" min="0" oninput="updateLine('koppajo01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_koppajo01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_koppajo01" onclick="resetLine('koppajo01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("koppajo01", [{'date': '2023-01-12', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 0, 'TOI': 8.83}, {'date': '2023-01-18', 'opponent': 'NYI', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 10.8}, {'date': '2023-01-22', 'opponent': 'SJS', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 1, 'PTS': 1, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 13.58}, {'date': '2023-01-24', 'opponent': 'MTL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 8.03}, {'date': '2023-01-26', 'opponent': 'TBL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 2, 'BLK': 1, 'TOI': 12.88}, {'date': '2023-12-02', 'opponent': 'PHI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 7.23}, {'date': '2023-12-04', 'opponent': 'PHI', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 9.53}, {'date': '2023-12-06', 'opponent': 'TBL', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 0, 'TOI': 5.5}, {'date': '2024-03-05', 'opponent': 'CBJ', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 2, 'BLK': 1, 'TOI': 8.97}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

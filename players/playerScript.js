@@ -85,3 +85,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setupModal("glossaryModal", "glossaryButton", "closeGlossary");
 });
+
+document.addEventListener("DOMContentLoaded", function () {{
+	const images = document.querySelectorAll(".playerPicture");
+	let validImageFound = false;
+
+	images.forEach((img) => {{
+		img.onload = function () {{
+			if (!validImageFound) {{
+				validImageFound = true;
+			}} else {{
+				img.style.display = "none"; 
+			}}
+		}};
+
+		img.onerror = function () {{
+			img.style.display = "none";
+		}};
+	}});
+}});

@@ -273,6 +273,7 @@
 </div>
 <div class="header">
 <h1>DERRICK POULIOT</h1>
+<div class="playerPicture"><img alt="DERRICK POULIOT" src="https://www.hockey-reference.com/req/202301051/images/headshots/poulide01-2020.jpg"/></div>
 </div>
 </div>
 <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
@@ -305,6 +306,322 @@
 </ul>
 </div>
 </div>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_poulide01">Stat:</label>
+<select id="statSelector_poulide01" onchange="updateStat('poulide01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_poulide01">Opponent:</label>
+<select id="teamFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="EDM">EDM</option>
+<option value="MIN">MIN</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="SEA">SEA</option>
+<option value="STL">STL</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_poulide01">Home/Away:</label>
+<select id="homeAwayFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_poulide01">Start:</label>
+<input id="startDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_poulide01">End:</label>
+<input id="endDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_poulide01"></canvas>
+<div class="filter-buttons">
+<button id="L5_poulide01" onclick="showRecentGames('poulide01', 5)">L5</button>
+<button id="L10_poulide01" onclick="showRecentGames('poulide01', 10)">L10</button>
+<button id="L20_poulide01" onclick="showRecentGames('poulide01', 20)">L20</button>
+<button id="202324_poulide01" onclick="filterBySeason('poulide01', '2023-24')">2023-24</button>
+<button id="202425_poulide01" onclick="filterBySeason('poulide01', '2024-25')">2024-25</button>
+<button id="showAll_poulide01" onclick="showAllGames('poulide01')">All</button>
+<button id="TOI_poulide01" onclick="toggleTOIOverlay('poulide01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_poulide01" onclick="clearFilters('poulide01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_poulide01">Change Line:</label>
+<input id="lineSlider_poulide01" max="30" min="0" oninput="updateLine('poulide01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_poulide01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_poulide01" onclick="resetLine('poulide01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("poulide01", [{'date': '2023-03-07', 'opponent': 'COL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 16.6}, {'date': '2023-03-09', 'opponent': 'STL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.32}, {'date': '2023-03-11', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 16.75}, {'date': '2023-03-14', 'opponent': 'CBJ', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.28}, {'date': '2023-03-16', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 18.93}, {'date': '2023-03-18', 'opponent': 'NYI', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 17.18}, {'date': '2023-03-20', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.98}, {'date': '2023-03-23', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 3, 'TOI': 14.52}, {'date': '2024-02-19', 'opponent': 'BOS', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 13.28}, {'date': '2024-02-20', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 10.55}, {'date': '2024-02-22', 'opponent': 'OTT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 15.92}, {'date': '2024-02-24', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.93}, {'date': '2024-02-26', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 11.02}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_poulide01">Stat:</label>
+<select id="statSelector_poulide01" onchange="updateStat('poulide01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_poulide01">Opponent:</label>
+<select id="teamFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="EDM">EDM</option>
+<option value="MIN">MIN</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="SEA">SEA</option>
+<option value="STL">STL</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_poulide01">Home/Away:</label>
+<select id="homeAwayFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_poulide01">Start:</label>
+<input id="startDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_poulide01">End:</label>
+<input id="endDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_poulide01"></canvas>
+<div class="filter-buttons">
+<button id="L5_poulide01" onclick="showRecentGames('poulide01', 5)">L5</button>
+<button id="L10_poulide01" onclick="showRecentGames('poulide01', 10)">L10</button>
+<button id="L20_poulide01" onclick="showRecentGames('poulide01', 20)">L20</button>
+<button id="202324_poulide01" onclick="filterBySeason('poulide01', '2023-24')">2023-24</button>
+<button id="202425_poulide01" onclick="filterBySeason('poulide01', '2024-25')">2024-25</button>
+<button id="showAll_poulide01" onclick="showAllGames('poulide01')">All</button>
+<button id="TOI_poulide01" onclick="toggleTOIOverlay('poulide01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_poulide01" onclick="clearFilters('poulide01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_poulide01">Change Line:</label>
+<input id="lineSlider_poulide01" max="30" min="0" oninput="updateLine('poulide01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_poulide01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_poulide01" onclick="resetLine('poulide01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("poulide01", [{'date': '2023-03-07', 'opponent': 'COL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 16.6}, {'date': '2023-03-09', 'opponent': 'STL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.32}, {'date': '2023-03-11', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 16.75}, {'date': '2023-03-14', 'opponent': 'CBJ', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.28}, {'date': '2023-03-16', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 18.93}, {'date': '2023-03-18', 'opponent': 'NYI', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 17.18}, {'date': '2023-03-20', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.98}, {'date': '2023-03-23', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 3, 'TOI': 14.52}, {'date': '2024-02-19', 'opponent': 'BOS', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 13.28}, {'date': '2024-02-20', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 10.55}, {'date': '2024-02-22', 'opponent': 'OTT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 15.92}, {'date': '2024-02-24', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.93}, {'date': '2024-02-26', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 11.02}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_poulide01">Stat:</label>
+<select id="statSelector_poulide01" onchange="updateStat('poulide01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_poulide01">Opponent:</label>
+<select id="teamFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="EDM">EDM</option>
+<option value="MIN">MIN</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="SEA">SEA</option>
+<option value="STL">STL</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_poulide01">Home/Away:</label>
+<select id="homeAwayFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_poulide01">Start:</label>
+<input id="startDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_poulide01">End:</label>
+<input id="endDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_poulide01"></canvas>
+<div class="filter-buttons">
+<button id="L5_poulide01" onclick="showRecentGames('poulide01', 5)">L5</button>
+<button id="L10_poulide01" onclick="showRecentGames('poulide01', 10)">L10</button>
+<button id="L20_poulide01" onclick="showRecentGames('poulide01', 20)">L20</button>
+<button id="202324_poulide01" onclick="filterBySeason('poulide01', '2023-24')">2023-24</button>
+<button id="202425_poulide01" onclick="filterBySeason('poulide01', '2024-25')">2024-25</button>
+<button id="showAll_poulide01" onclick="showAllGames('poulide01')">All</button>
+<button id="TOI_poulide01" onclick="toggleTOIOverlay('poulide01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_poulide01" onclick="clearFilters('poulide01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_poulide01">Change Line:</label>
+<input id="lineSlider_poulide01" max="30" min="0" oninput="updateLine('poulide01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_poulide01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_poulide01" onclick="resetLine('poulide01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("poulide01", [{'date': '2023-03-07', 'opponent': 'COL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 16.6}, {'date': '2023-03-09', 'opponent': 'STL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.32}, {'date': '2023-03-11', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 16.75}, {'date': '2023-03-14', 'opponent': 'CBJ', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.28}, {'date': '2023-03-16', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 18.93}, {'date': '2023-03-18', 'opponent': 'NYI', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 17.18}, {'date': '2023-03-20', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.98}, {'date': '2023-03-23', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 3, 'TOI': 14.52}, {'date': '2024-02-19', 'opponent': 'BOS', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 13.28}, {'date': '2024-02-20', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 10.55}, {'date': '2024-02-22', 'opponent': 'OTT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 15.92}, {'date': '2024-02-24', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.93}, {'date': '2024-02-26', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 11.02}], 0.5, "G");
+</script>
+<div class="player-chart-container">
+<!-- Stat Selection Dropdown -->
+<div class="barChart-filters">
+<div class="barChartFilter">
+<label for="statSelector_poulide01">Stat:</label>
+<select id="statSelector_poulide01" onchange="updateStat('poulide01', this.value)">
+<option value="G">Goals</option>
+<option value="A">Assists</option>
+<option value="PTS">Points</option>
+<option value="SOG">Shots on Goal</option>
+<option value="HIT">Hits</option>
+<option value="BLK">Blocked Shots</option>
+<option value="TOI">Time on Ice</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="teamFilter_poulide01">Opponent:</label>
+<select id="teamFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="BOS">BOS</option>
+<option value="CAR">CAR</option>
+<option value="CBJ">CBJ</option>
+<option value="COL">COL</option>
+<option value="EDM">EDM</option>
+<option value="MIN">MIN</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="SEA">SEA</option>
+<option value="STL">STL</option>
+<option value="VAN">VAN</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="homeAwayFilter_poulide01">Home/Away:</label>
+<select id="homeAwayFilter_poulide01" onchange="applyFilters('poulide01')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label for="startDate_poulide01">Start:</label>
+<input id="startDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label for="endDate_poulide01">End:</label>
+<input id="endDate_poulide01" onchange="applyFilters('poulide01')" type="date"/>
+</div>
+</div>
+<canvas class="player-barChart" id="chart_poulide01"></canvas>
+<div class="filter-buttons">
+<button id="L5_poulide01" onclick="showRecentGames('poulide01', 5)">L5</button>
+<button id="L10_poulide01" onclick="showRecentGames('poulide01', 10)">L10</button>
+<button id="L20_poulide01" onclick="showRecentGames('poulide01', 20)">L20</button>
+<button id="202324_poulide01" onclick="filterBySeason('poulide01', '2023-24')">2023-24</button>
+<button id="202425_poulide01" onclick="filterBySeason('poulide01', '2024-25')">2024-25</button>
+<button id="showAll_poulide01" onclick="showAllGames('poulide01')">All</button>
+<button id="TOI_poulide01" onclick="toggleTOIOverlay('poulide01')">Toggle TOI</button>
+<button class="clear-chart-filters" id="clearFiltersBtn_poulide01" onclick="clearFilters('poulide01')">Clear Filters</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label for="lineSlider_poulide01">Change Line:</label>
+<input id="lineSlider_poulide01" max="30" min="0" oninput="updateLine('poulide01', this.value)" step="0.25" type="range" value="0.5"/>
+<span id="lineValue_poulide01">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" id="reset-line-btn_poulide01" onclick="resetLine('poulide01', 0.5)">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="chartScript.js"></script>
+<script>
+    // Initialize the chart with player-specific data by calling a function from chart_logic.js
+    initializeChart("poulide01", [{'date': '2023-03-07', 'opponent': 'COL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 4, 'BLK': 0, 'TOI': 16.6}, {'date': '2023-03-09', 'opponent': 'STL', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 0, 'BLK': 0, 'TOI': 16.32}, {'date': '2023-03-11', 'opponent': 'MIN', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 2, 'TOI': 16.75}, {'date': '2023-03-14', 'opponent': 'CBJ', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 2, 'PTS': 2, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.28}, {'date': '2023-03-16', 'opponent': 'SEA', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 2, 'TOI': 18.93}, {'date': '2023-03-18', 'opponent': 'NYI', 'location': 'home', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 2, 'BLK': 0, 'TOI': 17.18}, {'date': '2023-03-20', 'opponent': 'EDM', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 17.98}, {'date': '2023-03-23', 'opponent': 'VAN', 'location': 'away', 'season': '2022-23', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 3, 'TOI': 14.52}, {'date': '2024-02-19', 'opponent': 'BOS', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 0, 'BLK': 1, 'TOI': 13.28}, {'date': '2024-02-20', 'opponent': 'NYR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 2, 'TOI': 10.55}, {'date': '2024-02-22', 'opponent': 'OTT', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 1, 'HIT': 1, 'BLK': 1, 'TOI': 15.92}, {'date': '2024-02-24', 'opponent': 'CAR', 'location': 'away', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 0, 'HIT': 1, 'BLK': 1, 'TOI': 9.93}, {'date': '2024-02-26', 'opponent': 'NYI', 'location': 'home', 'season': '2023-24', 'G': 0, 'A': 0, 'PTS': 0, 'SOG': 2, 'HIT': 1, 'BLK': 0, 'TOI': 11.02}], 0.5, "G");
+</script>
 
 <div class="player-chart-container">
 <!-- Stat Selection Dropdown -->

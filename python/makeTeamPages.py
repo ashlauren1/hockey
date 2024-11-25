@@ -138,7 +138,7 @@ def create_team_pages(data, output_dir):
     
     def get_logo_url(team_id):
         logo_id = logo_id_map.get(team_id, team_id)
-        return f"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nhl/500/{logo_id}.png&h=40&w=40"
+        return f"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nhl/500/{logo_id}.png"
 
     for team_id, team_data in grouped_data:
         team_name = team_data.iloc[0]['Team']

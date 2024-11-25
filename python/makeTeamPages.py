@@ -13,6 +13,17 @@ data = pd.read_csv(team_csv)
 
 # **Part 1: Create Team Directory (index.html)**
 def create_team_directory(data, output_dir):
+    logo_id_map = {
+        "LAK": "LA",
+        "SJS": "SJ",
+        "TBL": "tb",
+        "VEG": "VGK"
+    }
+    
+    def get_logo_url(team_id):
+        logo_id = logo_id_map.get(team_id, team_id)
+        return f"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nhl/500/{logo_id}.png&h=40&w=40"
+    
     unique_teams = data.drop_duplicates(subset=["Team", "TeamID"]).sort_values(by="Team")
     html_content = """
 <!DOCTYPE html>
@@ -90,10 +101,12 @@ function myFunction() {
     for _, row in unique_teams.iterrows():
         team_name = row["Team"]
         team_id = row["TeamID"]
+        logo_url = get_logo_url(team_id)
+        team_name_with_logo = f'<div class="team-cell"><div class="logo-container"><a href="/hockey/teams/{team_id}.html" target="_blank"><img src="{logo_url}" alt="{team_id}" class="team-logo"></a></div><div class="team-name-container"><a href="/hockey/teams/{team_id}.html" target="_blank">{team_name}</a></div></div>'
 
         html_content += f"""
             <tr>
-                <td style="text-align:left"><a href="/hockey/teams/{team_id}.html">{team_name}</a></td>
+                <td class="team-name-cell">{team_name_with_logo}</td>
             </tr>
         """
 
@@ -116,9 +129,20 @@ function myFunction() {
 # **Part 2: Generate Individual Team Pages**
 def create_team_pages(data, output_dir):
     grouped_data = data.groupby('TeamID')
+    logo_id_map = {
+        "LAK": "LA",
+        "SJS": "SJ",
+        "TBL": "tb",
+        "VEG": "VGK"
+    }
+    
+    def get_logo_url(team_id):
+        logo_id = logo_id_map.get(team_id, team_id)
+        return f"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nhl/500/{logo_id}.png&h=40&w=40"
 
     for team_id, team_data in grouped_data:
         team_name = team_data.iloc[0]['Team']
+        logo_url = get_logo_url(team_id)
         team_filename = os.path.join(output_dir, f"{team_id}.html")
 
         # Start HTML content for the team's gamelog
@@ -184,6 +208,12 @@ function myFunction() {{
     </div>
 </div>
     <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+    
+<div id="player_info">
+    <div id="playerPictureContainer">
+        <img class="playerPicture" src="{logo_url}" alt="{team_id}" onerror="this.style.display='none';">
+    </div>
+</div>
     
 <div id="team-container">
     <div class="button-container">

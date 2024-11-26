@@ -450,7 +450,6 @@ function myFunction() {
                 <th data-tip="Hits">HIT</th>
                 <th data-tip="Blocks">BLK</th>
                 <th data-tip="Time on Ice">TOI</th>
-                <th data-tip="Shot Attempts">SAtt</th>
                 <th data-tip="Penalty Minutes">PIM</th>
                 <th data-tip="Even Strength Goals">EVG</th>
                 <th data-tip="Power Play Goals">PPG</th>
@@ -465,8 +464,6 @@ function myFunction() {
                 <th data-tip="Hits per Game">HIT/GP</th>
                 <th data-tip="Blocks per Game">BLK/GP</th>
                 <th data-tip="Time on Ice per Game">TOI/GP</th>
-                <th data-tip="Shot Attempts per Game">SAtt/GP</th>
-                <th data-tip="Penalty Minutes per Game">PIM/GP</th>
             </tr>
         </thead>
         <tbody>
@@ -494,7 +491,6 @@ function myFunction() {
                 <td>{int(row['HIT'])}</td>
                 <td>{int(row['BLK'])}</td>
                 <td>{row['TOI']:.2f}</td>
-                <td>{int(row['SAtt'])}</td>
                 <td>{int(row['PIM'])}</td>
                 <td>{int(row['EVG'])}</td>
                 <td>{int(row['PPG'])}</td>
@@ -509,8 +505,6 @@ function myFunction() {
                 <td>{row['HIT_GP']:.2f}</td>
                 <td>{row['BLK_GP']:.2f}</td>
                 <td>{row['TOI_GP']:.2f}</td>
-                <td>{row['SAtt_GP']:.2f}</td>
-                <td>{row['PIM_GP']:.2f}</td>
             </tr>
         """
 
@@ -1076,21 +1070,11 @@ def generate_html_table(data, title, table_id, division_table=False):
                 <th data-tip="Power Play Goals Against">PPGA</th>
                 <th data-tip="Power Play Opportunities Against">PPOA</th>
                 <th data-tip="Penalty Kill %">PK%</th>
-                <th data-tip="Hits">HIT</th>
-                <th data-tip="Blocks">BLK</th>
+                
                 <th data-tip="Penalty Minutes">PIM</th>
-                <th data-tip="Hits Against">HITA</th>
-                <th data-tip="Blocks Against">BLKA</th>
+                
                 <th data-tip="Penalty Minutes Drawn">PIMA</th>
-                <th data-tip="Corsi For (SOG + Misses + Blocks)">CF</th>
-                <th data-tip="Corsi Against (SOGA + Misses + Blocks)">CA</th>
-                <th data-tip="Corsi For %">CF%</th>
-                <th data-tip="Fenwick For (SOG + Misses)">FF</th>
-                <th data-tip="Fenwick Against (SOGA + Misses)">FA</th>
-                <th data-tip="Fenwick For %">FF%</th>
-                <th data-tip="Faceoff Wins">FOW</th>
-                <th data-tip="Faceoff Losses">FOL</th>
-                <th data-tip="Faceoff %">FO%</th>
+                
                 <th style="min-width:22px; max-width:22px; visibility:hidden;"></th>
             </tr>
         </thead>
@@ -1119,37 +1103,24 @@ def generate_html_table(data, title, table_id, division_table=False):
                 <td>{row['L']}</td>
                 <td>{row['OTL']}</td>
                 <td>{row['Points']}</td>
-                <td>{row['PtsPct']:.1f}%</td>
+                <td>{row['PtsPct']:.2f}%</td>
                 <td>{row['RW']}</td>
                 <td>{row['ROW']}</td>
                 <td>{row['GF']}</td>
                 <td>{row['GA']}</td>
                 <td>{gdiff}</td>
                 <td>{row['SOG']}</td>
-                <td>{row['SPct']:.1f}%</td>
+                <td>{row['SPct']:.2f}%</td>
                 <td>{row['SOGA']}</td>
-                <td>{row['SVPct']:.1f}%</td>
+                <td>{row['SVPct']:.2f}%</td>
                 <td>{row['PPG']}</td>
                 <td>{row['PPO']}</td>
-                <td>{row['PPpct']:.1f}%</td>
+                <td>{row['PPpct']:.2f}%</td>
                 <td>{row['PPGA']}</td>
                 <td>{row['PPOA']}</td>
-                <td>{row['PKpct']:.1f}%</td>
-                <td>{row['HIT']}</td>
-                <td>{row['BLK']}</td>
+                <td>{row['PKpct']:.2f}%</td>
                 <td>{row['PIM']}</td>
-                <td>{row['HITA']}</td>
-                <td>{row['BLKA']}</td>
                 <td>{row['PIMA']}</td>
-                <td>{row['CF']}</td>
-                <td>{row['CA']}</td>
-                <td>{row['CFpct']:.1f}%</td>
-                <td>{row['FF']}</td>
-                <td>{row['FA']}</td>
-                <td>{row['FFpct']:.1f}%</td>
-                <td>{row['FOW']}</td>
-                <td>{row['FOL']}</td>
-                <td>{row['FOpct']:.1f}%</td>
                 <td style="min-width:22px; max-width:22px; visibility:hidden;"></td>
             </tr>
         '''

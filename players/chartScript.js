@@ -1,4 +1,3 @@
-// Function to initialize a player's chart
 function initializeChart(playerId, chartData, bettingLine, defaultStat) {
 	const processedData = chartData.map(d => ({
         ...d,
@@ -31,18 +30,27 @@ function initializeChart(playerId, chartData, bettingLine, defaultStat) {
     });
 }
 
-
 function formatLabel(data) {
     const opponentText = data.location === 'home' ? 'vs' : '@';
     const date = new Date(data.date);
     const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${String(date.getFullYear()).slice(-2)}`;
     
-    // Return an array to create a multiline label
     return [`${opponentText} ${data.opponent}`, formattedDate];
 }
 
-// Chart options with multiline labels enabled
 function getChartOptions(playerId, line, stat) {
+	const stat_map = {
+        "G": "Goals",
+        "A": "Assists",
+        "PTS": "Points",
+        "SOG": "Shots on Goal",
+        "HIT": "Hits",
+        "BLK": "Blocked Shots",
+        "TOI": "Time on Ice"
+    };
+	
+	const statName = stat_map[stat] || stat;
+	
     return {
         plugins: {
             legend: { 
@@ -50,12 +58,12 @@ function getChartOptions(playerId, line, stat) {
 			},
             title: {
                 display: true,
-                text: stat,
+                text: statName,
                 font: { 
 					size: 14,
-					family: 'Verdana'
+					family: 'Montserrat'
 				},
-				color: '#333333',
+				color: '#000',
 				padding: 4
             },
             annotation: {
@@ -64,7 +72,7 @@ function getChartOptions(playerId, line, stat) {
                         type: 'line',
                         yMin: line,
                         yMax: line,
-                        borderColor: '#333333',
+                        borderColor: '#333',
                         borderWidth: 1.5
                     }
                 }
@@ -74,21 +82,21 @@ function getChartOptions(playerId, line, stat) {
             y: { 
 				grid: { 
                     display: true,
-					color: '#dfe1e2'
+					color: '#ededed'
                 },
 				ticks: {
 					font: {
 						size: 10,
-						family: 'Verdana'
+						family: 'Inter'
 					},
-					color: '#333333',
+					color: '#000',
 					padding: 6 
 				},
 				beginAtZero: true, 
                 stepSize: 1.0 
             },
             y1: { 
-				display: false, // Hidden by default until TOI is toggled on
+				display: false,
                 position: 'right',
                 beginAtZero: true,
                 title: {
@@ -96,7 +104,7 @@ function getChartOptions(playerId, line, stat) {
                     text: 'TOI'
                 },
                 grid: {
-                    drawOnChartArea: false // Avoids overlapping grid lines
+                    drawOnChartArea: false
                 }
 			},
 			x: { 
@@ -108,10 +116,10 @@ function getChartOptions(playerId, line, stat) {
                     maxRotation: 0,
                     minRotation: 0,
 					font: {
-						size: 9,
-						family: 'Verdana'
+						size: 8,
+						family: 'Inter'
 					},
-					color: '#333333',
+					color: '#000',
 					padding: 0 
                 }
             }
@@ -119,21 +127,25 @@ function getChartOptions(playerId, line, stat) {
     };
 }
 
-
-
-// Get background colors for the chart bars based on stats
 function getBackgroundColors(data, stat, line, playerId) {
     return data.map(d => (d[stat] === 0 ? '#c01616' : (d[stat] >= line ? '#16c049' : '#c01616')));
 }
 
-// Get border colors for the chart bars
 function getBorderColors(data, stat, line, playerId) {
     return data.map(d => (d[stat] === 0 ? '#421f1f' : (d[stat] >= line ? '#304f3a' : '#421f1f')));
 }
 
-
-// Update the selected stat in the chart
 function updateStat(playerId, selectedStat) {
+	const stat_map = {
+        "G": "Goals",
+        "A": "Assists",
+        "PTS": "Points",
+        "SOG": "Shots on Goal",
+        "HIT": "Hits",
+        "BLK": "Blocked Shots",
+        "TOI": "Time on Ice"
+    };
+	
     const chart = window[`chart_${playerId}`];
     const data = window[`allData_${playerId}`];
     const line = window[`Line_${playerId}`];
@@ -141,36 +153,30 @@ function updateStat(playerId, selectedStat) {
     window[`currentStat_${playerId}`] = selectedStat;
     chart.data.datasets[0].data = data.map(d => d[selectedStat] || 0.0);
     chart.data.datasets[0].label = selectedStat;
-    chart.options.plugins.title.text = selectedStat;
+	
+	const statName = stat_map[selectedStat] || selectedStat;
+    chart.options.plugins.title.text = statName;
+	
     chart.data.datasets[0].backgroundColor = getBackgroundColors(data, selectedStat, line, playerId);
     chart.update();
 }
 
-// Update the betting line and adjust the chart annotation
 function updateLine(playerId, newLine) {
     const chart = window[`chart_${playerId}`];
-    const data = chart.data.datasets[0].data; // Use the current dataset without altering the original
+    const data = chart.data.datasets[0].data;
 
-    // Update the global line value
     window[`Line_${playerId}`] = parseFloat(newLine);
 
-    // Update the displayed line value text
     document.getElementById(`lineValue_${playerId}`).innerText = newLine;
 
-    // Update the annotation line on the chart
     chart.options.plugins.annotation.annotations.line1.yMin = newLine;
     chart.options.plugins.annotation.annotations.line1.yMax = newLine;
-
-    // Update bar colors based on the new line value
     chart.data.datasets[0].backgroundColor = data.map(value => (value >= newLine ? '#16c049' : '#c01616'));
     chart.update();
 }
 
-// Apply filters (team, home/away, date range) to the chart
-// Modified applyFilters function
-// Modified applyFilters function
 function applyFilters(playerId) {
-    const originalData = window[`allData_${playerId}`]; // Use the original data as the base
+    const originalData = window[`allData_${playerId}`];
     const stat = window[`currentStat_${playerId}`];
     const line = window[`Line_${playerId}`];
 
@@ -179,11 +185,9 @@ function applyFilters(playerId) {
     const startDate = document.getElementById(`startDate_${playerId}`).value;
     const endDate = document.getElementById(`endDate_${playerId}`).value;
 
-    // Check for recent games filter
     const recentGamesFilter = window[`recentGames_${playerId}`] || null;
     const seasonFilter = window[`seasonFilter_${playerId}`] || null;
 
-    // Apply filters to the data based on all criteria
     let filteredData = originalData.filter(d => {
         const isTeamMatch = (teamFilter === 'all') || (d.opponent === teamFilter);
         const isLocationMatch = (homeAwayFilter === 'all') || 
@@ -194,14 +198,12 @@ function applyFilters(playerId) {
         return isTeamMatch && isLocationMatch && isDateInRange;
     });
 
-    // If recent games filter is active, slice the data to the last N games after other filters
     if (recentGamesFilter) {
         filteredData = filteredData.slice(-recentGamesFilter);
     } else if (seasonFilter) {
         filteredData = filteredData.filter(d => d.season === seasonFilter);
     }
 	
-    // Update chart with the filtered data and reset the colors
     const chart = window[`chart_${playerId}`];
     chart.data.labels = filteredData.map(d => formatLabel(d));
     chart.data.datasets[0].data = filteredData.map(d => d[stat] || 0.0);
@@ -209,38 +211,30 @@ function applyFilters(playerId) {
     chart.update();
 }
 
-// Modified showRecentGames to work with the main applyFilters function
 function showRecentGames(playerId, numGames) {
-    window[`recentGames_${playerId}`] = numGames; // Store recent games filter
+    window[`recentGames_${playerId}`] = numGames;
 	window[`seasonFilter_${playerId}`] = null;
-    applyFilters(playerId); // Apply all filters together
+    applyFilters(playerId);
 }
 
-// Modified filterBySeason to work with the main applyFilters function
 function filterBySeason(playerId, season) {
-    window[`seasonFilter_${playerId}`] = season; // Store season filter
+    window[`seasonFilter_${playerId}`] = season;
 	window[`recentGames_${playerId}`] = null;
-    applyFilters(playerId); // Apply all filters together
+    applyFilters(playerId);
 }
 
-// Modified showAllGames to reset all filters
 function showAllGames(playerId) {
-    window[`recentGames_${playerId}`] = null; // Clear recent games filter
-    window[`seasonFilter_${playerId}`] = null; // Clear season filter
-    applyFilters(playerId); // Apply all filters with no recent or season constraints
+    window[`recentGames_${playerId}`] = null;
+    window[`seasonFilter_${playerId}`] = null;
+    applyFilters(playerId);
 }
 
-
-
-// Reset the filters and the betting line
 function clearFilters(playerId) {
-    // Reset filter inputs to default values
     document.getElementById(`teamFilter_${playerId}`).value = "all";
     document.getElementById(`homeAwayFilter_${playerId}`).value = "all";
     document.getElementById(`startDate_${playerId}`).value = "";
     document.getElementById(`endDate_${playerId}`).value = "";
 
-    // Use original unfiltered data to reset chart
     const originalData = window[`allData_${playerId}`];
     const stat = window[`currentStat_${playerId}`];
     const line = window[`Line_${playerId}`];
@@ -252,17 +246,14 @@ function clearFilters(playerId) {
     chart.update();
 }
 
-// Update the chart display with new filtered data
 function updateChart(playerId, filteredData, stat, line) {
     const chart = window[`chart_${playerId}`];
-    if (!chart) return; // Exit if the chart does not exist
+    if (!chart) return;
 
-    // Update chart data and labels with filtered data
     chart.data.labels = filteredData.map(d => formatLabel(d));
     chart.data.datasets[0].data = filteredData.map(d => d[stat] || 0.0);
     chart.data.datasets[0].backgroundColor = getBackgroundColors(filteredData, stat, line, playerId);
 
-    // Refresh the chart to reflect changes
     chart.update();
 }
 
@@ -275,43 +266,34 @@ function applyFilter(playerId, filterType, filterValue = null) {
     let filteredData = [...originalData];
 
     if (filterType === "recent" && filterValue) {
-        // Only slice if filterValue is provided
         filteredData = filteredData.slice(-filterValue);
     } else if (filterType === "season" && filterValue) {
-        // Filter by season
         filteredData = filteredData.filter(d => d.season === filterValue);
     } else if (filterType === "all") {
-        // No filtering; show all games
         filteredData = originalData;
     }
 
-    // Call updateChart with filtered data
     updateChart(playerId, filteredData, stat, line);
 }
 
-// Function to reset the betting line and move the slider to the default value
 function resetLine(playerId, defaultLine) {
-    updateLine(playerId, defaultLine); // Update displayed line value and chart annotation
+    updateLine(playerId, defaultLine);
     
-    // Set the slider's position to the default value
     document.getElementById(`lineSlider_${playerId}`).value = defaultLine;
 }
 
 function toggleTOIOverlay(playerId) {
     const chart = window[`chart_${playerId}`];
     const data = window[`allData_${playerId}`];
-
-    // Check if the TOI overlay already exists
     const toiDatasetIndex = chart.data.datasets.findIndex(dataset => dataset.label === "TOI Overlay");
 
     if (toiDatasetIndex === -1) {
-        // Add TOI overlay as a transparent line behind the bars
         chart.data.datasets.push({
             label: "TOI Overlay",
             data: data.map(d => d.TOI || 0),
-            type: 'bar',                                  // Use line type for TOI overlay
-            backgroundColor: "rgba(128, 128, 128, 0.1)",   // Light grey for TOI
-            borderColor: "rgba(128, 128, 128, 0.4)",       // Darker grey line
+            type: 'bar',
+            backgroundColor: "rgba(128, 128, 128, 0.1)",
+            borderColor: "rgba(128, 128, 128, 0.4)",
             pointRadius: 0,
             fill: true, 
             yAxisID: 'y1',
@@ -321,15 +303,13 @@ function toggleTOIOverlay(playerId) {
             categoryPercentage: 1.0,
 			stack: 'combined'
         });
-        chart.options.scales.y1.display = true; // Show the secondary Y-axis for TOI
+        chart.options.scales.y1.display = true;
         console.log("TOI overlay added as a transparent line for player", playerId);
     } else {
-        // Remove TOI overlay if it exists
         chart.data.datasets.splice(toiDatasetIndex, 1);
-        chart.options.scales.y1.display = false; // Hide the secondary Y-axis when TOI is removed
+        chart.options.scales.y1.display = false;
         console.log("TOI overlay removed for player", playerId);
     }
 
-    // Update chart to reflect changes
     chart.update();
 }

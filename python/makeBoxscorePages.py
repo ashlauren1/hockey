@@ -23,215 +23,157 @@ def create_game_directory(game_data, output_file_path):
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Game Directory</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <script src="modalsMobileNavAndSearch.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="commonStylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const table = document.getElementById("boxscore-index");
-            const headerRow = table.querySelector("thead tr:first-child");
-            const filterRow = document.querySelector("#filter-row");
-            const rows = Array.from(table.querySelectorAll("tbody tr"));
+    <title>Game Directory</title>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("boxscore-index");
+    const headerRow = table.querySelector("thead tr:first-child");
+    const filterRow = document.querySelector("#filter-row");
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
 
-            // Add filters and sorting
-            addFilters(table);
-            addSortToHeaders(table);
+    addFilters(table);
+    addSortToHeaders(table);
 
-            function addFilters(table) {
-                const headerRow = table.querySelector("thead tr:first-child");
-                const filterRow = document.createElement("tr");
-                filterRow.id = "filter-row";
-                Array.from(headerRow.cells).forEach((header, index) => {
-                    const filterCell = document.createElement("td");
-                    const filterSelect = document.createElement("select");
-                    filterSelect.classList.add("filter-select");
+    function addFilters(table) {
+        const headerRow = table.querySelector("thead tr:first-child");
+        const filterRow = document.createElement("tr");
+        filterRow.id = "filter-row";
+        Array.from(headerRow.cells).forEach((header, index) => {
+            const filterCell = document.createElement("td");
+            const filterSelect = document.createElement("select");
+            filterSelect.classList.add("filter-select");
 
-                    filterSelect.innerHTML = '<option value="">All</option>';
-                    const values = Array.from(new Set(
-                        Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
-                        .map(cell => cell.textContent.trim())
-                    )).sort();
+            filterSelect.innerHTML = '<option value="">All</option>';
+            const values = Array.from(new Set(
+                Array.from(table.querySelectorAll("tbody tr td:nth-child(" + (index + 1) + ")"))
+                .map(cell => cell.textContent.trim())
+            )).sort();
 
-                    values.forEach(value => {
-                        const option = document.createElement("option");
-                        option.value = value;
-                        option.textContent = value;
-                        filterSelect.appendChild(option);
-                    });
-
-                    filterSelect.addEventListener("change", filterTable);
-                    filterCell.appendChild(filterSelect);
-                    filterRow.appendChild(filterCell);
-                });
-                table.querySelector("thead").appendChild(filterRow);
-            }
-
-            function filterTable() {
-                const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
-                rows.forEach(row => {
-                    const cells = Array.from(row.cells);
-                    const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
-                    row.style.display = matchesFilter ? "" : "none";
-                });
-            }
-
-            function addSortToHeaders(table) {
-                const headers = table.querySelectorAll("thead th");
-                headers.forEach((header, index) => {
-                    header.style.cursor = "pointer";
-                    header.addEventListener("click", function () {
-                        sortTable(table, index);
-                    });
-                });
-            }
-
-            function sortTable(table, columnIndex) {
-                const rows = Array.from(table.querySelectorAll("tbody tr"));
-                const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
-                table.dataset.sortDirection = direction;
-
-                // Detect data type
-                let isNumeric = true;
-                let isDate = true;
-                for (let row of rows) {
-                    const cellText = row.cells[columnIndex].textContent.trim();
-                    if (cellText === '') continue; // Skip empty cells
-                    if (isNumeric && isNaN(cellText)) {
-                        isNumeric = false;
-                    }
-                    if (isDate && isNaN(Date.parse(cellText))) {
-                        isDate = false;
-                    }
-                    if (!isNumeric && !isDate) break;
-                }
-
-                rows.sort((a, b) => {
-                    const cellA = a.cells[columnIndex].textContent.trim();
-                    const cellB = b.cells[columnIndex].textContent.trim();
-
-                    let valA, valB;
-
-                    if (isNumeric) {
-                        valA = parseFloat(cellA);
-                        valB = parseFloat(cellB);
-                    } else if (isDate) {
-                        valA = new Date(cellA);
-                        valB = new Date(cellB);
-                    } else {
-                        valA = cellA.toLowerCase();
-                        valB = cellB.toLowerCase();
-                    }
-
-                    if (valA < valB) {
-                        return direction === "asc" ? -1 : 1;
-                    } else if (valA > valB) {
-                        return direction === "asc" ? 1 : -1;
-                    } else {
-                        return 0;
-                    }
-                });
-
-                const tbody = table.querySelector("tbody");
-                rows.forEach(row => tbody.appendChild(row));
-            }
-        });
-        
-    document.addEventListener("DOMContentLoaded", async function () {
-        const searchBar = document.getElementById("search-bar");
-        const searchResults = document.getElementById("search-results");
-        const searchButton = document.getElementById("search-button");
-
-        let playerLinks = {};
-        let teamLinks = {};
-
-        // Load players and teams data from JSON files
-        async function loadLinks() {
-            playerLinks = await fetch('players.json').then(response => response.json());
-            teamLinks = await fetch('teams.json').then(response => response.json());
-        }
-
-        await loadLinks();  // Ensure links are loaded before searching
-
-        // Filter data and show suggestions based on input
-        function updateSuggestions() {
-            const query = searchBar.value.trim().toLowerCase();
-            searchResults.innerHTML = ""; // Clear previous results
-
-            if (query === "") return;
-
-            // Combine players and teams for search
-            const combinedLinks = { ...playerLinks, ...teamLinks };
-            const matchingEntries = Object.entries(combinedLinks)
-                .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
-                .slice(0, 10); // Limit to top 10
-
-
-            matchingEntries.forEach(([name, url]) => {
-                const resultItem = document.createElement("div");
-                resultItem.classList.add("suggestion");
-
-                // Proper case for names
-                resultItem.textContent = name;
-
-                resultItem.addEventListener("click", () => {
-                    window.open(url, "_self");
-                });
-                searchResults.appendChild(resultItem);
+            values.forEach(value => {
+                const option = document.createElement("option");
+                option.value = value;
+                option.textContent = value;
+                filterSelect.appendChild(option);
             });
 
-        if (matchingEntries.length > 0) {
-            searchResults.style.display = "block"; // Show results if matches are found
-        } else {
-            const noResultItem = document.createElement("div");
-            noResultItem.classList.add("no-result");
-            noResultItem.textContent = "No results found.";
-            searchResults.appendChild(noResultItem);
-            searchResults.style.display = "block";
-        }
-    }
-    
-    document.addEventListener("click", function(event) {
-        if (!searchResults.contains(event.target) && event.target !== searchBar) {
-            searchResults.style.display = "none";
-        }
-    });
-
-    // Add event listener to search bar
-    searchBar.addEventListener("input", updateSuggestions);
-    
-    function redirectToSearchResults() {
-        const query = searchBar.value.trim().toLowerCase();;
-        if (query) {
-            window.location.href = `/hockey/search_results.html?query=${encodeURIComponent(query)}`;
-        }
+            filterSelect.addEventListener("change", filterTable);
+            filterCell.appendChild(filterSelect);
+            filterRow.appendChild(filterCell);
+        });
+        table.querySelector("thead").appendChild(filterRow);
     }
 
-    // Add event listeners for search
-    searchBar.addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-            redirectToSearchResults();
-        }
-    });
+    function filterTable() {
+        const filters = Array.from(document.querySelectorAll(".filter-select")).map(select => select.value);
+        rows.forEach(row => {
+            const cells = Array.from(row.cells);
+            const matchesFilter = filters.every((filter, i) => !filter || cells[i].textContent.trim() === filter);
+            row.style.display = matchesFilter ? "" : "none";
+        });
+    }
 
-    searchButton.addEventListener("click", redirectToSearchResults);
+    function addSortToHeaders(table) {
+        const headers = table.querySelectorAll("thead th");
+        headers.forEach((header, index) => {
+            header.style.cursor = "pointer";
+            header.addEventListener("click", function () {
+                sortTable(table, index);
+            });
+        });
+    }
+
+    function sortTable(table, columnIndex) {
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
+        const direction = table.dataset.sortDirection === "asc" ? "desc" : "asc";
+        table.dataset.sortDirection = direction;
+
+        // Detect data type
+        let isNumeric = true;
+        let isDate = true;
+        for (let row of rows) {
+            const cellText = row.cells[columnIndex].textContent.trim();
+            if (cellText === '') continue; // Skip empty cells
+            if (isNumeric && isNaN(cellText)) {
+                isNumeric = false;
+            }
+            if (isDate && isNaN(Date.parse(cellText))) {
+                isDate = false;
+            }
+            if (!isNumeric && !isDate) break;
+        }
+
+        rows.sort((a, b) => {
+            const cellA = a.cells[columnIndex].textContent.trim();
+            const cellB = b.cells[columnIndex].textContent.trim();
+
+            let valA, valB;
+
+            if (isNumeric) {
+                valA = parseFloat(cellA);
+                valB = parseFloat(cellB);
+            } else if (isDate) {
+                valA = new Date(cellA);
+                valB = new Date(cellB);
+            } else {
+                valA = cellA.toLowerCase();
+                valB = cellB.toLowerCase();
+            }
+
+            if (valA < valB) {
+                return direction === "asc" ? -1 : 1;
+            } else if (valA > valB) {
+                return direction === "asc" ? 1 : -1;
+            } else {
+                return 0;
+            }
+        });
+
+        const tbody = table.querySelector("tbody");
+        rows.forEach(row => tbody.appendChild(row));
+    }
 });
-        </script>
-    </head>
-    <body>
-<div id="page-heading">
-    <div class="topnav">
-        <a href="/hockey/" target="_blank">Projections</a>
-        <a href="/hockey/players/" target="_blank">Players</a>
-        <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/leaders/" target="_blank">Leaders</a>
-        <a href="/hockey/leaders/standings.html" target="_blank">Standings</a>
-        <a href="/hockey/boxscores/" target="_blank">Scores</a>
-        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+</script>
+</head>
+
+<body>
+<div id="mobileTopnav">
+    <div class="menuBarContainer mobile active">
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i>Menu</a>
+    </div>
+    <div id="myLinks">
+        <ul class="navLinks">
+            <li class="nav-link"><a href="/hockey/" target="_blank">Projections</a></li>
+            <li class="nav-link"><a href="/hockey/players/" target="_blank">Players</a></li>
+            <li class="nav-link"><a href="/hockey/teams/" target="_blank">Teams</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/" target="_blank">Leaders</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/standings.html" target="_blank">Standings</a></li>
+            <li class="nav-link"><a href="/hockey/boxscores/" target="_blank">Scores</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="pageHeading">
+	<div class="topnav">
+        <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
+        <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
+        <a class="topnav-item" href="/hockey/teams/" target="_blank">Teams</a>
+        <a class="topnav-item" href="/hockey/leaders/" target="_blank">Leaders</a>
+        <a class="topnav-item" href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+        <a class="topnav-item" href="/hockey/boxscores/" target="_blank">Scores</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
     </div>
     <div id="search-container">
         <input type="text" id="search-bar" placeholder="Search for a player or team...">
@@ -240,23 +182,26 @@ def create_game_directory(game_data, output_file_path):
     </div>
     <div class="header">
         <h1>Game Directory</h1>
-    </div>
+	</div>
 </div>
+
     <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
-    <div id="index-container">
-        <table id="boxscore-index">
-            <thead>
-                <tr>
-                    <th>Season</th>
-                    <th>Date</th>
-                    <th>Game</th>
-                    <th>Home</th>
-                    <th>Goals</th>
-                    <th>Away</th>
-                    <th>Goals</th>
-                </tr>
-            </thead>
-            <tbody>
+<main>
+<div id="pageContainer">
+<div id="tableContainer">
+    <table id="boxscore-index">
+        <thead>
+            <tr>
+                <th>Season</th>
+                <th>Date</th>
+                <th>Game</th>
+                <th>Home</th>
+                <th>Goals</th>
+                <th>Away</th>
+                <th>Goals</th>
+            </tr>
+        </thead>
+        <tbody>
     """
 
     # Populate the table with each unique game
@@ -273,22 +218,24 @@ def create_game_directory(game_data, output_file_path):
         away_goals = int(round(row["GA"]))
 
         html_content += f"""
-                <tr>
-                    <td style="text-align:center">{season}</td>
-                    <td style="text-align:left">{game_date}</td>
-                    <td style="text-align:left"><a href="/hockey/boxscores/{game_id}.html">{game_name}</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/{home_id}.html">{home_name}</a></td>
-                    <td style="text-align:center;width:24px"><a href="/hockey/boxscores/{game_id}.html">{home_goals}</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/{away_id}.html">{away_name}</a></td>
-                    <td style="text-align:center;width:24px"><a href="/hockey/boxscores/{game_id}.html">{away_goals}</a></td>
-                </tr>
+            <tr>
+                <td style="text-align:center">{season}</td>
+                <td style="text-align:left">{game_date}</td>
+                <td style="text-align:left"><a href="/hockey/boxscores/{game_id}.html">{game_name}</a></td>
+                <td style="text-align:left"><a href="/hockey/teams/{home_id}.html">{home_name}</a></td>
+                <td style="text-align:center;width:24px"><a href="/hockey/boxscores/{game_id}.html">{home_goals}</a></td>
+                <td style="text-align:left"><a href="/hockey/teams/{away_id}.html">{away_name}</a></td>
+                <td style="text-align:center;width:24px"><a href="/hockey/boxscores/{game_id}.html">{away_goals}</a></td>
+            </tr>
         """
 
     # Close the table and HTML tags
     html_content += """
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
+</div>
+</main>
 <div class="footer"></div>
 </body>
 </html>
@@ -308,6 +255,7 @@ def create_game_boxscores(gamelogs_data, output_dir):
         game_name = game_data.iloc[0]['Game']
         date = game_data.iloc[0]['Date']
         team_name = game_data.iloc[0]['TeamName']
+        team_id = game_data.iloc[0]['Team']
         home_data = game_data[game_data['Is_Home'] == 1]
         away_data = game_data[game_data['Is_Home'] == 0]
         game_filename = f'{output_dir}/{game_id}.html'
@@ -324,17 +272,21 @@ def create_game_boxscores(gamelogs_data, output_dir):
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{game_name}</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheet.css">
-    <script src="boxscoreScript.js"></script>
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <script src="modalsMobileNavAndSearch.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="commonStylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <script src="boxscoreScript.js"></script>
+    <title>{game_name}</title>
 </head>
 <body>
-<div id="page-heading">
+<div id="pageHeading">
 	<div class="topnav">
         <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
         <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
@@ -356,69 +308,31 @@ def create_game_boxscores(gamelogs_data, output_dir):
 </div>
     <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
     
-<div id="boxscore-container">
-
-    <div class="groupedProbAndButtons" style="width:95%">
-        <div class="button-container">
-            <button id="toggle-selection-btn">Show Selected Only</button>
-            <button id="clear-filters-btn">Remove Filters</button>
-            <button id="clear-all-btn">Clear All</button>
-        </div>
-    </div>
-    <div id="table-container">
-    <div id="glossaryModal" class="modal">
-        <div id="glossary-modal-content">
-            <span class="closeGlossary">&times;</span>
-            <ul class="tiebreaker-modal-list" type="none">
-                <li>GP:&nbsp;&nbsp;Games Played</li>
-                <li>GF:&nbsp;&nbsp;Goals</li>
-                <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
-                <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
-                <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
-                <li>PPO:&nbsp;&nbsp;Power Play Opportunities</li>
-                <li>SHG:&nbsp;&nbsp;Short-Handed Goals</li>
-                <li>SOGA:&nbsp;&nbsp;Shots Against</li>
-                <li>PIMA:&nbsp;&nbsp;Opponent Penalties in Minutes</li>
-                <li>PPGA:&nbsp;&nbsp;Power Play Goals Against</li>
-                <li>PPOA:&nbsp;&nbsp;Power Play Opportunities Against</li>
-                <li>SHGA:&nbsp;&nbsp;Short-Handed Goals Against</li>
-                <li>CF:&nbsp;&nbsp;Corsi For at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
-                <li>CA:&nbsp;&nbsp;Corsi Against at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
-                <li>CF%:&nbsp;&nbsp;Corsi For % at Even Strength -- CF / (CF + CA)</li>
-                <li>FF:&nbsp;&nbsp;Fenwick For at Even Strength -- Shots + Misses</li>
-                <li>FA:&nbsp;&nbsp;Fenwick Against at Even Strength -- Shots + Misses</li>
-                <li>FF%:&nbsp;&nbsp;Fenwick For % at Even Strength -- FF / (FF + FA)</li>
-                <li>FOW:&nbsp;&nbsp;Faceoff Wins</li>
-                <li>FOL:&nbsp;&nbsp;Faceoff Losses</li>
-                <li>FO%:&nbsp;&nbsp;Faceoff Win Percentage</li>
-            </ul>
-        </div>
-    </div>
-    
+<div id="pageContainer">
+    <div id="tableContainer">
         '''
 
         def create_team_table(team_data, team_name, totals, table_id):
             team_table = f'''
-        <span class="caption">{team_name}</span>
+        <p class="title-caption"><a href="/hockey/teams/{team_id}.html" target="_blank">{team_name}</a></p>
         <table id="{table_id}">
             <thead>
                 <tr>
                     <th>Player</th>
-                    <th>Team</th>
-                    <th>G</th>
-                    <th>A</th>
-                    <th>PTS</th>
-                    <th>SOG</th>
-                    <th>HIT</th>
-                    <th>BLK</th>
-                    <th>TOI</th>
-                    <th>PIM</th>
-                    <th>EVG</th>
-                    <th>PPG</th>
-                    <th>SHG</th>
-                    <th>EVA</th>
-                    <th>PPA</th>
-                    <th>SHA</th>
+                    <th data-tip="Goals">G</th>
+                    <th data-tip="Assists">A</th>
+                    <th data-tip="Points">PTS</th>
+                    <th data-tip="Shots on Goal">SOG</th>
+                    <th data-tip="Hits">HIT</th>
+                    <th data-tip="Blocked Shots">BLK</th>
+                    <th data-tip="Time on Ice">TOI</th>
+                    <th data-tip="Penalty Minutes">PIM</th>
+                    <th data-tip="Even Strength Goals">EVG</th>
+                    <th data-tip="Power Play Goals">PPG</th>
+                    <th data-tip="Short-Handed Goals">SHG</th>
+                    <th data-tip="Even Strength Assists">EVA</th>
+                    <th data-tip="Power Play Assists">PPA</th>
+                    <th data-tip="Short-Handed Assists">SHA</th>
                 </tr>
             </thead>
             <tbody>
@@ -428,7 +342,6 @@ def create_game_boxscores(gamelogs_data, output_dir):
                 team_table += f'''
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/{row['PlayerID']}.html" target="_blank">{row['Player']}</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/{row['Team']}.html" target="_blank">{row['Team']}</a></td>
                     <td>{row['G']}</td>
                     <td>{row['A']}</td>
                     <td>{row['PTS']}</td>
@@ -450,7 +363,7 @@ def create_game_boxscores(gamelogs_data, output_dir):
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2"><strong>Total</strong></td>
+                    <td><strong>Total</strong></td>
                     <td>{int(totals['G'])}</td>
                     <td>{int(totals['A'])}</td>
                     <td>{int(totals['PTS'])}</td>

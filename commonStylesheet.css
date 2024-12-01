@@ -1,0 +1,1592 @@
+/* VARIABLES */
+:root {
+	--textColor: #000;
+	--buttonBackground: rgb(239,246,251);
+	--buttonBackgroundHover: rgba(199, 229, 244, 0.75);
+	--robotoSlabTopnav: 600 14px "Roboto Slab", serif;
+	--smallMontserrat: 500 11px "Montserrat";
+	--robotoSlabHeaders: 600 16px "Roboto Slab", serif;
+}
+
+/* RESET */
+*, *::before, *::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+	width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  border-left: 1px solid #eee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d6d5; 
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bdc2c1; 
+}
+
+body {
+	max-width: 100%;
+	background-color: #fefefe;
+	color: var(--textColor);
+}
+
+h2, caption {
+	font: var(--robotoSlabHeaders);
+	margin: 8px 0;
+	text-align: left;
+}
+
+a {
+	color: #265CCA;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #4E29CA;
+}
+
+strong {
+	font-weight: 700;
+}
+
+.footer {
+	margin-top: 24px;
+}
+
+/* HEADER */
+
+#pageHeading {
+	width: 100%;
+	margin: 0 0 12px 0;
+	padding: 0;
+}
+
+.header h1 {
+	font: 700 24px "Roboto Slab";
+	margin-bottom: 4px;
+	text-align: center;
+}
+
+.topnav {
+    background-color: var(--buttonBackground);
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+    z-index: 1000;
+    padding: 0;
+    white-space: nowrap;
+    overflow: auto;
+	align-items: center;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	box-sizing: border-box;
+	border-bottom: .5px solid #ededed;
+}
+
+.topnav-item {
+	flex: 1;
+	padding: 14px 0;
+	transition: background-color 0.2s ease;
+	cursor: pointer;
+}
+
+.topnav a {
+	width: 100%;
+	text-decoration: none;
+	text-align: center;
+	color: var(--textColor);
+	font: var(--robotoSlabTopnav);
+}
+
+.topnav-item:hover {
+	background-color: var(--buttonBackgroundHover);
+	transition: background-color 0.2s ease;
+	box-shadow: 0 0 6px 2px rgba(0, 0, 0, .08);
+}
+
+#search-container {
+	width: 95%;
+	margin: 62px auto 12px auto; 
+}
+
+#search-bar {
+	font: var(--smallMontserrat);
+    text-align: left;
+    padding: 4px 8px;
+    width: 240px;
+    border: 1px solid #ccc;
+	margin: 0;
+	box-sizing: border-box;
+    outline: none;
+	cursor: text;
+}
+
+#search-button {
+	font: var(--smallMontserrat);
+    text-align: center;
+    padding: 4px 22px;
+    background-color: var(--buttonBackground);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+	margin-left: 8px;
+	transition: background-color 0.2s ease;
+}
+
+#search-button:hover {
+    background-color: var(--buttonBackgroundHover);
+	transition: background-color 0.2s ease;
+	cursor: pointer;
+}
+
+#search-results {
+	font: var(--smallMontserrat);
+    text-align: left;
+    width: 240px;
+    position: absolute;
+	margin: 0;
+    overflow-y: auto;
+	display: none;
+	background-color: #fff;
+    z-index: 1000;
+}
+
+.suggestion, .no-result {
+	font: var(--smallMontserrat);
+    padding: 6px;
+    cursor: pointer;
+    border-bottom: 0.5px solid #e0e0e0;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+    text-align: left;
+}
+
+.suggestion:last-child, .no-result {
+    border-bottom: 1px solid #ccc;
+}
+
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+.arrowUp {
+	position: fixed;
+	right: 12px;
+	bottom: 12px;
+	width: 50px;
+	height: 35px;
+	z-index: 99;
+	background-color: rgba(196, 223, 232, 0.2);
+	text-align: center;
+	text-decoration: none;
+	color: var(--textColor);
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.arrowUp:hover {
+	background-color: rgba(196, 223, 232, 0.5);
+	cursor: pointer;
+}
+
+.title-caption {
+	font: var(--robotoSlabHeaders);
+	color: var(--textColor);
+	margin-left: 0;
+	margin-top: 12px;
+	margin-bottom: 4px;
+	text-align: left;
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    background-color: #000;
+    color: #fff;
+	text-align: center;
+    padding: 4px;
+	border: 1px solid #000;
+    border-radius: 4px;
+    font-size: 10px;
+	font-family: "Inter";
+	font-weight: 500;
+    word-wrap: normal;
+    z-index: 1000;
+    transform: translateY(-8px);
+	min-width: 54px;
+}
+
+.tooltip.active {
+    display: block;
+}
+
+.tooltip.inactive {
+    display: none;
+}
+
+#tiebreakerModal, #glossaryModal {
+	display: none; 
+	position: static;
+	z-index: 1; 
+	left: 0;
+	top: 0;
+	max-width: 80%;
+	max-height: 160px;
+	overflow: auto; 
+	background-color: transparent;
+	margin: 0;
+	margin-top: 4px;
+}
+
+#tiebreakerModal.open, #glossaryModal.open {
+	display: block; 
+	position: static;
+	z-index: 1; 
+	left: 0;
+	top: 0;
+	overflow: auto; 
+	background-color: transparent;
+	margin: 4px 0 16px 0;
+}
+
+#modal-content, #glossary-modal-content {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  width: 95%;
+  margin: 0;
+  padding: 4px 12px;
+}
+
+.close, .closeGlossary {
+  color: #000;
+  float: right;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 0 12px;
+}
+
+.close:hover, .close:focus, .closeGlossary:hover, .closeGlossary:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+#tiebreakerInfoButton, #glossaryButton {
+	background-color: transparent;
+	color: #c40303;
+	outline: none;
+	border: none;
+	text-decoration: none;
+	text-align: left;
+	font-size: 12px;
+	font-weight: 500;
+	font-family: "Montserrat";
+	cursor: pointer;
+	display: inline;
+	margin: 0 12px;
+	padding: 0 6px;
+}
+
+.tiebreaker-modal-content, .tiebreaker-modal-list li {
+	color: #000;
+	outline: none;
+	border: none;
+	text-decoration: none;
+	text-align: left;
+	font-size: 11px;
+	font-weight: 500;
+	font-family: "Inter";
+	margin: 2px 0;
+	align-items: left;
+	line-height: 1.3em;
+}
+
+#filter-container-div {
+	background-color: #f7f7f7;
+    border-radius: 4px;
+	border: 1px solid #ccc;
+    display: inline-flex;
+    overflow: visible;
+	width: 100%;
+	gap: 6px;
+	margin: 0 0 4px 0;
+	outline: none;
+	padding: 6px;
+}
+
+#filter-div {
+    display: inline-flex;
+	outline: none;
+	max-width: 460px;
+	width: auto;
+	font: var(--smallMontserrat);
+	color: #000;
+	white-space: nowrap;
+}
+
+#filter-div form {
+	text-align: left;
+	outline: none;
+	margin: 0 6px;
+	padding: 0;
+}
+
+#filter-div label, #filter-div label {
+	outline: none;
+	margin: 0 2px;
+	padding: 0;
+	text-align: left;
+}
+
+#filter-div select {
+	width: auto;
+	max-width: 140px;
+	font: var(--smallMontserrat);
+	outline: none;
+	margin: 0;
+	padding: 2px 4px;
+	border: 1px solid #ccc;
+    border-radius: 4px;
+	overflow-y: scroll;
+}
+
+#filter-div option {
+	max-width: 140px;
+	margin: 0;
+	padding: 0;
+	font-size: 10px;
+	font-weight: 500;
+	font-family: "Montserrat";
+}
+
+.button-container {
+	display: inline-flex;
+	outline: none;
+	width: auto;
+	font: var(--smallMontserrat);
+	color: #000;
+	white-space: nowrap;
+}
+
+.button-container button {
+	font: var(--smallMontserrat);
+	white-space: nowrap;
+	outline: none;
+	margin: 0 6px;
+	padding: 4px;
+	border: 1px solid #ccc;
+    border-radius: 4px;
+	color: #000;
+	text-align: center;
+	background-color: var(--buttonBackground);
+	transition: background-color 0.1s ease;
+}
+
+.button-container button:hover {
+	background-color: var(--buttonBackgroundHover);
+	cursor: pointer;
+	transition: background-color 0.1s ease;
+}
+
+#pageContainer {
+	width: 95%;
+	margin: 8px auto;
+}
+
+#tableContainer {
+	width: auto;
+	margin: 0 auto;
+	overflow-x: auto;
+}
+
+@media screen and (min-width: 501px) {
+	#mobileTopnav, .menuBarContainer, #myLinks, .navLinks, .nav-link, .mobile {
+		display: none;
+		visibility: hidden;
+	}
+	
+	.topnav {
+		display: flex;
+		visibility: visible;
+	}
+}
+
+
+@media screen and (max-width: 500px) {	
+	#topnav, .topnav-item {
+		display: none;
+		visibility: hidden;
+	}
+
+	#mobileTopnav {
+		display: block;
+		visibility: visible;
+		align-items: center;
+		box-sizing: border-box;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.mobile, .mobile.active {
+		display: block;
+		overflow: hidden;
+		position: relative;
+		padding: 0;
+		text-decoration: none;
+		color: #000;
+	}
+	
+	#myLinks {
+		display: none;
+	}
+	
+	.navLinks {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		background-color: var(--buttonBackground);
+	}
+	
+	.nav-link {
+		box-sizing: border-box;
+		border-top: 0.5px solid #ddd;
+		border-bottom: 0.5px solid #ddd;
+		border-collapse: collapse;
+		border-spacing: 0;
+		padding: 0 8px;
+	}
+	
+	.nav-link a {
+		display: block;
+		color: #000;
+		padding: 8px;
+		text-decoration: none;
+		text-align: left;
+		font: var(--robotoSlabTopnav);
+	}
+	
+	.nav-link:last-child {
+		border-bottom: none;
+	}
+
+	.menuBarContainer {
+		background-color: var(--buttonBackground);
+		text-decoration: none;
+		display: flex;
+		padding: 8px;
+		white-space: nowrap;
+		color: #000;
+		align-items: flex-start;
+		border-bottom: 1px solid #ddd;
+	}
+	
+	#mobileTopnav .icon {
+		display: block;
+		padding: 8px;
+		font: var(--robotoSlabTopnav);
+		text-decoration: none;		
+		color: #000;
+	}
+	
+	#mobileTopnav i {
+		padding: 8px;
+	}
+	
+	#search-container {
+		margin: 22px auto 12px auto; 
+	}
+}
+
+#filter-row, #filter-row:hover {
+	background-color: #f1f2f3;
+	cursor: pointer;
+	font: var(--smallMontserrat);
+}
+
+#filter-row td select {
+	font: var(--smallMontserrat);
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.filter-select option {
+	width: 100%;
+	font: 500 10px "Montserrat";
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #000;
+}
+
+table tbody tr:hover {
+	cursor: pointer;
+	background-color: var(--buttonBackground);
+}
+
+.selected-row {
+	background-color: var(--buttonBackgroundHover);
+}
+	
+.selected-row:hover {
+	background-color: #dbe7f0;
+}
+
+table thead th {
+	background-color: #f1f2f3;
+}
+
+table thead th:hover {
+	background-color: #dfe0e1;
+}
+
+@media screen and (max-width: 500px) {
+	table {
+		width: 100%;
+	}
+}
+
+
+
+/* VARIABLES */
+:root {
+	--textColor: #000;
+	--divBackground: #f7f7f7;
+	--buttonBackground: rgb(239,246,251);
+	--buttonBackgroundHover: rgb(221, 235, 243);
+	--box-background-color: #eaf4f9;
+	--buttonBackgroundHover: rgba(199, 229, 244, 0.75);
+	--robotoSlabTopnav: 600 14px "Roboto Slab", serif;
+	--smallMontserrat: 500 11px "Montserrat";
+}
+
+/* LEADERS PAGES */
+#leadersIndexContainer {
+	margin: 0 22px;
+	overflow-x: auto;
+}
+
+#seasons_list_container, .tabular {
+	margin: 4px 0;
+	overflow-x: auto;
+}
+
+#seasons_list_container {
+    display: inline-block;
+}
+
+.seasons_list ul {
+	margin: 0;
+	padding: 0;
+    background: transparent;
+    white-space: normal;
+}
+
+.seasons_list li {
+    float: left;
+    list-style-type: none;
+}
+
+.seasons_list li a {
+	display: block;
+	text-align: left;
+	padding: 4px 0;
+	margin-right: 22px;
+	font: 600 14px "Inter";
+}
+
+.tabular {
+	max-width: none;
+    column-width: 350px;
+    border: 1px solid #ddd;
+    background: var(--divBackground);
+	font-family: "Inter";
+	font-size: 11px;
+    overflow: hidden;
+    padding: 8px;
+	box-sizing: border-box;
+}
+
+.groupedTabular {
+	padding: 4px 0;
+	display: block;
+	break-inside: avoid;
+	box-sizing: border-box;
+	border-bottom: 1px solid #ddd;
+}
+
+.tabular_row {
+    display: grid;
+    grid-template-columns: 180px 2fr;
+	padding: 1px 0;
+	margin-right: 8px;
+}
+
+.tabular_row>div {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.tabular_row>div:not(strong) {
+	font-weight: 500;
+}
+
+
+#season-leaders-container {
+	max-width: 100%;
+	margin: 8px 22px;
+}
+
+.prevnext {
+	display: inline-flex;
+    overflow: visible;
+	gap: 12px;
+	margin: 0 0 4px 0;
+	outline: none;
+}
+
+.button2 {
+    display: inline-block;
+	background-color: var(--buttonBackground);
+    margin: 4px 0;
+    padding: 6px 12px;
+    text-align: center;
+	font: 600 11px "Montserrat";
+	border: 1px solid #bbb;
+	border-radius: 4px;
+	color: #000;
+	cursor: pointer;
+	transition: background-color 0.1s ease;
+	min-width: 128px;
+}
+
+.button2[href] {
+    text-decoration: none
+}
+
+.button2:hover {
+	background-color: var(--buttonBackgroundHover);
+}
+
+.button2:last-child {
+    margin-right: 0;
+}
+
+.button2.next:after {
+    content: "\203A\203A";
+    padding-left: 6px;
+	font-weight: 700;
+}
+
+.button2.prev:before {
+    content: "\2039\2039";
+    padding-right: 6px;
+	font-weight: 700;
+}
+
+#seasonLeaders {
+	background-color: #ffffff;
+	color: #000;
+	font-size: 10px;
+	box-sizing: border-box;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	font-family: "Inter";
+	font-weight: 400;
+}
+
+#seasonLeaders th {
+	background-color: #f1f2f3;
+	font-family: "Montserrat";
+	font-size: 10.5px;
+	font-weight: 600;
+	text-align: center;
+	cursor: pointer;
+	padding: 6px;
+	border-collapse: collapse;
+	border: 1px solid #dedede;
+	border-spacing: 0px;
+}
+
+#seasonLeaders th:hover {
+	background-color: #dfe0e1;
+}
+
+#seasonLeaders td {
+	text-align: center;
+	line-height: 20px;
+	border-collapse: collapse;
+	border: 1px solid #dedede;
+	border-spacing: 0px;
+	font-size: 10px;
+	padding: 4px 6px;
+	white-space: nowrap;
+}
+
+#seasonLeaders td:nth-child(1) {
+	text-align: left;
+}
+
+#seasonLeaders td:last-child {
+	text-align: left;
+}
+
+#seasonLeaders td:not(td:nth-child(1)), #seasonLeaders td:not(td:last-child) {
+	min-width: 40px;
+}
+
+.standings-button-container {
+    background-color: #f1f2f3;
+    border-radius: 4px;
+	border: 1px solid #ccc;
+    display: inline-flex;
+    overflow: visible;
+	width: 40%;
+	gap: 12px;
+	margin: 0 0 4px 0;
+	outline: none;
+}
+
+.standings-button-container button {
+    background: transparent;
+	width: 33%;
+    border: 0;
+    color: #000;
+	text-align: center;
+	margin: 0 auto;
+	justify-content: space-between;
+	font-size: 13px;
+	font-weight: 600;
+	outline: none;
+	padding: 8px 10px;
+	font-family: "Roboto Slab";
+	cursor: pointer;
+}	
+
+.standings-button-container button:hover {
+    background: transparent;
+    color: #c40303;
+	cursor: pointer;
+}
+
+.standings-button-container button.active-button {
+    width: 33.333333%;
+	background: #fff;
+    border-radius: 4px;
+	box-shadow: 0 2px 10px 0 rgba(0,0,0,.4);
+	color: #c40303;
+}
+
+#league-table-container, #division-table-container, #conference-table-container {
+	margin: 4px 0;
+}
+
+.standings-table {
+	background-color: #ffffff;
+	color: #000;
+	font-size: 10px;
+	box-sizing: border-box;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	font-family: "Inter";
+	font-weight: 400;
+}
+
+.standings-table th {
+	background-color: #f1f2f3;
+	font-family: "Montserrat";
+	font-size: 10.5px;
+	font-weight: 600;
+	text-align: center;
+	cursor: pointer;
+	padding: 6px 0;
+	border-collapse: collapse;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-spacing: 0px;
+}
+
+.standings-table th:hover {
+	background-color: #dfe0e1;
+}
+
+.standings-table th:nth-child(1), .standings-table td:nth-child(1) {
+	border-left: 1px solid #ccc;
+}
+
+.standings-table th:last-child, .standings-table td:last-child {
+	border-right: 1px solid #ccc;
+}
+
+.standings-table tbody tr {
+	box-sizing: border-box;
+	line-height: 20px;
+}
+
+.standings-table td {
+	text-align: center;
+	line-height: 20px;
+	border-collapse: collapse;
+	border: 1px solid #ededed;
+	border-spacing: 0px;
+	font-size: 10px;
+}
+
+.standings-table tbody tr td:not(.team-name-cell) {
+	min-width: 50px;
+	padding: 2px;
+}
+
+.standings-table tbody tr td.team-name-cell {
+	box-sizing: border-box;
+	text-align: left;
+	min-width: 160px;
+	max-width: 160px;
+	line-height: 20px;
+	font-family: "Montserrat", "Roboto Slab";
+	font-weight: 500;
+}
+
+.team-cell {
+	box-sizing: border-box;
+	white-space: nowrap;
+	padding: 1px 0;
+	display: flex;
+}
+
+.logo-container {
+	box-sizing: border-box;
+	float: left;
+	align-self: center;
+	height: 20px;
+	line-height: 20px;
+}
+
+.team-logo {
+	object-fit: contain;
+	height: 20px;
+	width: 20px;
+	margin: 0 6px 0 2px;
+	padding: 0;
+	align-self: center;
+}
+
+.team-name-container {
+	box-sizing: border-box;
+	float: left;
+	align-self: center;
+	height: 20px;
+	line-height: 20px;
+}
+
+.team-name-container a {
+	height: 18px;
+	padding: 0;
+	margin: 0 0 0 2px;
+	align-self: center;
+}
+
+.team-logo:hover, .team-name-container a:hover {
+	cursor: pointer;
+}
+
+#data-table {
+	background-color: #ffffff;
+	color: #000;
+	font-size: 10px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+#data-table th {
+	background-color: #f1f2f3;
+	font: 600 11px "Montserrat";
+	text-align: center;
+	cursor: pointer;
+	padding: 6px 2px;
+	border-collapse: collapse;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-spacing: 0px;
+}
+
+#data-table th:hover {
+	background-color: #dfe0e1;
+}
+
+#data-table th:nth-child(1), #data-table td:nth-child(1) {
+	border-left: 1px solid #ccc;
+}
+
+#data-table th:last-child, #data-table td:last-child {
+	border-right: 1px solid #ccc;
+}
+
+#data-table td {
+	text-align: center;
+	font-size: 11px;
+	font-family: "Inter";
+	font-weight: 400;
+	white-space: nowrap;
+	border: 1px solid #ededed;
+	padding: 4px 6px;
+}
+
+#data-table td:nth-child(4) {
+	text-align: left;
+}
+
+.checkboxDiv {
+	max-width: 20px;
+	display: flex;
+	align-items: center;
+	margin: 0 auto;
+	justify-content: space-around;
+	padding: 4px;
+}
+
+.eventCheckbox {
+	margin: 0;
+	height: 12px;
+	width: 12px;
+	float: left;
+	cursor: pointer;
+}
+
+#multi-filters, .min-filters {
+	margin: 6px auto;
+	display: inline-block;
+	font: var(--smallMontserrat);
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	overflow: visible;
+	padding: 12px;
+	outline: none;
+	width: 100%;
+}
+
+.filterLabel, .minFilterHeader {
+	outline: none;
+	margin: 0 4px;
+	padding: 0;
+	text-align: left;
+	font: var(--smallMontserrat);
+}
+
+.checkboxFilters label {
+	margin-right: 6px;
+	white-space: nowrap;
+	font: var(--smallMontserrat);
+}
+
+#multi-filters input[type="checkbox"] {
+	cursor: pointer;
+	height: 11px;
+	width: 11px;
+	margin-right: 4px;
+	margin-left: 8px;
+}
+
+#type-filters, #team-filters, #stat-filters, #game-filters, .minFilterRow {
+	width: 100%;
+	display: block;
+	align-items: center;
+	outline: none;
+	margin: 6px 0;
+	padding: 4px;	
+}
+
+.inputFilters {
+	display: inline;
+	white-space: nowrap;
+	padding: 4px;
+	max-height: 18px;
+	outline: none;
+	font: var(--smallMontserrat);
+	color: #000;
+	min-width: 130px;
+}
+
+.inputFilters .minFilterLabel {
+	margin-right: 6px;
+	white-space: nowrap;
+	font: var(--smallMontserrat);
+}
+
+.min-filters input {
+	font: var(--smallMontserrat);
+	padding: 2px;
+}
+
+
+@media screen and (max-width: 500px) {
+	.min-filters input {
+		max-width: 60px;
+		margin: 4px;
+	}
+	
+	.min-filters input::-webkit-outer-spin-button, .min-filters input::-webkit-inner-spin-button {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 501px) {
+	.min-filters input {
+		min-width: 68px;
+		max-width: 68px;
+		margin: 4px;
+	}
+
+	.min-filters input::-webkit-outer-spin-button, .min-filters input::-webkit-inner-spin-button {
+		opacity: 1;
+		margin: 0;
+		cursor: pointer;
+		width: 4px;
+		align-self: right;
+		color: #000;
+	}
+}
+
+.groupedProbAndButtons {
+	margin: 4px auto;
+}
+
+.groupedProbAndButtons #filter-container-div {
+	background: transparent;
+	border: none;
+	margin: 2px 0;
+}
+
+
+.combinedProbLabel {
+	font: 500 12px "Montserrat";
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.secret {
+	margin-left: 128px;
+	font-family: "Montserrat", "Roboto Slab";
+	font-weight: 500;
+	font-size: 9px;
+}
+
+#result-container {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	background-color: #f7f7f7;
+	border-radius: 4px;
+	padding: 6px;
+	margin: 4px 0;
+}
+
+#result {
+	width: 100%;
+	margin: 0;
+	font-family: "Montserrat", "Roboto Slab";
+	font-weight: 500;
+	font-size: 12px;
+}
+
+#home-boxscore, #away-boxscore {
+	background-color: #ffffff;
+	color: #000;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	margin: 4px 0 8px 0;
+	white-space: nowrap;
+	border: 1px solid #ccc;
+}
+
+#home-boxscore th, #away-boxscore th {
+	background-color: #f1f2f3;
+	font: 600 11px "Montserrat";
+	text-align: center;
+	cursor: pointer;
+	padding: 6px 0;
+	border-collapse: collapse;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-spacing: 0px;	
+}
+
+#home-boxscore th:hover, #away-boxscore th:hover, #team-table th:hover {
+	background-color: #dfe0e1;
+}
+
+#home-boxscore td, #away-boxscore td {
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid #ededed;
+	border-spacing: 0px;
+	font: 400 10.5px "Inter";
+	padding: 4px 6px;
+	white-space: nowrap;
+}
+
+#home-boxscore td:not(td:nth-child(1)), #away-boxscore td:not(td:nth-child(1)) {
+	min-width: 48px;
+}
+
+#home-boxscore td:nth-child(1), #away-boxscore td:nth-child(1) {
+	min-width: 142px;
+	border-left: 1px solid #ccc;
+}
+
+#home-boxscore td:last-child, #away-boxscore td:last-child {
+	border-right: 1px solid #ccc;
+}
+
+#home-boxscore tfoot td, #away-boxscore tfoot td {
+	background-color: #f1f2f3;
+	font: 600 11px "Montserrat";
+	text-align: center;
+	padding: 8px 6px;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+}
+
+#boxscore-index  {
+	background-color: #ffffff;
+	color: #000;
+	table-layout: auto;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	margin: 4px auto;
+	white-space: nowrap;
+	border: 1px solid #ccc;
+}
+
+#boxscore-index  th {
+	background-color: #f1f2f3;
+	font: 600 11px "Montserrat";
+	text-align: center;
+	cursor: pointer;
+	padding: 6px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 1px solid #ededed;
+}
+
+#boxscore-index th:hover {
+	background-color: #dfe0e1;
+}
+
+#boxscore-index td {
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid #ededed;
+	border-spacing: 0px;
+	font: 400 10.5px "Inter";
+	padding: 4px 8px;
+	white-space: nowrap;
+}
+
+#team-table {
+	background-color: #ffffff;
+	color: #000;
+	table-layout: auto;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	margin: 4px 0 8px 0;
+	white-space: nowrap;
+	border: 1px solid #ccc;
+	min-width: 80%;
+}
+
+#player-table {
+	background-color: #ffffff;
+	color: #000;
+	table-layout: auto;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	margin: 4px 0 8px 0;
+	white-space: nowrap;
+	border: 1px solid #ccc;
+	width: 100%;
+}
+
+#H2H-table {
+	background-color: #ffffff;
+	color: #000;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	margin: 6px 0;
+	white-space: nowrap;
+	border: 1px solid #ccc;
+	table-layout: auto;
+}
+
+#H2H-table td {
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid #ededed;
+	border-spacing: 0px;
+	font: 400 11px "Inter";
+	padding: 6px 8px;
+	white-space: nowrap;
+	min-width: 50px;
+}
+
+#H2H-table td:nth-child(1) {
+	text-align: left;
+}
+
+#team-table th, #player-table th, #H2H-table th {
+	background-color: #f1f2f3;
+	font: 600 11px "Montserrat";
+	text-align: center;
+	cursor: pointer;
+	padding: 6px 0;
+	border-collapse: collapse;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-spacing: 0px;	
+}
+
+#team-table td, #player-table td {
+	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid #ededed;
+	border-spacing: 0px;
+	font: 400 11px "Inter";
+	padding: 6px;
+	white-space: nowrap;
+}
+
+#team-table tr td:nth-child(1), #player-table tr td:nth-child(1), #H2H-table tr td:nth-child(1) {
+	border-left: 1px solid #ccc;
+}
+
+#team-table tr td:last-child, #player-table tr td:last-child, #H2H-table tr td:last-child {
+	border-right: 1px solid #ccc;
+}
+
+#team-index, #player-index, #boxscore-index {
+	width: 80%;
+	border-collapse: collapse;
+	border: .5pt solid #D9D9D9;
+	background-color: #ffffff;
+	margin-left: auto;
+	margin-right:auto;
+	padding-bottom: 28px;
+	word-wrap: break-word;
+	overflow-x: scroll;
+}
+
+#team-index th, #player-index th, #boxscore-index th {
+	background-color: #f1f2f3;
+	font: 600 11px "Montserrat";
+	cursor: pointer;
+	padding: 4px 6px;
+	text-align: center;
+	border: 1px solid #e0e0e0;
+}
+	
+#team-index td, #player-index td, #boxscore-index td {
+	padding: 4px 6px;
+	text-align: center;
+	border: 1px solid #e0e0e0;
+	font: 500 11px "Montserrat";
+}
+
+#team-index tbody tr:hover, #player-index tbody tr:hover, #boxscore-index tbody tr:hover {
+	background-color: #eaf4f9;
+	cursor: pointer;
+}
+
+#player-table td:nth-child(1) {
+	text-align: left;
+}
+
+#player_info {
+    width: 100%;
+    margin: 24px auto 12px auto;
+    min-height: 140px;
+	height: auto;
+	display: block;
+	box-sizing: border-box;
+}
+
+#playerPictureContainer {
+    width: 100px;
+	display: block;
+}
+
+.playerPicture {
+    width: 92px;
+	height: auto;
+    display: inline-block;
+    float: left;
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.info p {
+    display: block;
+	font: 600 12px "Montserrat";
+	margin: 4px 0;
+}
+
+.info h1 {
+    text-align: left;
+    font: 700 18px "Montserrat";
+}
+
+#seasonStats {
+	width: 80%;
+}
+
+.seasonSummary {
+	margin: 8px 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+	text-align: center;
+}
+
+.seasonSummary th {
+	min-width: 36px;
+	padding: 2px;
+	margin: 4px 0px;
+	font: 600 12px "Montserrat";
+}
+
+.seasonSummary td {
+	font: 500 12px "Montserrat";
+	padding: 2px;
+	margin: 4px 0px;
+}
+
+.caption {
+	color: #000;
+	font-family: "Roboto Slab";
+	font-weight: 600;
+	font-size: 16px;
+	margin-left: 0;
+	margin-top: 8px;
+	margin-bottom: 6px;
+	text-align: left;
+}
+
+.chartContainer	{
+	margin: 14px 0;
+	border: 1px solid #ccc;
+	border-radius:4px;
+	background-color: #f7f7f7;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.barChart {
+	padding: 0px 6px;
+	background: transparent;
+	max-height: 225px;
+	box-sizing: border-box;
+}
+
+.filter-buttons {
+	display: inline-flex;
+	justify-content: flex-start;
+	gap: 2px;
+	margin: 4px;
+	outline: none;
+	padding: 4px 0;
+	align-items: center;	
+	box-sizing: border-box;
+}
+
+.filter-buttons .last_n_games_btn {
+	background-color: var(--buttonBackground);
+	outline: none;
+	border-radius: 4px;
+	border: 1px solid #bbb;
+	font: 500 11px "Montserrat";
+	padding: 4px 6px;
+	color: #000;
+	text-align: center;
+	margin: 0 8px;
+	cursor: pointer;
+	transition: background-color 0.1s ease;
+	float: left;
+	width: 85px;
+	transition: background-color 0.1s ease;
+}
+
+.filter-buttons .last_n_games_btn:hover {
+	background-color: var(--buttonBackgroundHover);
+	transition: background-color 0.1s ease;
+	cursor: pointer;
+}
+
+.filter-buttons .toggleTOIButton, .clear-chart-filters  {
+	background-color: transparent;
+	outline: none;
+	border: none;
+	font: 600 11px "Montserrat";
+	padding: 4px 6px;
+	color: #c40303;
+	text-decoration: none;
+	text-align: left;
+	cursor: pointer;
+	display: inline;
+	margin: 0 8px;
+	padding: 4px 6px;
+}
+
+.barChart-filters {
+    display: inline-flex;
+    overflow: visible;
+	width: 100%;
+	gap: 2px;
+	margin: 0;
+	outline: none;
+	padding: 4px 0;
+	justify-content: flex-start;
+}
+
+.barChartFilter {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 0 4px;
+	box-sizing: border-box;
+	text-align: left;
+	font: 500 10px "Montserrat";
+	outline: none;
+	padding: 0;
+	color: #000;
+}
+
+.barChartFilter label {
+	outline: none;
+	padding: 0;
+	text-align: left;
+	font: 500 10px "Montserrat";
+	margin-right: 4px;
+}
+
+.barChartFilter select, .barChartFilter input {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	text-align: left;
+	padding: 2px;
+	box-sizing: border-box;
+	font: 500 10px "Montserrat";
+	outline: none;
+	overflow-y: scroll;
+	max-width: 104px;
+}
+
+.barChartFilter option {
+	margin: 0;
+	padding: 0;
+	font: 500 10px "Montserrat";
+	line-height: 0.5em;
+}
+
+.slider-container {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0;
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 2px auto;
+	outline: none;
+	justify-content: flex-start;
+	align-content: center;
+	align-items: center;
+}
+
+#line-slider {
+	padding: 0;
+	align-self: center;
+	width: 420px;
+	outline: none;
+	float: left;
+}
+
+#line-slider input[type="range"] {
+	cursor: pointer;
+	padding: 0;
+	width: 260px;
+	box-sizing: border-box;
+	height: 4px;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #c4e1ee;
+	border: .5px solid #ccc;
+	border-radius: 4px;
+	outline: none;
+	align-self: center;
+}
+
+#line-slider input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 14px;
+	height: 14px;
+	background-color: #9abfd0;
+	cursor: pointer;
+	border-radius: 50%;
+	border: .5px solid #ccc;
+	outline: none;
+	transition: background-color 0.1s ease;
+}
+
+#line-slider input[type="range"]::-webkit-slider-thumb:hover {
+	background-color: #83abbe;
+	transition: background-color 0.1s ease;
+}
+
+#line-slider label, #line-slider span {
+	font: 600 11px "Montserrat";
+	box-sizing: border-box;
+	margin: 0px 6px;
+	align-self: center;
+	line-height: 15px;
+}
+
+.chartButtons {
+	box-sizing: border-box;	
+}
+
+.reset-line-btn {
+	font: 600 11px "Montserrat";
+	outline: none;
+	padding: 6px;
+	border: none;
+	color: #c40303;
+	background-color: transparent;
+	float: left;
+}
+
+

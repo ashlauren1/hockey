@@ -2,17 +2,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NJD vs DET</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheet.css">
-    <script src="boxscoreScript.js"></script>
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <script src="modalsMobileNavAndSearch.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="commonStylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <script src="boxscoreScript.js"></script>
+    <title>NJD vs DET</title>
 </head>
 <body>
-<div id="page-heading">
+<div id="pageHeading">
 	<div class="topnav">
         <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
         <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
@@ -34,73 +38,34 @@
 </div>
     <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
     
-<div id="boxscore-container">
-
-    <div class="groupedProbAndButtons" style="width:95%">
-        <div class="button-container">
-            <button id="toggle-selection-btn">Show Selected Only</button>
-            <button id="clear-filters-btn">Remove Filters</button>
-            <button id="clear-all-btn">Clear All</button>
-        </div>
-    </div>
-    <div id="table-container">
-    <div id="glossaryModal" class="modal">
-        <div id="glossary-modal-content">
-            <span class="closeGlossary">&times;</span>
-            <ul class="tiebreaker-modal-list" type="none">
-                <li>GP:&nbsp;&nbsp;Games Played</li>
-                <li>GF:&nbsp;&nbsp;Goals</li>
-                <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
-                <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
-                <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
-                <li>PPO:&nbsp;&nbsp;Power Play Opportunities</li>
-                <li>SHG:&nbsp;&nbsp;Short-Handed Goals</li>
-                <li>SOGA:&nbsp;&nbsp;Shots Against</li>
-                <li>PIMA:&nbsp;&nbsp;Opponent Penalties in Minutes</li>
-                <li>PPGA:&nbsp;&nbsp;Power Play Goals Against</li>
-                <li>PPOA:&nbsp;&nbsp;Power Play Opportunities Against</li>
-                <li>SHGA:&nbsp;&nbsp;Short-Handed Goals Against</li>
-                <li>CF:&nbsp;&nbsp;Corsi For at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
-                <li>CA:&nbsp;&nbsp;Corsi Against at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
-                <li>CF%:&nbsp;&nbsp;Corsi For % at Even Strength -- CF / (CF + CA)</li>
-                <li>FF:&nbsp;&nbsp;Fenwick For at Even Strength -- Shots + Misses</li>
-                <li>FA:&nbsp;&nbsp;Fenwick Against at Even Strength -- Shots + Misses</li>
-                <li>FF%:&nbsp;&nbsp;Fenwick For % at Even Strength -- FF / (FF + FA)</li>
-                <li>FOW:&nbsp;&nbsp;Faceoff Wins</li>
-                <li>FOL:&nbsp;&nbsp;Faceoff Losses</li>
-                <li>FO%:&nbsp;&nbsp;Faceoff Win Percentage</li>
-            </ul>
-        </div>
-    </div>
-    
+<div id="pageContainer">
+    <div id="tableContainer">
         
-        <span class="caption">New Jersey Devils - Home</span>
+        <p class="title-caption"><a href="/hockey/teams/NJD.html" target="_blank">New Jersey Devils - Home</a></p>
         <table id="home-boxscore">
             <thead>
                 <tr>
                     <th>Player</th>
-                    <th>Team</th>
-                    <th>G</th>
-                    <th>A</th>
-                    <th>PTS</th>
-                    <th>SOG</th>
-                    <th>HIT</th>
-                    <th>BLK</th>
-                    <th>TOI</th>
-                    <th>PIM</th>
-                    <th>EVG</th>
-                    <th>PPG</th>
-                    <th>SHG</th>
-                    <th>EVA</th>
-                    <th>PPA</th>
-                    <th>SHA</th>
+                    <th data-tip="Goals">G</th>
+                    <th data-tip="Assists">A</th>
+                    <th data-tip="Points">PTS</th>
+                    <th data-tip="Shots on Goal">SOG</th>
+                    <th data-tip="Hits">HIT</th>
+                    <th data-tip="Blocked Shots">BLK</th>
+                    <th data-tip="Time on Ice">TOI</th>
+                    <th data-tip="Penalty Minutes">PIM</th>
+                    <th data-tip="Even Strength Goals">EVG</th>
+                    <th data-tip="Power Play Goals">PPG</th>
+                    <th data-tip="Short-Handed Goals">SHG</th>
+                    <th data-tip="Even Strength Assists">EVA</th>
+                    <th data-tip="Power Play Assists">PPA</th>
+                    <th data-tip="Short-Handed Assists">SHA</th>
                 </tr>
             </thead>
             <tbody>
             
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/bahlke01.html" target="_blank">KEVIN BAHL</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -119,7 +84,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/bastina01.html" target="_blank">NATHAN BASTIAN</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -138,7 +102,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/brattje01.html" target="_blank">JESPER BRATT</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>1</td>
                     <td>1</td>
@@ -157,7 +120,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/haulaer01.html" target="_blank">ERIK HAULA</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -176,7 +138,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/hischni01.html" target="_blank">NICO HISCHIER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -195,7 +156,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/holtzal01.html" target="_blank">ALEXANDER HOLTZ</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -214,7 +174,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/hugheja03.html" target="_blank">JACK HUGHES</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>1</td>
                     <td>1</td>
@@ -233,7 +192,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/hughelu01.html" target="_blank">LUKE HUGHES</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -252,7 +210,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/lazarcu01.html" target="_blank">CURTIS LAZAR</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -271,7 +228,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/marinjo01.html" target="_blank">JOHN MARINO</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -290,7 +246,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/mcleomi01.html" target="_blank">MICHAEL MCLEOD</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -309,7 +264,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/meierti01.html" target="_blank">TIMO MEIER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>2</td>
                     <td>0</td>
                     <td>2</td>
@@ -328,7 +282,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/merceda01.html" target="_blank">DAWSON MERCER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -347,7 +300,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/nemecsi01.html" target="_blank">SIMON NEMEC</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -366,7 +318,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/palaton01.html" target="_blank">ONDREJ PALAT</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -385,7 +336,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/siegejo01.html" target="_blank">JONAS SIEGENTHALER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -404,7 +354,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/smithbr05.html" target="_blank">BRENDAN SMITH</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -423,7 +372,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/toffoty01.html" target="_blank">TYLER TOFFOLI</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
                     <td>1</td>
                     <td>0</td>
                     <td>1</td>
@@ -443,7 +391,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2"><strong>Total</strong></td>
+                    <td><strong>Total</strong></td>
                     <td>3</td>
                     <td>2</td>
                     <td>5</td>
@@ -462,33 +410,31 @@
             </tfoot>
         </table>
             
-        <span class="caption">Detroit Red Wings - Away</span>
+        <p class="title-caption"><a href="/hockey/teams/NJD.html" target="_blank">Detroit Red Wings - Away</a></p>
         <table id="away-boxscore">
             <thead>
                 <tr>
                     <th>Player</th>
-                    <th>Team</th>
-                    <th>G</th>
-                    <th>A</th>
-                    <th>PTS</th>
-                    <th>SOG</th>
-                    <th>HIT</th>
-                    <th>BLK</th>
-                    <th>TOI</th>
-                    <th>PIM</th>
-                    <th>EVG</th>
-                    <th>PPG</th>
-                    <th>SHG</th>
-                    <th>EVA</th>
-                    <th>PPA</th>
-                    <th>SHA</th>
+                    <th data-tip="Goals">G</th>
+                    <th data-tip="Assists">A</th>
+                    <th data-tip="Points">PTS</th>
+                    <th data-tip="Shots on Goal">SOG</th>
+                    <th data-tip="Hits">HIT</th>
+                    <th data-tip="Blocked Shots">BLK</th>
+                    <th data-tip="Time on Ice">TOI</th>
+                    <th data-tip="Penalty Minutes">PIM</th>
+                    <th data-tip="Even Strength Goals">EVG</th>
+                    <th data-tip="Power Play Goals">PPG</th>
+                    <th data-tip="Short-Handed Goals">SHG</th>
+                    <th data-tip="Even Strength Assists">EVA</th>
+                    <th data-tip="Power Play Assists">PPA</th>
+                    <th data-tip="Short-Handed Assists">SHA</th>
                 </tr>
             </thead>
             <tbody>
             
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/chiarbe01.html" target="_blank">BEN CHIAROT</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -507,7 +453,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/comphj.01.html" target="_blank">J.T. COMPHER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -526,7 +471,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/coppan01.html" target="_blank">ANDREW COPP</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -545,7 +489,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/debrial01.html" target="_blank">ALEX DEBRINCAT</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>1</td>
                     <td>1</td>
@@ -564,7 +507,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/edvinsi01.html" target="_blank">SIMON EDVINSSON</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -583,7 +525,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/fabbrro01.html" target="_blank">ROBBY FABBRI</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -602,7 +543,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/fischch01.html" target="_blank">CHRISTIAN FISCHER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>1</td>
                     <td>1</td>
@@ -621,7 +561,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/gostish01.html" target="_blank">SHAYNE GOSTISBEHERE</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>1</td>
                     <td>0</td>
                     <td>1</td>
@@ -640,7 +579,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/kanepa01.html" target="_blank">PATRICK KANE</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>1</td>
                     <td>0</td>
                     <td>1</td>
@@ -659,7 +597,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/larkidy01.html" target="_blank">DYLAN LARKIN</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -678,7 +615,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/perroda01.html" target="_blank">DAVID PERRON</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -697,7 +633,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/petryje01.html" target="_blank">JEFF PETRY</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -716,7 +651,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/rasmumi01.html" target="_blank">MICHAEL RASMUSSEN</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -735,7 +669,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/raymolu01.html" target="_blank">LUCAS RAYMOND</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -754,7 +687,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/seidemo01.html" target="_blank">MORITZ SEIDER</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>1</td>
                     <td>1</td>
@@ -773,7 +705,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/spronda01.html" target="_blank">DANIEL SPRONG</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>1</td>
                     <td>1</td>
@@ -792,7 +723,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/velenjo01.html" target="_blank">JOE VELENO</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -811,7 +741,6 @@
                 
                 <tr>
                     <td style="text-align:left"><a href="/hockey/players/walmaja01.html" target="_blank">JAKE WALMAN</a></td>
-                    <td style="text-align:left"><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -831,7 +760,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2"><strong>Total</strong></td>
+                    <td><strong>Total</strong></td>
                     <td>2</td>
                     <td>4</td>
                     <td>6</td>

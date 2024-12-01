@@ -220,187 +220,39 @@ def generate_h2h_pages(metrics_data, h2h_pairs, output_dir):
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{player_name} vs {opp_name} - Previous Matchups</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel=Stylesheet href=stylesheet.css>
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <script src="modalsMobileNavAndSearch.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="commonStylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <script>
-    document.addEventListener("DOMContentLoaded", async function () {{
-        const searchBar = document.getElementById("search-bar");
-        const searchResults = document.getElementById("search-results");
-        const searchButton = document.getElementById("search-button");
-
-        let playerLinks = {{}};
-        let teamLinks = {{}};
-
-        // Load players and teams data from JSON files
-        async function loadLinks() {{
-            playerLinks = await fetch('players.json').then(response => response.json());
-            teamLinks = await fetch('teams.json').then(response => response.json());
-        }}
-
-        await loadLinks();  // Ensure links are loaded before searching
-
-        // Filter data and show suggestions based on input
-        function updateSuggestions() {{
-            const query = searchBar.value.trim().toLowerCase();
-            searchResults.innerHTML = ""; // Clear previous results
-
-            if (query === "") return;
-
-            // Combine players and teams for search
-            const combinedLinks = {{ ...playerLinks, ...teamLinks }};
-            const matchingEntries = Object.entries(combinedLinks)
-                .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
-                .slice(0, 10); // Limit to top 10
-
-            matchingEntries.forEach(([name, url]) => {{
-                const resultItem = document.createElement("div");
-                resultItem.classList.add("suggestion");
-
-                // Proper case for names
-                resultItem.textContent = name;
-
-                resultItem.addEventListener("click", () => {{
-                    window.open(url, "_self");
-                }});
-                searchResults.appendChild(resultItem);
-            }});
-
-            if (matchingEntries.length > 0) {{
-                searchResults.style.display = "block"; // Show results if matches are found
-            }} else {{
-                const noResultItem = document.createElement("div");
-                noResultItem.classList.add("no-result");
-                noResultItem.textContent = "No results found.";
-                searchResults.appendChild(noResultItem);
-                searchResults.style.display = "block";
-            }}
-        }}
-        
-        document.addEventListener("click", function(event) {{
-            if (!searchResults.contains(event.target) && event.target !== searchBar) {{
-                searchResults.style.display = "none";
-            }}
-        }});
-
-        // Add event listener to search bar
-        searchBar.addEventListener("input", updateSuggestions);
-        
-        function redirectToSearchResults() {{
-        const query = searchBar.value.trim().toLowerCase();;
-        if (query) {{
-            window.location.href = `/hockey/search_results.html?query=${{encodeURIComponent(query)}}`;
-        }}
-    }}
-
-    // Add event listeners for search
-    searchBar.addEventListener("keypress", function (e) {{
-        if (e.key === "Enter") {{
-            redirectToSearchResults();
-        }}
-    }});
-
-    searchButton.addEventListener("click", redirectToSearchResults);
-}});
-
-document.addEventListener("DOMContentLoaded", function () {{
-    var glossaryModal = document.getElementById("glossaryModal");
-    var glossaryModalButton = document.getElementById("glossaryButton");
-    var glossaryModalContent = document.getElementById("glossary-modal-content");
-    var closeGlossaryModal = document.getElementsByClassName("closeGlossary")[0];
-
-    glossaryModalButton.onclick = function() {{
-        glossaryModal.classList.add("open");
-        glossaryModal.style.display = "block";
-    }}
-
-    closeGlossaryModal.onclick = function() {{
-        glossaryModal.classList.remove("open");
-        glossaryModal.style.display = "none";
-    }}
-
-    window.onclick = function(event) {{
-        if (event.target === glossaryModal) {{
-            glossaryModal.style.display = "none";
-        }}
-    }}
-}})
-        
-document.addEventListener("DOMContentLoaded", function () {{
-    const container = document.getElementById("table-container");
-
-    const glossaryButton = document.createElement("button");
-    glossaryButton.id = "glossaryButton";
-    glossaryButton.innerText = "Glossary";
-    container.querySelector(".title-caption").appendChild(glossaryButton);
-
-    function setupModal(modalId, buttonId, closeClass) {{
-        const modal = document.getElementById(modalId);
-        const button = document.getElementById(buttonId);
-        const closeButton = modal.querySelector(`.${{closeClass}}`);
-
-        // Toggle modal visibility when button is clicked
-        button.onclick = function () {{
-            const isOpen = modal.classList.contains("open");
-            modal.style.display = isOpen ? "none" : "block";
-            modal.classList.toggle("open", !isOpen);
-        }};
-
-        // Close modal when the close button is clicked
-        closeButton.onclick = function () {{
-            modal.style.display = "none";
-            modal.classList.remove("open");
-        }};
-
-        // Close modal when clicking outside the modal content
-        window.onclick = function (event) {{
-            if (event.target === modal) {{
-                modal.style.display = "none";
-                modal.classList.remove("open");
-            }}
-        }};
-    }}
-
-    setupModal("glossaryModal", "glossaryButton", "closeGlossary");
-}});
-</script>
+    <title>{player_name} vs {opp_name} - Previous Matchups</title>
 </head>
+
 <body>
-<div class="mobile">
-	<a class="activeMobile" href="/hockey/" target="_blank">Home</a>
-	<div id="myLinks">
-		<a href="/hockey/players/" target="_blank">Players</a>
-        <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/leaders/" target="_blank">Leaders</a>
-        <a href="/hockey/leaders/standings.html" target="_blank">Standings</a>
-        <a href="/hockey/boxscores/" target="_blank">Scores</a>
-        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
-	</div>
-	<a href="javascript:void(0);" class="icon" onclick="myFunction()">
-		<i class="fa fa-bars"></i>
-	</a>
-
-
-<script>
-function myFunction() {{
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "block") {{
-    x.style.display = "none";
-  }} else {{
-    x.style.display = "block";
-  }}
-}}
-</script>
+<div id="mobileTopnav">
+    <div class="menuBarContainer mobile active">
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i>Menu</a>
+    </div>
+    <div id="myLinks">
+        <ul class="navLinks">
+            <li class="nav-link"><a href="/hockey/" target="_blank">Projections</a></li>
+            <li class="nav-link"><a href="/hockey/players/" target="_blank">Players</a></li>
+            <li class="nav-link"><a href="/hockey/teams/" target="_blank">Teams</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/" target="_blank">Leaders</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/standings.html" target="_blank">Standings</a></li>
+            <li class="nav-link"><a href="/hockey/boxscores/" target="_blank">Scores</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a></li>
+        </ul>
+    </div>
 </div>
 
-
-<div id="page-heading">
+<div id="pageHeading">
 	<div class="topnav">
         <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
         <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
@@ -416,60 +268,35 @@ function myFunction() {{
         <button id="search-button">Search</button>
         <div id="search-results"></div>
     </div>
-	<div class="header">
-		<h1>{player_name} vs {opp_name} - Previous Matchups</h1>
+    <div class="header">
+        <h1>{player_name} vs {opp_name} - Previous Matchups</h1>
 	</div>
 </div>
+
     <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
-<div id="H2H-container">
-    <div id="table-container">
-        <div id="glossaryModal" class="modal">
-            <div id="glossary-modal-content">
-                <span class="closeGlossary">&times;</span>
-                <ul class="tiebreaker-modal-list" type="none">
-                    <li>GP:&nbsp;&nbsp;Games Played</li>
-                    <li>GF:&nbsp;&nbsp;Goals</li>
-                    <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
-                    <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
-                    <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
-                    <li>PPO:&nbsp;&nbsp;Power Play Opportunities</li>
-                    <li>SHG:&nbsp;&nbsp;Short-Handed Goals</li>
-                    <li>SOGA:&nbsp;&nbsp;Shots Against</li>
-                    <li>PIMA:&nbsp;&nbsp;Opponent Penalties in Minutes</li>
-                    <li>PPGA:&nbsp;&nbsp;Power Play Goals Against</li>
-                    <li>PPOA:&nbsp;&nbsp;Power Play Opportunities Against</li>
-                    <li>SHGA:&nbsp;&nbsp;Short-Handed Goals Against</li>
-                    <li>CF:&nbsp;&nbsp;Corsi For at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
-                    <li>CA:&nbsp;&nbsp;Corsi Against at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
-                    <li>CF%:&nbsp;&nbsp;Corsi For % at Even Strength -- CF / (CF + CA)</li>
-                    <li>FF:&nbsp;&nbsp;Fenwick For at Even Strength -- Shots + Misses</li>
-                    <li>FA:&nbsp;&nbsp;Fenwick Against at Even Strength -- Shots + Misses</li>
-                    <li>FF%:&nbsp;&nbsp;Fenwick For % at Even Strength -- FF / (FF + FA)</li>
-                    <li>FOW:&nbsp;&nbsp;Faceoff Wins</li>
-                    <li>FOL:&nbsp;&nbsp;Faceoff Losses</li>
-                    <li>FO%:&nbsp;&nbsp;Faceoff Win Percentage</li>
-                </ul>
-            </div>
-        </div>
+
+<main>
+<div id="pageContainer">
+    <div id="tableContainer">
+        <p class="title-caption"><a href="/hockey/players/{player_id}.html" target="_blank">{player_name}</a> H2H Results</p>
         <table id="H2H-table">
-        <caption class="title-caption"><a href="/hockey/players/{player_id}.html" target="_blank">{player_name}</a> H2H Results</caption>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Team</th>
-                <th></th>
-                <th>Opp</th>
-                <th>G</th>
-                <th>A</th>
-                <th>PTS</th>
-                <th>SOG</th>
-                <th>HIT</th>
-                <th>BLK</th>
-                <th>TOI</th>
-                <th>PIM</th>
-            </tr>
-        </thead>
-        <tbody>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Team</th>
+                    <th></th>
+                    <th>Opp</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>PTS</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
+                    <th>TOI</th>
+                    <th>PIM</th>
+                </tr>
+            </thead>
+            <tbody>
         '''
 
         # Add rows for each game
@@ -477,12 +304,8 @@ function myFunction() {{
             # Convert date to MM/DD/YYYY format
             date_obj = datetime.strptime(str(row['Date']), "%Y-%m-%d %H:%M:%S")
             formatted_date = date_obj.strftime("%m/%d/%Y")
-            game_id = row['GameID']  # Assumes 'GameID' column is present in your data
-            
-            # Create a hyperlink for the date
+            game_id = row['GameID']
             date_link = f'<a href="/hockey/boxscores/{game_id}.html" target="_blank">{formatted_date}</a>'
-
-            # Other row data
             team = row['Team']
             opp = row['Opp']
             g = row['G']
@@ -493,31 +316,32 @@ function myFunction() {{
             blk = row['BLK']
             toi = f"{row['TOI']:.2f}"
             pim = row['PIM']
-            
 
             html_content += f'''
-            <tr>
-                <td>{date_link}</td>
-                <td><a href="/hockey/teams/{team}.html" target="_blank">{team}</a></td>
-                <td>{'vs' if row['Is_Home'] == 1 else '@'}</td>
-                <td><a href="/hockey/teams/{opp}.html" target="_blank">{opp}</a></td>
-                <td>{g}</td>
-                <td>{a}</td>
-                <td>{pts}</td>
-                <td>{sog}</td>
-                <td>{hit}</td>
-                <td>{blk}</td>
-                <td>{toi}</td>
-                <td>{pim}</td>
-            </tr>
+                <tr>
+                    <td>{date_link}</td>
+                    <td><a href="/hockey/teams/{team}.html" target="_blank">{team}</a></td>
+                    <td>{'vs' if row['Is_Home'] == 1 else '@'}</td>
+                    <td><a href="/hockey/teams/{opp}.html" target="_blank">{opp}</a></td>
+                    <td>{g}</td>
+                    <td>{a}</td>
+                    <td>{pts}</td>
+                    <td>{sog}</td>
+                    <td>{hit}</td>
+                    <td>{blk}</td>
+                    <td>{toi}</td>
+                    <td>{pim}</td>
+                </tr>
             '''
 
         # Close HTML content
         html_content += '''
-        </tbody>
+            </tbody>
         </table>
     </div>
-    </div>
+    <div id="chartPlaceholder"></div>
+</div>
+</main>
 </body>
 </html>
         '''
@@ -537,19 +361,20 @@ with open(output_file_path, 'w') as f:
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hockey!</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel=Stylesheet href=stylesheet.css>
     <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <script src="modalsMobileNavAndSearch.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="commonStylesheet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <script src="players.json"></script>
     <script src="teams.json"></script>
-
+    <title>NHL Projections</title>
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("data-table");
     const headerRow = table.querySelector("thead tr:first-child");
@@ -560,16 +385,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let showSelectedOnly = false;
     let isDragging = false;
 
-    // Explicitly set the index of the "Prob." column (adjust if necessary)
     const probColumnIndex = 8;
 
-    // Add checkboxes to the header row
     const checkboxHeader = document.createElement("th");
     checkboxHeader.classList.add("checkboxHeader");
     checkboxHeader.textContent = "";
     headerRow.prepend(checkboxHeader);
-
-    // Add checkboxes to each row in the table
     
     rows.forEach(row => {
         const checkboxCell = document.createElement("td");
@@ -579,7 +400,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		checkboxDiv.classList.add("checkboxDiv");
         checkbox.classList.add("eventCheckbox");
 
-        // Get probability from "Prob." column and store it as a data attribute
         const probText = row.cells[probColumnIndex].textContent.trim();
         const probValue = parseFloat(probText);
         checkbox.dataset.prob = probValue;
@@ -588,11 +408,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		checkboxDiv.appendChild(checkbox);
         row.prepend(checkboxCell);
 
-        // Recalculate combined probability when a checkbox is checked or unchecked
         checkbox.addEventListener("change", calculateCombinedProbability);
     });
 
-    // Calculate combined probability for selected rows
     function calculateCombinedProbability() {
         const checkboxes = document.querySelectorAll(".eventCheckbox:checked");
         let combinedProbability = 1;
@@ -605,7 +423,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("result").textContent = `Combined Probability: ${(combinedProbability * 100).toFixed(2)}%`;
     }
 
-    // Multi-row selection by dragging
     rows.forEach(row => {
         row.addEventListener("mousedown", function () {
             isDragging = true;
@@ -621,12 +438,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("mouseup", () => isDragging = false);
 
-    // Toggle selection for individual rows
     function toggleRowSelection(row) {
         row.classList.toggle("selected-row");
     }
 
-    // Show only selected rows or all rows
     toggleSelectionBtn.addEventListener("click", () => {
         showSelectedOnly = !showSelectedOnly;
         if (showSelectedOnly) {
@@ -640,7 +455,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Add sorting to each header
     addSortToHeaders(table);
 
     function addSortToHeaders(table) {
@@ -653,7 +467,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Sort the table by column
     function sortTable(table, columnIndex) {
         const rows = Array.from(table.querySelectorAll("tbody tr"));
         const isNumeric = rows.every(row => !isNaN(row.cells[columnIndex].textContent.trim()));
@@ -673,9 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
         rows.forEach(row => table.querySelector("tbody").appendChild(row));
     }
 
-    // Add filters
     addFilters(table);
-
     function addFilters(table) {
         const filterColumns = ["Game", "Team", "Type", "Stat"];
         const filterHeaders = Array.from(table.querySelectorAll("thead th"));
@@ -688,7 +499,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 .map(cell => cell.textContent.trim())
             )).sort();
 
-            // For each value, create a checkbox
             const filterDiv = document.getElementById(`${colName.toLowerCase()}-filters`);
             if (filterDiv) {
                 filterDiv.innerHTML = "";
@@ -701,16 +511,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 allLabel.appendChild(document.createTextNode("All"));
                 filterDiv.appendChild(allLabel);
 
-            // Event listener to check/uncheck all checkboxes in this category
             allCheckbox.addEventListener('change', function () {
                 const isChecked = allCheckbox.checked;
                 document.querySelectorAll(`.${colName.toLowerCase()}-filter`).forEach(checkbox => {
                     checkbox.checked = isChecked;
                 });
-                filterTable(); // Update table display based on new filter states
+                filterTable();
             });
 
-                
                 values.forEach(value => {
                     const label = document.createElement('label');
                     const checkbox = document.createElement('input');
@@ -722,13 +530,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     label.appendChild(document.createTextNode(value));
                     filterDiv.appendChild(label);
 
-                    // Add event listener to the checkbox
                     checkbox.addEventListener('change', () => {
-                    // If any checkbox in the group is unchecked, uncheck the "All" checkbox
                     if (!checkbox.checked) {
                         allCheckbox.checked = false;
                     } else {
-                        // Check if all individual boxes are selected to set "All" checkbox
                         const allSelected = Array.from(document.querySelectorAll(`.${colName.toLowerCase()}-filter`))
                             .every(cb => cb.checked);
                         allCheckbox.checked = allSelected;
@@ -746,7 +551,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(id).addEventListener("input", filterTable);
     });    
 
-    // Filter table based on selected filters
     function filterTable() {
         const filterColumns = ["Game", "Team", "Type", "Stat"];
         const filterClasses = ["game-filter", "team-filter", "type-filter", "stat-filter"];
@@ -779,11 +583,9 @@ document.addEventListener("DOMContentLoaded", function () {
 				const cellValue = cells[filterIndexes[i]].textContent.trim();
 
 				if (filterValues.length === 0) {
-                // No checkboxes checked in this category; no rows should match
 					matchesFilter = false;
 					break;
 				} else if (!filterValues.includes(cellValue)) {
-                // Cell value does not match any selected filter values
 					matchesFilter = false;
 					break;
             }
@@ -801,12 +603,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
 
-            // Display row if it matches all filters
             row.style.display = (matchesFilter && (!showSelectedOnly || row.classList.contains("selected-row"))) ? "" : "none";
         });
     }
 
-    // "Clear Filters" button functionality
     clearButton.addEventListener("click", () => {
         const filterClasses = ["game-filter", "team-filter", "type-filter", "stat-filter"];
         filterClasses.forEach(cls => {
@@ -818,12 +618,10 @@ document.addEventListener("DOMContentLoaded", function () {
         filterTable();
     });
 
-    // "Clear All" functionality
     clearAllButton.addEventListener("click", () => {
-        // Uncheck all event checkboxes
         document.querySelectorAll(".event-checkbox").forEach(checkbox => checkbox.checked = false);
 
-        // Reset filters
+
         const filterClasses = ["game-filter", "team-filter", "type-filter", "stat-filter"];
         filterClasses.forEach(cls => {
             document.querySelectorAll(`.${cls}`).forEach(checkbox => checkbox.checked = true);
@@ -843,14 +641,11 @@ document.addEventListener("DOMContentLoaded", function () {
         filterTable();
     });
 
-    // Gradient color code...
     const gradientColumns = ["Diff.", "Prob.", "24-25", "L5", "L10", "L20", "23-24", "All"];
 
-    // Get column indexes based on column headers
     const headers = Array.from(table.querySelectorAll("thead th"));
     const columnIndexes = gradientColumns.map(col => headers.findIndex(header => header.textContent.trim() === col));
 
-    // Get min and max values for each column
     const minMaxValues = columnIndexes.map(index => {
         let values = Array.from(table.querySelectorAll(`tbody tr td:nth-child(${index + 1})`))
             .map(cell => parseFloat(cell.textContent))
@@ -862,7 +657,6 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
 
-    // Apply gradient color based on value
     table.querySelectorAll("tbody tr").forEach(row => {
         columnIndexes.forEach((index, i) => {
             if (index >= 0) {
@@ -871,7 +665,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const { min, max } = minMaxValues[i];
 
                 if (!isNaN(value)) {
-                    // Adjust color for each value based on column min-max range
                     const color = getGradientColor(value, min, max);
                     cell.style.backgroundColor = color;
                     cell.style.color = "#000"; // Ensures text is readable
@@ -880,221 +673,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Helper function to get gradient color
     function getGradientColor(value, min, max) {
-        // Normalize value within the range for the column
         let normalized = (value - min) / (max - min);
-        normalized = Math.max(0, Math.min(1, normalized)); // Clamps the value between 0 and 1
+        normalized = Math.max(0, Math.min(1, normalized));
 
-        // Color blend from red (low values) to green (high values)
         const red = normalized < 0.5 ? 255 : Math.floor(255 * (1 - normalized) * 2);
         const green = normalized > 0.5 ? 255 : Math.floor(255 * normalized * 2);
-        const blue = 255 * (1 - Math.abs(normalized - 0.5) * 2); // Blend through white
-
+        const blue = 255 * (1 - Math.abs(normalized - 0.5) * 2);
         return `rgb(${red}, ${green}, ${blue})`;
     }
 });
-
-    document.addEventListener("DOMContentLoaded", async function () {
-        const searchBar = document.getElementById("search-bar");
-        const searchResults = document.getElementById("search-results");
-        const searchButton = document.getElementById("search-button");
-
-        let playerLinks = {};
-        let teamLinks = {};
-
-        // Load players and teams data from JSON files
-        async function loadLinks() {
-            playerLinks = await fetch('players.json').then(response => response.json());
-            teamLinks = await fetch('teams.json').then(response => response.json());
-        }
-
-        await loadLinks();  // Ensure links are loaded before searching
-
-        // Filter data and show suggestions based on input
-        function updateSuggestions() {
-            const query = searchBar.value.trim().toLowerCase();
-            searchResults.innerHTML = ""; // Clear previous results
-
-            if (query === "") return;
-
-            // Combine players and teams for search
-            const combinedLinks = { ...playerLinks, ...teamLinks };
-            const matchingEntries = Object.entries(combinedLinks)
-                .filter(([name]) => name.toLowerCase().includes(query))  // Matches on both name and ID
-                .slice(0, 10); // Limit to top 10
-
-
-            matchingEntries.forEach(([name, url]) => {
-                const resultItem = document.createElement("div");
-                resultItem.classList.add("suggestion");
-
-                // Proper case for names
-                resultItem.textContent = name;
-
-                resultItem.addEventListener("click", () => {
-                    window.open(url, "_self");
-                });
-                searchResults.appendChild(resultItem);
-            });
-
-        if (matchingEntries.length > 0) {
-            searchResults.style.display = "block"; // Show results if matches are found
-        } else {
-            const noResultItem = document.createElement("div");
-            noResultItem.classList.add("no-result");
-            noResultItem.textContent = "No results found.";
-            searchResults.appendChild(noResultItem);
-            searchResults.style.display = "block";
-        }
-    }
-    
-    document.addEventListener("click", function(event) {
-        if (!searchResults.contains(event.target) && event.target !== searchBar) {
-            searchResults.style.display = "none";
-        }
-    });
-
-    // Add event listener to search bar
-    searchBar.addEventListener("input", updateSuggestions);
-    
-    function redirectToSearchResults() {
-        const query = searchBar.value.trim().toLowerCase();;
-        if (query) {
-            window.location.href = `/hockey/search_results.html?query=${encodeURIComponent(query)}`;
-        }
-    }
-
-    // Add event listeners for search
-    searchBar.addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-            redirectToSearchResults();
-        }
-    });
-
-    searchButton.addEventListener("click", redirectToSearchResults);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const headers = document.querySelectorAll("thead th[data-tip]");
-
-    headers.forEach(header => {
-        const tooltip = document.createElement("span");
-        tooltip.className = "tooltip inactive"; // Add both classes initially
-        tooltip.textContent = header.getAttribute("data-tip");
-        document.body.appendChild(tooltip);
-
-        // Show tooltip on mouseover
-        header.addEventListener("mouseover", () => {
-            tooltip.classList.add("active");
-            tooltip.classList.remove("inactive");
-
-            const rect = header.getBoundingClientRect();
-            tooltip.style.left = rect.left + "px"; // Align with header
-            tooltip.style.top = (rect.top + window.scrollY - tooltip.offsetHeight + 6) + "px"; // Above header, add a small gap
-        });
-
-        // Hide tooltip on mouseout
-        header.addEventListener("mouseout", () => {
-            tooltip.classList.remove("active");
-            tooltip.classList.add("inactive");
-        });
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    var glossaryModal = document.getElementById("glossaryModal");
-    var glossaryModalButton = document.getElementById("glossaryButton");
-    var glossaryModalContent = document.getElementById("glossary-modal-content");
-    var closeGlossaryModal = document.getElementsByClassName("closeGlossary")[0];
-
-    glossaryModalButton.onclick = function() {
-        glossaryModal.classList.add("open");
-        glossaryModal.style.display = "block";
-    }
-
-    closeGlossaryModal.onclick = function() {
-        glossaryModal.classList.remove("open");
-        glossaryModal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target === glossaryModal) {
-            glossaryModal.style.display = "none";
-        }
-    }
-})
-        
-document.addEventListener("DOMContentLoaded", function () {
-    const container = document.querySelector(".button-container");
-
-    const glossaryButton = document.createElement("button");
-    glossaryButton.id = "glossaryButton";
-    glossaryButton.innerText = "Glossary";
-    container.appendChild(glossaryButton);
-
-    function setupModal(modalId, buttonId, closeClass) {
-        const modal = document.getElementById(modalId);
-        const button = document.getElementById(buttonId);
-        const closeButton = modal.querySelector(`.${closeClass}`);
-
-        // Toggle modal visibility when button is clicked
-        button.onclick = function () {
-            const isOpen = modal.classList.contains("open");
-            modal.style.display = isOpen ? "none" : "block";
-            modal.classList.toggle("open", !isOpen);
-        };
-
-        // Close modal when the close button is clicked
-        closeButton.onclick = function () {
-            modal.style.display = "none";
-            modal.classList.remove("open");
-        };
-
-        // Close modal when clicking outside the modal content
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-                modal.classList.remove("open");
-            }
-        };
-    }
-
-    setupModal("glossaryModal", "glossaryButton", "closeGlossary");
-});
-
-    </script>
-</head>
-<body>
-
-<div class="mobile">
-	<a class="activeMobile" href="/hockey/" target="_blank">Home</a>
-	<div id="myLinks">
-		<a href="/hockey/players/" target="_blank">Players</a>
-        <a href="/hockey/teams/" target="_blank">Teams</a>
-        <a href="/hockey/leaders/" target="_blank">Leaders</a>
-        <a href="/hockey/leaders/standings.html" target="_blank">Standings</a>
-        <a href="/hockey/boxscores/" target="_blank">Scores</a>
-        <a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
-        <a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
-	</div>
-	<a href="javascript:void(0);" class="icon" onclick="myFunction()">
-		<i class="fa fa-bars"></i>
-	</a>
-
-<script>
-function myFunction() {
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
-  }
-}
 </script>
+</head>
+
+<body>
+<div id="mobileTopnav">
+    <div class="menuBarContainer mobile active">
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i>Menu</a>
+    </div>
+    <div id="myLinks">
+        <ul class="navLinks">
+            <li class="nav-link"><a href="/hockey/" target="_blank">Projections</a></li>
+            <li class="nav-link"><a href="/hockey/players/" target="_blank">Players</a></li>
+            <li class="nav-link"><a href="/hockey/teams/" target="_blank">Teams</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/" target="_blank">Leaders</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/standings.html" target="_blank">Standings</a></li>
+            <li class="nav-link"><a href="/hockey/boxscores/" target="_blank">Scores</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a></li>
+        </ul>
+    </div>
 </div>
 
-<div id="page-heading">
+<div id="pageHeading">
 	<div class="topnav">
         <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
         <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
@@ -1110,47 +721,74 @@ function myFunction() {
         <button id="search-button">Search</button>
         <div id="search-results"></div>
     </div>
-	<div class="header">
-		<h1>Today's Probabilities and Projections</h1>
+    <div class="header">
+        <h1>Today's Probabilities and Projections</h1>
 	</div>
 </div>
+
 	<button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
     
+<main>
+<div id="pageContainer">
     <div id="multi-filters">
-        <table class="multi-filters">
-            <tr><td class="multiFilterLabel">Games:</td><td><div id="game-filters"></div></td></tr>
-            <tr><td class="multiFilterLabel">Teams:</td><td><div id="team-filters"></div></td></tr>
-            <tr><td class="multiFilterLabel">Types:</td><td><div id="type-filters"></div></td></tr>
-            <tr><td class="multiFilterLabel">Stats:</td><td><div id="stat-filters"></div></td></tr>
-        </table>
-        
-        <div class="min-filters">
-			<span>Set Minimum Values:</span>
-            <div>
-                <span class="minFilterLabel">Diff:</span><span><input id="diff-filters" type="number" step="0.1"></span>
-                <span class="minFilterLabel">24-25:</span><span><input id="2425-filters" type="number" step="0.1"></span>
-                <span class="minFilterLabel">L5:</span><span><input id="l5-filters" type="number" step="0.1"></span>
-                <span class="minFilterLabel">L10:</span><span><input id="l10-filters" type="number" step="0.1"></span>
-                <span class="minFilterLabel">L20:</span><span><input id="l20-filters" type="number" step="0.1"></span>
-                <span class="minFilterLabel">23-24:</span><span><input id="2324-filters" type="number" step="0.1"></span>
-                <span class="minFilterLabel">All:</span><span><input id="all-filters" type="number" step="0.1"></span>
-			</div>
+        <div class="checkboxFilters">
+            <span class="filterLabel">Games:</span><span id="game-filters"></span>
         </div>
         
+        <div class="checkboxFilters">
+            <span class="filterLabel">Teams:</span><span id="team-filters"></span>
+        </div>
+        
+        <div class="checkboxFilters">
+            <span class="filterLabel">Types:</span><span id="type-filters"></span>
+        </div>
+        
+        <div class="checkboxFilters">
+            <span class="filterLabel">Stats:</span><span id="stat-filters"></span>
+        </div>
     </div>
-    <div class="groupedProbAndButtons" style="width:95%"><span class="combinedProbLabel">Click the Checkboxes Below to Calculate the Combined Probability</span><span class="secret"><a href="https://ashlauren1.github.io/rings/" target="_blank">rings</a></span>
+    <div class="min-filters">
+        <span class="minFilterHeader">Set Minimum Values:</span>
+        <div class="minFilterRow">
+            <div class="inputFilters">
+                <span class="minFilterLabel">Diff:</span><span class="minFilterInput"><input id="diff-filters" type="number" step="0.1"></span>
+            </div>
+            <div class="inputFilters">
+                <span class="minFilterLabel">24-25:</span><span class="minFilterInput"><input id="2425-filters" type="number" step="0.1"></span>
+            </div>
+            <div class="inputFilters">
+                <span class="minFilterLabel">L5:</span><span class="minFilterInput"><input id="l5-filters" type="number" step="0.1"></span>
+            </div>
+            <div class="inputFilters">
+                <span class="minFilterLabel">L10:</span><span class="minFilterInput"><input id="l10-filters" type="number" step="0.1"></span>
+            </div>
+            <div class="inputFilters">
+                <span class="minFilterLabel">L20:</span><span class="minFilterInput"><input id="l20-filters" type="number" step="0.1"></span>
+            </div>
+            <div class="inputFilters">
+                <span class="minFilterLabel">23-24:</span><span class="minFilterInput"><input id="2324-filters" type="number" step="0.1"></span>
+            </div>
+            <div class="inputFilters">
+                <span class="minFilterLabel">All:</span><span class="minFilterInput"><input id="all-filters" type="number" step="0.1"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="groupedProbAndButtons">
+        <span class="combinedProbLabel">Click the Checkboxes Below to Calculate the Combined Probability</span>
         <div id="result-container">
             <div id="result">Combined Probability:</div>
         </div>
+        <div id="filter-container-div">
         <div class="button-container">
             <button id="toggle-selection-btn">Show Selected Only</button>
             <button id="clear-filters-btn">Remove Filters</button>
             <button id="clear-all-btn">Clear All</button>
+            <button id="glossaryButton">Glossary</button>
+        </div>
         </div>
     </div>
     
-    
-    <div id="data-table-container">
     <div id="glossaryModal" class="modal">
         <div id="glossary-modal-content">
             <span class="closeGlossary">&times;</span>
@@ -1179,28 +817,30 @@ function myFunction() {
             </ul>
         </div>
     </div>
+    
+    <div id="tableContainer">
         <table id="data-table">
-        <thead>
-            <tr>
-                <th>Game</th>
-                <th>Team</th>
-                <th>Player</th>
-                <th>Type</th>
-                <th>Stat</th>
-                <th>Line</th>
-                <th data-tip="Projection">Proj.</th>
-                <th data-tip="Difference (Projection - Line)">Diff.</th>
-                <th data-tip="Probability of Going Over">Prob.</th>
-                <th data-tip="Percentage of games this season where the player went over the line">24-25</th>
-                <th data-tip="Percentage of games against the opposing team where the player went over the line">H2H</th>
-                <th data-tip="Percentage of this player's last 5 games where they went over the line">L5</th>
-                <th data-tip="Percentage of this player's last 10 games where they went over the line">L10</th>
-                <th data-tip="Percentage of this player's last 20 games where they went over the line">L20</th>
-                <th data-tip="Percentage of games in the 2023-24 season where the player went over the line">23-24</th>
-                <th data-tip="Percentage of all games since 2022 where the player went over the line">All</th>
-            </tr>
-        </thead>
-        <tbody>
+            <thead>
+                <tr>
+                    <th>Game</th>
+                    <th>Team</th>
+                    <th>Player</th>
+                    <th>Type</th>
+                    <th>Stat</th>
+                    <th>Line</th>
+                    <th data-tip="Projection">Proj.</th>
+                    <th data-tip="Difference (Projection - Line)">Diff.</th>
+                    <th data-tip="Probability of Going Over">Prob.</th>
+                    <th data-tip="Percentage of games this season where the player went over the line">24-25</th>
+                    <th data-tip="Percentage of games against the opposing team where the player went over the line">H2H</th>
+                    <th data-tip="Percentage of this player's last 5 games where they went over the line">L5</th>
+                    <th data-tip="Percentage of this player's last 10 games where they went over the line">L10</th>
+                    <th data-tip="Percentage of this player's last 20 games where they went over the line">L20</th>
+                    <th data-tip="Percentage of games in the 2023-24 season where the player went over the line">23-24</th>
+                    <th data-tip="Percentage of all games since 2022 where the player went over the line">All</th>
+                </tr>
+            </thead>
+            <tbody>
     """)
 
     # Adjust your code to loop through final_results as dictionaries
@@ -1236,10 +876,11 @@ function myFunction() {
         f.write("</tr>")
     
     f.write("""
-        </tbody>
+            </tbody>
         </table>
     </div>
-    <div class="footer"></div>
+</div>
+<div class="footer"></div>
 </body>
 </html>
         """)

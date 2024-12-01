@@ -47,44 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 })
-        
-document.addEventListener("DOMContentLoaded", function () {
-    const container = document.querySelector(".button-container");
-
-    const glossaryButton = document.createElement("button");
-    glossaryButton.id = "glossaryButton";
-    glossaryButton.innerText = "Glossary";
-    container.appendChild(glossaryButton);
-
-    function setupModal(modalId, buttonId, closeClass) {
-        const modal = document.getElementById(modalId);
-        const button = document.getElementById(buttonId);
-        const closeButton = modal.querySelector(`.${closeClass}`);
-
-        // Toggle modal visibility when button is clicked
-        button.onclick = function () {
-            const isOpen = modal.classList.contains("open");
-            modal.style.display = isOpen ? "none" : "block";
-            modal.classList.toggle("open", !isOpen);
-        };
-
-        // Close modal when the close button is clicked
-        closeButton.onclick = function () {
-            modal.style.display = "none";
-            modal.classList.remove("open");
-        };
-
-        // Close modal when clicking outside the modal content
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-                modal.classList.remove("open");
-            }
-        };
-    }
-
-    setupModal("glossaryModal", "glossaryButton", "closeGlossary");
-});
 
 document.addEventListener("DOMContentLoaded", function () {{
 	const images = document.querySelectorAll(".playerPicture");

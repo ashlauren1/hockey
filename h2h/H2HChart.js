@@ -39,17 +39,17 @@ function getChartOptions(line, stat) {
         },
         scales: {
             y: { 
-                grid: { 
+				grid: { 
                     display: true,
-					color: '#dfe1e2'
+					color: '#ededed'
                 },
 				ticks: {
 					font: {
 						size: 10,
-						family: 'Verdana'
+						family: 'Inter'
 					},
-					color: '#333333',
-					padding: 0 
+					color: '#000',
+					padding: 6 
 				},
 				beginAtZero: true, 
                 stepSize: 1.0 
@@ -63,10 +63,10 @@ function getChartOptions(line, stat) {
                     maxRotation: 0,
                     minRotation: 0,
 					font: {
-						size: 9,
-						family: 'Verdana'
+						size: 8,
+						family: 'Inter'
 					},
-					color: '#333333',
+					color: '#000',
 					padding: 0 
                 }
             }

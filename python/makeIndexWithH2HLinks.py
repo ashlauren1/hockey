@@ -754,9 +754,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <span class="minFilterLabel">Diff:</span><span class="minFilterInput"><input id="diff-filters" type="number" step="0.1"></span>
             </div>
             <div class="inputFilters">
-                <span class="minFilterLabel">24-25:</span><span class="minFilterInput"><input id="2425-filters" type="number" step="0.1"></span>
-            </div>
-            <div class="inputFilters">
                 <span class="minFilterLabel">L5:</span><span class="minFilterInput"><input id="l5-filters" type="number" step="0.1"></span>
             </div>
             <div class="inputFilters">
@@ -765,11 +762,16 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="inputFilters">
                 <span class="minFilterLabel">L20:</span><span class="minFilterInput"><input id="l20-filters" type="number" step="0.1"></span>
             </div>
+            
             <div class="inputFilters">
-                <span class="minFilterLabel">23-24:</span><span class="minFilterInput"><input id="2324-filters" type="number" step="0.1"></span>
+                <span class="minFilterLabel">2024-25:</span><span class="minFilterInput"><input id="2425-filters" type="number" step="0.1"></span>
+            </div>
+            
+            <div class="inputFilters">
+                <span class="minFilterLabel">2023-24:</span><span class="minFilterInput"><input id="2324-filters" type="number" step="0.1"></span>
             </div>
             <div class="inputFilters">
-                <span class="minFilterLabel">All:</span><span class="minFilterInput"><input id="all-filters" type="number" step="0.1"></span>
+                <span class="minFilterLabel">All Time:</span><span class="minFilterInput"><input id="all-filters" type="number" step="0.1"></span>
             </div>
         </div>
     </div>

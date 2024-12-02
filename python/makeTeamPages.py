@@ -2,17 +2,21 @@ import pandas as pd
 import os
 
 # **File Paths**
-team_csv = r"C:\Users\ashle\Documents\Projects\hockey\data\teamgamelogs.csv"
+data_dir = r"C:\Users\ashle\Documents\Projects\hockey\data"
 output_dir = r"C:\Users\ashle\Documents\Projects\hockey\teams"
+
+team_csv = os.path.join(data_dir, "teamgamelogs.csv")
+team_leaders_csv = os.path.join(data_dir, "leaderTeams.csv")
 
 # **Ensure Output Directory Exists**
 os.makedirs(output_dir, exist_ok=True)
 
 # **Load Data Once**
 data = pd.read_csv(team_csv)
+team_leaders_data = pd.read_csv(team_leaders_csv)
 
 # **Part 1: Create Team Directory (index.html)**
-def create_team_directory(data, output_dir):
+def create_team_directory(data, output_dir):    
     logo_id_map = {
         "LAK": "LA",
         "SJS": "SJ",
@@ -25,6 +29,7 @@ def create_team_directory(data, output_dir):
         return f"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nhl/500/{logo_id}.png&h=40&w=40"
     
     unique_teams = data.drop_duplicates(subset=["Team", "TeamID"]).sort_values(by="Team")
+    
     html_content = """
 <!DOCTYPE html>
 <html lang="en">
@@ -131,6 +136,8 @@ def create_team_directory(data, output_dir):
 # **Part 2: Generate Individual Team Pages**
 def create_team_pages(data, output_dir):
     grouped_data = data.groupby('TeamID')
+    team_leaders_data = pd.read_csv(team_leaders_csv)
+    
     logo_id_map = {
         "LAK": "LA",
         "SJS": "SJ",
@@ -144,8 +151,17 @@ def create_team_pages(data, output_dir):
 
     for team_id, team_data in grouped_data:
         team_name = team_data.iloc[0]['Team']
+        team_info = team_leaders_data[team_leaders_data['TeamID'] == team_id]
         logo_url = get_logo_url(team_id)
         team_filename = os.path.join(output_dir, f"{team_id}.html")
+        
+        conference = team_info.iloc[0]['Conference']
+        division = team_info.iloc[0]['Division']
+        rank = team_info.iloc[0]['Rk']
+        wins = team_info.iloc[0]['W']
+        losses = team_info.iloc[0]['L']
+        overtime = team_info.iloc[0]['OTL']
+        record = f'<h2>{wins}-{losses}-{overtime}</h2>'
 
         # Start HTML content for the team's gamelog
         html_content = f'''
@@ -202,28 +218,24 @@ def create_team_pages(data, output_dir):
         <div id="search-results"></div>
     </div>
     <div class="header">
-        <h1>{team_name} Gamelog</h1>
 	</div>
 </div>
 
     <button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
 
 <main>
-    <div id="player_info">
-        <div id="playerPictureContainer">
-            <img class="playerPicture" src="{logo_url}" alt="{team_id}" onerror="this.style.display='none';">
+<div id="pageContainer">
+    <div id="team_info">
+        <div id="teamLogoContainer">
+            <img class="logo_img" src="{logo_url}" alt="{team_id}" onerror="this.style.display='none';">
+       </div>
+       <div class="teamInfo">
+            <h1>{team_name}</h1>
+            {record}
+            <p>#{rank} in {division} Division</p>
         </div>
     </div>
 
-<div id="pageContainer">
-
-    <div id="filter-container-div" class="button-container">
-        <button id="toggle-selection-btn">Show Selected Only</button>
-        <button id="clear-filters-btn">Remove Filters</button>
-        <button id="clear-all-btn">Clear All</button>
-        <button id="glossaryButton">Glossary</button>
-    </div>
-    
     <div id="glossaryModal" class="modal">
         <div id="glossary-modal-content">
             <span class="closeGlossary">&times;</span>
@@ -252,6 +264,14 @@ def create_team_pages(data, output_dir):
             </ul>
         </div>
     </div>
+    
+    <div id="filter-container-div" class="button-container">
+        <button id="toggle-selection-btn">Show Selected Only</button>
+        <button id="clear-filters-btn">Remove Filters</button>
+        <button id="clear-all-btn">Clear All</button>
+        <button id="glossaryButton">Glossary</button>
+    </div>
+    
     <div id="tableContainer">
         <table id="team-table">
             <thead>

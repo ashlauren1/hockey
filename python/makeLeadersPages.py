@@ -25,14 +25,13 @@ def create_season_pages(oldleader_data, output_dir):
         season_filename = os.path.join(output_dir, f"{season}_skaters.html")
     
         previous_season_map = {
-            "2017-18": "",
+            "2017-18": "2017-18",
             "2018-19": "2017-18",
             "2019-20": "2018-19",
             "2020-21": "2019-20",
             "2021-22": "2020-21",
             "2022-23": "2021-22",
-            "2023-24": "2022-23",
-            "2024-25": "2023-24"   
+            "2023-24": "2022-23"
         }
         
         next_season_map = {
@@ -42,8 +41,7 @@ def create_season_pages(oldleader_data, output_dir):
             "2020-21": "2021-22",
             "2021-22": "2022-23",
             "2022-23": "2023-24",
-            "2023-24": "2024-25",
-            "2024-25": ""   
+            "2023-24": "2024-25"
         }
         
         def get_prev_season(season):
@@ -313,6 +311,406 @@ def create_season_pages(oldleader_data, output_dir):
             file.write(html_content)
 
     print("Season pages created successfully.")
+    
+
+def create_current_leader_directory(leader_data, output_dir):
+    current_leader_filename = os.path.join(output_dir, "2024-25_skaters.html")
+    html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/hockey/images/favicon.ico">
+    <script src="modalsMobileNavAndSearch.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="commonStylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <title>NHL Season Leaders</title>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	const seasonTable = document.getElementById("seasonLeaders");
+	const headerRow = seasonTable.querySelector("thead tr:first-child");
+    const rows = Array.from(seasonTable.querySelectorAll("tbody tr"));
+    const toggleSelectionBtn = document.getElementById("toggle-selection-btn");
+    const clearAllButton = document.getElementById("clear-all-btn");
+    const clearButton = document.getElementById("clear-filters-btn");
+    let showSelectedOnly = false;
+    let isDragging = false;
+	
+    rows.forEach(row => {
+        row.addEventListener("mousedown", function () {
+            isDragging = true;
+            toggleRowSelection(row);
+        });
+
+        row.addEventListener("mouseenter", function () {
+            if (isDragging) toggleRowSelection(row);
+        });
+
+        row.addEventListener("mouseup", () => isDragging = false);
+    });
+
+    document.addEventListener("mouseup", () => isDragging = false);
+
+    function toggleRowSelection(row) {
+        row.classList.toggle("selected-row");
+    }
+
+    toggleSelectionBtn.addEventListener("click", () => {
+        showSelectedOnly = !showSelectedOnly;
+        if (showSelectedOnly) {
+            rows.forEach(row => {
+                row.style.display = row.classList.contains("selected-row") ? "" : "none";
+            });
+            toggleSelectionBtn.textContent = "Show All Rows";
+        } else {
+            rows.forEach(row => (row.style.display = ""));
+            toggleSelectionBtn.textContent = "Show Selected Only";
+        }
+    });
+	
+	addSortToHeaders(seasonTable);
+	
+	function addSortToHeaders(seasonTable) {
+		const headers = seasonTable.querySelectorAll("thead th");
+		headers.forEach((header, index) => {
+			header.style.cursor = "pointer";
+			header.addEventListener("click", function () {
+				sortTable(seasonTable, index);
+			});
+		});
+	}
+	
+	function sortTable(seasonTable, columnIndex) {
+		const rows = Array.from(seasonTable.querySelectorAll("tbody tr"));
+		
+		// TESTING DEFAULT DESC SORT DIRECTION
+		let asc = false;
+		const direction = seasonTable.dataset.sortDirection === "desc" ? "asc" : "desc";
+		
+		seasonTable.dataset.sortDirection = direction;
+
+		rows.sort((a, b) => {
+			let cellA = a.cells[columnIndex].textContent.trim();
+			let cellB = b.cells[columnIndex].textContent.trim();
+
+			let valA, valB;
+			
+			const isPercentage = cellA.includes('%') && cellB.includes('%');
+			if (isPercentage) {
+				valA = parseFloat(cellA.replace('%', ''));
+				valB = parseFloat(cellB.replace('%', ''));
+			} else if (!isNaN(cellA) && !isNaN(cellB)) {
+				valA = parseFloat(cellA);
+				valB = parseFloat(cellB);
+			} else {
+				valA = cellA.toLowerCase();
+				valB = cellB.toLowerCase();
+			}
+
+			if (valA < valB) {
+				return direction === "asc" ? -1 : 1;
+			} else if (valA > valB) {
+				return direction === "asc" ? 1 : -1;
+			} else {
+				return 0;
+			}
+		});
+
+		const tbody = seasonTable.querySelector("tbody");
+		rows.forEach(row => tbody.appendChild(row));
+	}
+	
+	const teamSelect = document.getElementById("teams");
+    const positionSelect = document.getElementById("pos");
+    const positionGroups = {
+        f: ["lw", "rw", "w", "c", "f"],
+        w: ["lw", "rw", "w"],
+        c: ["c"],
+        lw: ["lw"],
+        rw: ["rw"],
+        d: ["d"],
+    };
+    
+    teamSelect.addEventListener("change", filterTable);
+    positionSelect.addEventListener("change", filterTable);
+
+    function filterTable() {
+        const teamFilter = teamSelect.value.trim().toLowerCase();
+        const positionFilter = positionSelect.value.trim().toLowerCase();
+        const positionGroup = positionGroups[positionFilter] || []; 
+        
+        rows.forEach(row => {
+            const cells = row.cells;
+            const teamCell = cells[1]?.textContent.trim().toLowerCase();
+            const positionCell = cells[2]?.textContent.trim().toLowerCase();
+            
+            const matchesTeam = !teamFilter || teamCell === teamFilter;
+            const matchesPosition =
+                !positionFilter || positionGroup.includes(positionCell);
+			const isFiltered = (!positionSelect.value === "") || (!teamSelect.value === "");
+			
+			!showSelectedOnly ? (row.style.display = matchesTeam && matchesPosition ? "" : "none") : (row.style.display = row.classList.contains("selected-row") && matchesTeam && matchesPosition ? "" : "none")
+        });
+    }
+	
+	clearButton.addEventListener("click", () => {
+		document.querySelectorAll("select").forEach(select => select.value = "");
+		filterTable();
+		if (showSelectedOnly) {
+            rows.forEach(row => {
+                row.style.display = row.classList.contains("selected-row") ? "" : "none";
+            });
+            toggleSelectionBtn.textContent = "Show All Rows";
+        } else {
+            rows.forEach(row => (row.style.display = ""));
+            toggleSelectionBtn.textContent = "Show Selected Only";
+        }
+	});
+
+    clearAllButton.addEventListener("click", () => {
+        document.querySelectorAll("select").forEach(select => select.value = "");
+
+        rows.forEach(row => {
+            row.classList.remove("selected-row");
+            row.style.display = "";
+        });
+        toggleSelectionBtn.textContent = "Show Selected Only";
+        showSelectedOnly = false;
+        
+        filterTable();
+    });
+});
+</script>
+</head>
+<body>
+<div id="mobileTopnav">
+    <div class="menuBarContainer mobile active">
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()"><i class="fa fa-bars"></i>Menu</a>
+    </div>
+    <div id="myLinks">
+        <ul class="navLinks">
+            <li class="nav-link"><a href="/hockey/" target="_blank">Projections</a></li>
+            <li class="nav-link"><a href="/hockey/players/" target="_blank">Players</a></li>
+            <li class="nav-link"><a href="/hockey/teams/" target="_blank">Teams</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/" target="_blank">Leaders</a></li>
+            <li class="nav-link"><a href="/hockey/leaders/standings.html" target="_blank">Standings</a></li>
+            <li class="nav-link"><a href="/hockey/boxscores/" target="_blank">Scores</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a></li>
+            <li class="nav-link"><a href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="pageHeading">
+	<div class="topnav">
+        <a class="topnav-item" href="/hockey/" target="_blank">Projections</a>
+        <a class="topnav-item" href="/hockey/players/" target="_blank">Players</a>
+        <a class="topnav-item" href="/hockey/teams/" target="_blank">Teams</a>
+        <a class="topnav-item" href="/hockey/leaders/" target="_blank">Leaders</a>
+        <a class="topnav-item" href="/hockey/leaders/standings.html" target="_blank">Standings</a>
+        <a class="topnav-item" href="/hockey/boxscores/" target="_blank">Scores</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/basketball/" target="_blank">Basketball</a>
+        <a class="topnav-item" href="https://ashlauren1.github.io/ufc/" target="_blank">UFC</a>
+    </div>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search for a player or team...">
+        <button id="search-button">Search</button>
+        <div id="search-results"></div>
+    </div>
+    <div class="header">
+	</div>
+</div>
+<button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+<main>
+<div id="pageContainer">
+<p class="title-caption">2024-25 Skater Stats</p>
+    <div class="prevnext">
+        <a href="/hockey/leaders/2023-24_skaters.html" class="button2 prev">Previous Season</a>
+    </div>
+    <div id="glossaryModal" class="modal">
+        <div id="glossary-modal-content">
+        <span class="closeGlossary">&times;</span>
+            <ul class="tiebreaker-modal-list" type="none">
+                <li>GP:&nbsp;&nbsp;Games Played</li>
+                <li>GF:&nbsp;&nbsp;Goals</li>
+                <li>SOG:&nbsp;&nbsp;Shots on Goal</li>
+                <li>PIM:&nbsp;&nbsp;Penalties in Minutes</li>
+                <li>PPG:&nbsp;&nbsp;Power Play Goals</li>
+                <li>PPO:&nbsp;&nbsp;Power Play Opportunities</li>
+                <li>SHG:&nbsp;&nbsp;Short-Handed Goals</li>
+                <li>SOGA:&nbsp;&nbsp;Shots Against</li>
+                <li>PIMA:&nbsp;&nbsp;Opponent Penalties in Minutes</li>
+                <li>PPGA:&nbsp;&nbsp;Power Play Goals Against</li>
+                <li>PPOA:&nbsp;&nbsp;Power Play Opportunities Against</li>
+                <li>SHGA:&nbsp;&nbsp;Short-Handed Goals Against</li>
+                <li>CF:&nbsp;&nbsp;Corsi For at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
+                <li>CA:&nbsp;&nbsp;Corsi Against at Even Strength -- Shots on Goal + Blocked Attempts + Missed Shots</li>
+                <li>CF%:&nbsp;&nbsp;Corsi For % at Even Strength -- CF / (CF + CA)</li>
+                <li>FF:&nbsp;&nbsp;Fenwick For at Even Strength -- Shots + Misses</li>
+                <li>FA:&nbsp;&nbsp;Fenwick Against at Even Strength -- Shots + Misses</li>
+                <li>FF%:&nbsp;&nbsp;Fenwick For % at Even Strength -- FF / (FF + FA)</li>
+                <li>FOW:&nbsp;&nbsp;Faceoff Wins</li>
+                <li>FOL:&nbsp;&nbsp;Faceoff Losses</li>
+                <li>FO%:&nbsp;&nbsp;Faceoff Win Percentage</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="filter-container-div">
+        <div id="filter-div">
+            <form class="team-filters">
+                <label for="teams">Team</label>
+                <select id="teams" name="teams">
+                    <option value="">All</option>
+                    <option value="ana">Anaheim Ducks</option>
+                    <option value="ari">Arizona Coyotes</option>
+                    <option value="bos">Boston Bruins</option>
+                    <option value="buf">Buffalo Sabres</option>
+                    <option value="car">Carolina Hurricanes</option>
+                    <option value="cbj">Columbus Blue Jackets</option>
+                    <option value="cgy">Calgary Flames</option>
+                    <option value="chi">Chicago Blackhawks</option>
+                    <option value="col">Colorado Avalanche</option>
+                    <option value="dal">Dallas Stars</option>
+                    <option value="det">Detroit Red Wings</option>
+                    <option value="edm">Edmonton Oilers</option>
+                    <option value="fla">Florida Panthers</option>
+                    <option value="lak">Los Angeles Kings</option>
+                    <option value="min">Minnesota Wild</option>
+                    <option value="mtl">Montreal Canadiens</option>
+                    <option value="njd">New Jersey Devils</option>
+                    <option value="nsh">Nashville Predators</option>
+                    <option value="nyi">New York Islanders</option>
+                    <option value="nyr">New York Rangers</option>
+                    <option value="ott">Ottawa Senators</option>
+                    <option value="phi">Philadelphia Flyers</option>
+                    <option value="pit">Pittsburgh Penguins</option>
+                    <option value="sea">Seattle Kraken</option>
+                    <option value="sjs">San Jose Sharks</option>
+                    <option value="stl">St. Louis Blues</option>
+                    <option value="tbl">Tampa Bay Lightning</option>
+                    <option value="tor">Toronto Maple Leafs</option>
+                    <option value="van">Vancouver Canucks</option>
+                    <option value="veg">Vegas Golden Knights</option>
+                    <option value="wpg">Winnipeg Jets</option>
+                    <option value="wsh">Washington Capitals</option>
+                </select>
+            </form>
+            <form class="position-filters">
+                <label for="position">Position</label>
+                <select id="pos" name="pos">
+                    <option value="">All</option>
+                    <option value="d">Defensemen</option>
+                    <option value="f">Forwards</option>
+                    <option value="c">Centers</option>
+                    <option value="w">Wingers</option>
+                    <option value="lw">Left Wing</option>
+                    <option value="rw">Right Wing</option>
+                </select>
+            </form>
+        </div>
+        <div class="button-container">
+            <button id="toggle-selection-btn">Show Selected Only</button>
+            <button id="clear-filters-btn">Remove Filters</button>
+            <button id="clear-all-btn">Clear All</button>
+            <button id="glossaryButton">Glossary</button>
+        </div>
+    </div>
+    
+    <div id="tableContainer">
+        <table id="seasonLeaders" class="seasonLeadersTable">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Team</th>
+                    <th>Pos.</th>
+                    <th data-tip="Games Played">GP</th>
+                    <th data-tip="Goals">G</th>
+                    <th data-tip="Assists">A</th>
+                    <th data-tip="Points">PTS</th>
+                    <th data-tip="Shots on Goal">SOG</th>
+                    <th data-tip="Shooting %">S%</th>
+                    <th data-tip="Hits">HIT</th>
+                    <th data-tip="Blocks">BLK</th>
+                    <th data-tip="Time on Ice">TOI</th>
+                    <th data-tip="Penalty Minutes">PIM</th>
+                    <th data-tip="Even Strength Goals">EVG</th>
+                    <th data-tip="Power Play Goals">PPG</th>
+                    <th data-tip="Short-Handed Goals">SHG</th>
+                    <th data-tip="Even Strength Assists">EVA</th>
+                    <th data-tip="Power Play Assists">PPA</th>
+                    <th data-tip="Short-Handed Assists">SHA</th>
+                    <th data-tip="Goals per Game">G/GP</th>
+                    <th data-tip="Assists per Game">A/GP</th>
+                    <th data-tip="Points per Game">PTS/GP</th>
+                    <th data-tip="Shots on Goal per Game">SOG/GP</th>
+                    <th data-tip="Hits per Game">HIT/GP</th>
+                    <th data-tip="Blocks per Game">BLK/GP</th>
+                    <th data-tip="Time on Ice per Game">TOI/GP</th>
+                </tr>
+            </thead>
+            <tbody>
+    """
+
+    # Generate table rows grouped by team
+    for _, row in leader_data.iterrows():
+        team_id = row["TeamID"]
+        player_id = row["PlayerID"]
+        player_name = row['Player'].replace(" ", "&nbsp;")
+        position = row["Position"]
+        
+        # Add player row
+        html_content += f"""
+            <tr>
+                <td style="text-align:left"><a href="/hockey/players/{player_id}.html">{player_name}</a></td>
+                <td><a href="/hockey/teams/{team_id}.html">{team_id}</a></td>
+                <td style="text-align:center">{position}</td>
+                <td>{int(row['GP'])}</td>
+                <td>{int(row['G'])}</td>
+                <td>{int(row['A'])}</td>
+                <td>{int(row['PTS'])}</td>
+                <td>{int(row['SOG'])}</td>
+                <td>{row['S%']:.2f}%</td>
+                <td>{int(row['HIT'])}</td>
+                <td>{int(row['BLK'])}</td>
+                <td>{row['TOI']:.2f}</td>
+                <td>{int(row['PIM'])}</td>
+                <td>{int(row['EVG'])}</td>
+                <td>{int(row['PPG'])}</td>
+                <td>{int(row['SHG'])}</td>
+                <td>{int(row['EVA'])}</td>
+                <td>{int(row['PPA'])}</td>
+                <td>{int(row['SHA'])}</td>
+                <td>{row['G_GP']:.2f}</td>
+                <td>{row['A_GP']:.2f}</td>
+                <td>{row['PTS_GP']:.2f}</td>
+                <td>{row['SOG_GP']:.2f}</td>
+                <td>{row['HIT_GP']:.2f}</td>
+                <td>{row['BLK_GP']:.2f}</td>
+                <td>{row['TOI_GP']:.2f}</td>
+            </tr>
+        """
+
+    # Close the single <tbody>, table, and HTML tags
+    html_content += """
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="footer"></div>
+</body>
+</html>
+    """
+
+    with open(current_leader_filename, "w") as file:
+        file.write(html_content)
+
+    print(f"Current leader pages created successfully")
 
 def create_leader_directory(leader_data, output_file_path):
     int_columns = ["G", "A", "PTS", "SOG", "HIT", "BLK", "PIM", "EVG", "PPG", "SHG", "EVA", "PPA", "SHA"]
@@ -823,5 +1221,5 @@ output_file_path = os.path.join(output_dir, "index.html")
 create_leader_directory(leader_data, output_file_path)
 
 create_season_pages(oldleader_data, output_dir)
-
+create_current_leader_directory(leader_data, output_dir)
 create_standings_page(team_leaders_data, output_dir)

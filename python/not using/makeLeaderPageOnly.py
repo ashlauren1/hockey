@@ -10,18 +10,15 @@ os.makedirs(output_dir, exist_ok=True)
 
 # **Load Data**
 leaders_csv = os.path.join(data_dir, "leaders.csv")
-team_leaders_csv = os.path.join(data_dir, "leaderTeams.csv")
 
 # Load roster data
 leader_data = pd.read_csv(leaders_csv)
 leader_data.sort_values(by=["G", "PlayerID"], ascending=[False, True], inplace=True)
 
 
-# Load gamelogs data
-team_leaders_data = pd.read_csv(team_leaders_csv)
-
 # **Part 1: Generate Player Directory (index.html)**
-def create_leader_directory(leader_data, output_file_path):
+def create_current_leader_directory(leader_data, output_dir):
+    current_leader_filename = os.path.join(output_dir, "2024-25_skaters.html")
     html_content = """
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +33,9 @@ def create_leader_directory(leader_data, output_file_path):
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>2024-25 Leaders</title>
+    <title>NHL Season Leaders</title>
+    <script src="leaders.js"></script>
+<!--
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("leader-index");
@@ -117,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const teamSelect = document.getElementById("teams");
     const positionSelect = document.getElementById("pos");
 </script>
+-->
 </head>
 
 <body>
@@ -154,13 +154,16 @@ document.addEventListener("DOMContentLoaded", function () {
         <button id="search-button">Search</button>
         <div id="search-results"></div>
     </div>
-    <div class="header">2024-25 Leaders</div>
+    <div class="header">
+	</div>
 </div>
-
-    <button class="arrowUp" onclick="window.scrollTo({top: 0})">Top</button>
-
-<div id="leaders-container">    
-    
+<button class="arrowUp" onclick="window.scrollTo({{top: 0}})">Top</button>
+<main>
+<div id="pageContainer">
+<p class="title-caption">2024-25 Skater Stats</p>
+    <div class="prevnext">
+        <a href="/hockey/leaders/2023-24_skaters.html" class="button2 prev">Previous Season</a>
+    </div>
     <div id="glossaryModal" class="modal">
         <div id="glossary-modal-content">
         <span class="closeGlossary">&times;</span>
@@ -236,55 +239,61 @@ document.addEventListener("DOMContentLoaded", function () {
                     <option value="">All</option>
                     <option value="d">Defensemen</option>
                     <option value="f">Forwards</option>
+                    <option value="c">Centers</option>
+                    <option value="w">Wingers</option>
+                    <option value="lw">Left Wing</option>
+                    <option value="rw">Right Wing</option>
                 </select>
             </form>
         </div>
-        <div class="filter-button-container">
-            <button id="leaders-clear-filters-btn">Remove Filters</button>
+        <div class="button-container">
+            <button id="toggle-selection-btn">Show Selected Only</button>
+            <button id="clear-filters-btn">Remove Filters</button>
+            <button id="clear-all-btn">Clear All</button>
             <button id="glossaryButton">Glossary</button>
         </div>
     </div>
     
-<div id="tableContainer">
-    <table id="leader-index">
-        <thead>
-            <tr>
-                <th>Player</th>
-                <th>Team</th>
-                <th>Pos.</th>
-                <th data-tip="Games Played">GP</th>
-                <th data-tip="Goals">G</th>
-                <th data-tip="Assists">A</th>
-                <th data-tip="Points">PTS</th>
-                <th data-tip="Shots on Goal">SOG</th>
-                <th data-tip="Shooting %">S%</th>
-                <th data-tip="Hits">HIT</th>
-                <th data-tip="Blocks">BLK</th>
-                <th data-tip="Time on Ice">TOI</th>
-                <th data-tip="Penalty Minutes">PIM</th>
-                <th data-tip="Even Strength Goals">EVG</th>
-                <th data-tip="Power Play Goals">PPG</th>
-                <th data-tip="Short-Handed Goals">SHG</th>
-                <th data-tip="Even Strength Assists">EVA</th>
-                <th data-tip="Power Play Assists">PPA</th>
-                <th data-tip="Short-Handed Assists">SHA</th>
-                <th data-tip="Goals per Game">G/GP</th>
-                <th data-tip="Assists per Game">A/GP</th>
-                <th data-tip="Points per Game">PTS/GP</th>
-                <th data-tip="Shots on Goal per Game">SOG/GP</th>
-                <th data-tip="Hits per Game">HIT/GP</th>
-                <th data-tip="Blocks per Game">BLK/GP</th>
-                <th data-tip="Time on Ice per Game">TOI/GP</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div id="tableContainer">
+        <table id="seasonLeaders" class="seasonLeadersTable">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Team</th>
+                    <th>Pos.</th>
+                    <th data-tip="Games Played">GP</th>
+                    <th data-tip="Goals">G</th>
+                    <th data-tip="Assists">A</th>
+                    <th data-tip="Points">PTS</th>
+                    <th data-tip="Shots on Goal">SOG</th>
+                    <th data-tip="Shooting %">S%</th>
+                    <th data-tip="Hits">HIT</th>
+                    <th data-tip="Blocks">BLK</th>
+                    <th data-tip="Time on Ice">TOI</th>
+                    <th data-tip="Penalty Minutes">PIM</th>
+                    <th data-tip="Even Strength Goals">EVG</th>
+                    <th data-tip="Power Play Goals">PPG</th>
+                    <th data-tip="Short-Handed Goals">SHG</th>
+                    <th data-tip="Even Strength Assists">EVA</th>
+                    <th data-tip="Power Play Assists">PPA</th>
+                    <th data-tip="Short-Handed Assists">SHA</th>
+                    <th data-tip="Goals per Game">G/GP</th>
+                    <th data-tip="Assists per Game">A/GP</th>
+                    <th data-tip="Points per Game">PTS/GP</th>
+                    <th data-tip="Shots on Goal per Game">SOG/GP</th>
+                    <th data-tip="Hits per Game">HIT/GP</th>
+                    <th data-tip="Blocks per Game">BLK/GP</th>
+                    <th data-tip="Time on Ice per Game">TOI/GP</th>
+                </tr>
+            </thead>
+            <tbody>
     """
 
     # Generate table rows grouped by team
     for _, row in leader_data.iterrows():
         team_id = row["TeamID"]
         player_id = row["PlayerID"]
-        player_name = row["Player"]
+        player_name = row['Player'].replace(" ", "&nbsp;")
         position = row["Position"]
         
         # Add player row
@@ -331,11 +340,9 @@ document.addEventListener("DOMContentLoaded", function () {
     """
 
     # Write the HTML content to a file
-    with open(output_file_path, "w") as file:
+    with open(current_leader_filename, "w") as file:
         file.write(html_content)
 
-    print(f"Leaders directory created at {output_file_path}")
+    print(f"Current leader pages created successfully")
 
-# Create leader directory
-output_file_path = os.path.join(output_dir, "index.html")
-create_leader_directory(leader_data, output_file_path)
+create_current_leader_directory(leader_data, output_dir)

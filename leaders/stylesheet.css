@@ -83,7 +83,6 @@
 	font-weight: 500;
 }
 
-
 #season-leaders-container {
 	max-width: 100%;
 	margin: 8px 22px;
@@ -187,47 +186,6 @@
 	min-width: 40px;
 }
 
-.standings-button-container {
-    background-color: #f1f2f3;
-    border-radius: 4px;
-	border: 1px solid #ccc;
-    display: inline-flex;
-    overflow: visible;
-	width: 40%;
-	gap: 12px;
-	margin: 0 0 4px 0;
-	outline: none;
-}
-
-.standings-button-container button {
-    background: transparent;
-	width: 33%;
-    border: 0;
-    color: #000;
-	text-align: center;
-	margin: 0 auto;
-	justify-content: space-between;
-	font-size: 13px;
-	font-weight: 600;
-	outline: none;
-	padding: 8px 10px;
-	font-family: "Roboto Slab";
-	cursor: pointer;
-}	
-
-.standings-button-container button:hover {
-    background: transparent;
-    color: #c40303;
-	cursor: pointer;
-}
-
-.standings-button-container button.active-button {
-    width: 33.333333%;
-	background: #fff;
-    border-radius: 4px;
-	box-shadow: 0 2px 10px 0 rgba(0,0,0,.4);
-	color: #c40303;
-}
 
 #league-table-container, #division-table-container, #conference-table-container {
 	margin: 4px 0;
@@ -408,9 +366,9 @@
 	cursor: pointer;
 }
 
-#multi-filters, .min-filters {
+#multi-filters {
 	margin: 6px auto;
-	display: inline-block;
+	display: block;
 	font: var(--smallMontserrat);
 	background-color: #f7f7f7;
 	border: 1px solid #ccc;
@@ -421,18 +379,23 @@
 	width: 100%;
 }
 
-.filterLabel, .minFilterHeader {
+.checkboxFilters {
+	padding: 6px 0;
+}
+
+.checkboxFilters .filterLabel {
 	outline: none;
-	margin: 0 4px;
+	margin-right: 6px;
 	padding: 0;
 	text-align: left;
-	font: var(--smallMontserrat);
+	font: 600 11px "Inter";
+	display: inline;
 }
 
 .checkboxFilters label {
 	margin-right: 6px;
 	white-space: nowrap;
-	font: var(--smallMontserrat);
+	font: 400 11px "Inter";
 }
 
 #multi-filters input[type="checkbox"] {
@@ -440,43 +403,43 @@
 	height: 11px;
 	width: 11px;
 	margin-right: 4px;
-	margin-left: 8px;
 }
 
-#type-filters, #team-filters, #stat-filters, #game-filters, .minFilterRow {
+#type-filters, #team-filters, #stat-filters, #game-filters {
 	width: 100%;
-	display: block;
 	align-items: center;
 	outline: none;
-	margin: 6px 0;
-	padding: 4px;	
+	margin: 4px 0;
 }
 
-.inputFilters {
-	display: inline;
-	white-space: nowrap;
-	padding: 4px;
-	max-height: 18px;
-	outline: none;
-	font: var(--smallMontserrat);
-	color: #000;
-	min-width: 130px;
+#type-filters label, #team-filters label, #stat-filters label, #game-filters label {
+	padding: 2px 0;
 }
-
-.inputFilters .minFilterLabel {
-	margin-right: 6px;
-	white-space: nowrap;
-	font: var(--smallMontserrat);
-}
-
-.min-filters input {
-	font: var(--smallMontserrat);
-	padding: 2px;
-}
-
 
 @media screen and (max-width: 500px) {
+	#game-filters {
+		display: grid;
+		grid-template-columns: 70px 70px 70px 70px;
+	}
+
+	#team-filters {
+		display: grid;
+		grid-template-columns: 50px 50px 50px 50px 50px 50px 50px;
+	}
+	
+	#type-filters, #stat-filters {
+		display: grid;
+		grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px;
+	}
+	
+	.minFilterRow {
+		display: grid;
+		grid-template-columns: 80px 80px 80px 80px;
+	}
+	
 	.min-filters input {
+		font: var(--smallMontserrat);
+		padding: 2px;
 		max-width: 60px;
 		margin: 4px;
 	}
@@ -486,11 +449,32 @@
 	}
 }
 
-@media screen and (min-width: 501px) {
+
+@media screen and (min-width: 500px) {
+	#game-filters {
+		display: grid;
+		grid-template-columns: 70px 70px 70px 70px 70px 70px 70px;
+	}
+
+	#team-filters {
+		display: grid;
+		grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+	}
+	
+	#type-filters, #stat-filters {
+		display: grid;
+		grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+	}
+	
+	.minFilterRow {
+		display: grid;
+		grid-template-columns: 80px 80px 80px 80px 80px; 
+	}
+	
 	.min-filters input {
-		min-width: 68px;
-		max-width: 68px;
-		margin: 4px;
+		font: var(--smallMontserrat);
+		padding: 2px;
+		max-width: 62px;
 	}
 
 	.min-filters input::-webkit-outer-spin-button, .min-filters input::-webkit-inner-spin-button {
@@ -503,6 +487,103 @@
 	}
 }
 
+@media screen and (min-width: 600px) {
+	.minFilterRow {
+		display: grid;
+		grid-template-columns: 80px 80px 80px 80px 80px 80px 80px; 
+	}
+	
+	.min-filters input {
+		font: var(--smallMontserrat);
+		padding: 2px;
+		max-width: 62px;
+	}
+
+	.min-filters input::-webkit-outer-spin-button, .min-filters input::-webkit-inner-spin-button {
+		opacity: 1;
+		margin: 0;
+		cursor: pointer;
+		width: 4px;
+		align-self: right;
+		color: #000;
+	}
+}
+
+
+@media screen and (min-width: 700px) {
+	#game-filters {
+		display: grid;
+		grid-template-columns: 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px 70px;
+	}
+
+	#team-filters {
+		display: grid;
+		grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+	}
+	
+	#type-filters, #stat-filters {
+		display: grid;
+		grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+	}
+	
+	.minFilterRow {
+		display: flex-grid;
+		grid-template-columns: 80px 80px 80px 80px 80px 80px 80px; 
+	}
+	
+	.min-filters input {
+		font: var(--smallMontserrat);
+		padding: 2px;
+		min-width: 62px;
+		margin: 4px 0;
+	}
+
+	.min-filters input::-webkit-outer-spin-button, .min-filters input::-webkit-inner-spin-button {
+		opacity: 1;
+		margin: 0;
+		cursor: pointer;
+		width: 4px;
+		align-self: right;
+		color: #000;
+	}
+}
+
+.minFilterHeader {
+	outline: none;
+	margin: 2px 6px 0 0;
+	padding: 0;
+	text-align: left;
+	font: 600 11px "Montserrat";
+}
+
+.min-filters {
+	margin: 6px auto;
+	display: block;
+	font: var(--smallMontserrat);
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	overflow: visible;
+	padding: 12px;
+	outline: none;
+	width: 100%;
+}
+
+.inputFilters {
+	display: block;
+	padding: 4px;
+	outline: none;
+	font: var(--smallMontserrat);
+	color: #000;
+}
+
+.minFilterLabel {
+	margin-right: 6px;
+	white-space: nowrap;
+	font: var(--smallMontserrat);
+	display: inline;
+}
+
 .groupedProbAndButtons {
 	margin: 4px auto;
 }
@@ -513,7 +594,6 @@
 	margin: 2px 0;
 }
 
-
 .combinedProbLabel {
 	font: 500 12px "Montserrat";
 	width: 100%;
@@ -523,9 +603,7 @@
 
 .secret {
 	margin-left: 128px;
-	font-family: "Montserrat", "Roboto Slab";
-	font-weight: 500;
-	font-size: 9px;
+	font: 500 9px "Montserrat", "Roboto Slab";
 }
 
 #result-container {
@@ -541,9 +619,7 @@
 #result {
 	width: 100%;
 	margin: 0;
-	font-family: "Montserrat", "Roboto Slab";
-	font-weight: 500;
-	font-size: 12px;
+	font: 500 12px "Montserrat", "Roboto Slab";
 }
 
 #home-boxscore, #away-boxscore {
@@ -758,275 +834,230 @@
 	text-align: left;
 }
 
-#player_info {
-    width: 100%;
-    margin: 24px auto 12px auto;
-    min-height: 140px;
-	height: auto;
-	display: block;
-	box-sizing: border-box;
+@media screen and (min-width: 501px) {
+	#player_info {
+		width: 100%;
+		margin: 24px auto 12px auto;
+		min-height: 140px;
+		height: auto;
+		display: block;
+		box-sizing: border-box;
+	}
+
+	#playerPictureContainer {
+		width: 100px;
+		display: block;
+	}
+
+	.playerPicture {
+		width: 92px;
+		height: auto;
+		display: inline-block;
+		float: left;
+		margin-left: 0;
+		margin-right: 10px;
+	}
+
+	.info h1 {
+		text-align: left;
+		font: 700 20px "Roboto Slab";
+	}
+	
+	.info h2 {
+		text-align: left;
+		font: 500 16px "Roboto Slab";
+		letter-spacing: 1px;
+	}
+	
+	.info p {
+		font: 500 16px "Roboto Slab";
+		margin: 4px 0;
+	}
+
+	#seasonStats {
+		width: 80%;
+	}
+
+	.seasonSummary {
+		margin: 8px 0;
+		border-collapse: collapse;
+		border-spacing: 0;
+		text-align: center;
+	}
+
+	.seasonSummary th {
+		min-width: 36px;
+		padding: 2px;
+		margin: 4px 0px;
+		font: 600 12px "Montserrat";
+	}
+
+	.seasonSummary td {
+		font: 500 12px "Montserrat";
+		padding: 2px;
+		margin: 4px 0px;
+	}
+	
+	#team_info {
+		width: 100%;
+		margin: 12px auto 4px auto;
+		height: auto;
+		display: block;
+		box-sizing: border-box;
+	}
+	
+	#teamLogoContainer {
+		width: 100px;
+		display: block;
+	}
+
+	.logo_img {
+		width: 92px;
+		height: auto;
+		display: inline-block;
+		float: left;
+		margin-left: 0;
+		margin-right: 10px;
+	}
+	
+	.teamInfo h1 {
+		text-align: left;
+		font: 700 20px "Roboto Slab";
+		margin: 0;
+		padding: 0;
+	}
+	
+	.teamInfo h2 {
+		text-align: left;
+		font: 500 16px "Roboto Slab";
+		letter-spacing: 1px;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.teamInfo p {
+		font: 500 16px "Roboto Slab";
+		margin: 0;
+		padding: 0;
+	}
+	
 }
 
-#playerPictureContainer {
-    width: 100px;
-	display: block;
+
+@media screen and (max-width: 501px) {
+	#player_info {
+		width: 100%;
+		margin: 24px auto 12px auto;
+		min-height: 140px;
+		height: auto;
+		display: inline-block;
+		box-sizing: border-box;
+	}
+
+	#playerPictureContainer {
+		width: 100px;
+		display: block;
+	}
+
+	.playerPicture {
+		width: 82px;
+		height: auto;
+		display: inline-block;
+		float: left;
+		margin-left: 0;
+		margin-right: 10px;
+	}
+
+	.info h1 {
+		text-align: left;
+		font: 700 20px "Roboto Slab";
+	}
+	
+	.info h2 {
+		text-align: left;
+		font: 500 16px "Roboto Slab";
+		letter-spacing: 1px;
+	}
+	
+	.info p {
+		text-align: left;
+		font: 500 16px "Roboto Slab";
+		margin: 4px 0;
+	}
+
+	#seasonStats {
+		width: auto;
+		display: inline-flex;
+	}
+
+	.seasonSummary {
+		margin: 8px 0;
+		border-collapse: collapse;
+		border-spacing: 0;
+		text-align: center;
+	}
+
+	.seasonSummary th {
+		padding: 2px 6px;
+		margin: 4px 0px;
+		font: 600 12px "Montserrat";
+	}
+
+	.seasonSummary td {
+		font: 500 12px "Montserrat";
+		padding: 2px 6px;
+		margin: 4px 0px;
+	}
+	
+	#team_info {
+		width: 100%;
+		margin: 12px auto 4px auto;
+		height: auto;
+		display: inline-block;
+		box-sizing: border-box;
+	}
+	
+	#teamLogoContainer {
+		width: 100px;
+		display: block;
+	}
+
+	.logo_img {
+		width: 92px;
+		height: auto;
+		display: inline-block;
+		float: left;
+		margin-left: 0;
+		margin-right: 10px;
+	}
+	
+	.teamInfo h1 {
+		text-align: left;
+		font: 700 20px "Roboto Slab";
+		margin: 0;
+		padding: 0;
+	}
+	
+	.teamInfo h2 {
+		text-align: left;
+		font: 500 16px "Roboto Slab";
+		letter-spacing: 1px;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.teamInfo p {
+		font: 500 16px "Roboto Slab";
+		margin: 0;
+		padding: 0;
+	}
+	
 }
 
-.playerPicture {
-    width: 92px;
-	height: auto;
-    display: inline-block;
-    float: left;
-    margin-left: 0;
-    margin-right: 10px;
-}
-
-.info p {
-    display: block;
-	font: 600 12px "Montserrat";
-	margin: 4px 0;
-}
-
-.info h1 {
-    text-align: left;
-    font: 700 18px "Montserrat";
-}
-
-#seasonStats {
-	width: 80%;
-}
-
-.seasonSummary {
-	margin: 8px 0;
-	border-collapse: collapse;
-	border-spacing: 0;
-	text-align: center;
-}
-
-.seasonSummary th {
-	min-width: 36px;
-	padding: 2px;
-	margin: 4px 0px;
-	font: 600 12px "Montserrat";
-}
-
-.seasonSummary td {
-	font: 500 12px "Montserrat";
-	padding: 2px;
-	margin: 4px 0px;
-}
-
-.caption {
-	color: #000;
-	font-family: "Roboto Slab";
-	font-weight: 600;
-	font-size: 16px;
-	margin-left: 0;
-	margin-top: 8px;
-	margin-bottom: 6px;
-	text-align: left;
-}
-
-.chartContainer	{
-	margin: 14px 0;
-	border: 1px solid #ccc;
-	border-radius:4px;
-	background-color: #f7f7f7;
-	box-sizing: border-box;
-	width: 100%;
-}
-
-.barChart {
-	padding: 0px 6px;
-	background: transparent;
-	max-height: 225px;
-	box-sizing: border-box;
-}
-
-.filter-buttons {
-	display: inline-flex;
-	justify-content: flex-start;
-	gap: 2px;
-	margin: 4px;
-	outline: none;
-	padding: 4px 0;
-	align-items: center;	
-	box-sizing: border-box;
-}
-
-.filter-buttons .last_n_games_btn {
-	background-color: var(--buttonBackground);
-	outline: none;
-	border-radius: 4px;
-	border: 1px solid #bbb;
-	font: 500 11px "Montserrat";
-	padding: 4px 6px;
-	color: #000;
-	text-align: center;
-	margin: 0 8px;
-	cursor: pointer;
-	transition: background-color 0.1s ease;
-	float: left;
-	width: 85px;
-	transition: background-color 0.1s ease;
-}
-
-.filter-buttons .last_n_games_btn:hover {
-	background-color: var(--buttonBackgroundHover);
-	transition: background-color 0.1s ease;
-	cursor: pointer;
-}
-
-.filter-buttons .toggleTOIButton, .clear-chart-filters  {
-	background-color: transparent;
-	outline: none;
-	border: none;
-	font: 600 11px "Montserrat";
-	padding: 4px 6px;
-	color: #c40303;
-	text-decoration: none;
-	text-align: left;
-	cursor: pointer;
-	display: inline;
-	margin: 0 8px;
-	padding: 4px 6px;
-}
-
-.barChart-filters {
-    display: inline-flex;
-    overflow: visible;
-	width: 100%;
-	gap: 2px;
-	margin: 0;
-	outline: none;
-	padding: 4px 0;
-	justify-content: flex-start;
-}
-
-.barChartFilter {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	margin: 0 4px;
-	box-sizing: border-box;
-	text-align: left;
-	font: 500 10px "Montserrat";
-	outline: none;
-	padding: 0;
-	color: #000;
-}
-
-.barChartFilter label {
-	outline: none;
-	padding: 0;
-	text-align: left;
-	font: 500 10px "Montserrat";
-	margin-right: 4px;
-}
-
-.barChartFilter select, .barChartFilter input {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-	background-color: #fff;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	text-align: left;
-	padding: 2px;
-	box-sizing: border-box;
-	font: 500 10px "Montserrat";
-	outline: none;
-	overflow-y: scroll;
-	max-width: 104px;
-}
-
-.barChartFilter option {
-	margin: 0;
-	padding: 0;
-	font: 500 10px "Montserrat";
-	line-height: 0.5em;
-}
-
-.slider-container {
-	box-sizing: border-box;
-	width: 100%;
-	padding: 0;
-	display: inline-flex;
-	flex-wrap: wrap;
-	align-items: center;
-	margin: 2px auto;
-	outline: none;
-	justify-content: flex-start;
-	align-content: center;
-	align-items: center;
-}
-
-#line-slider {
-	padding: 0;
-	align-self: center;
-	width: 420px;
-	outline: none;
-	float: left;
-}
-
-#line-slider input[type="range"] {
-	cursor: pointer;
-	padding: 0;
-	width: 260px;
-	box-sizing: border-box;
-	height: 4px;
-	-webkit-appearance: none;
-	appearance: none;
-	background-color: #c4e1ee;
-	border: .5px solid #ccc;
-	border-radius: 4px;
-	outline: none;
-	align-self: center;
-}
-
-#line-slider input[type="range"]::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	width: 14px;
-	height: 14px;
-	background-color: #9abfd0;
-	cursor: pointer;
-	border-radius: 50%;
-	border: .5px solid #ccc;
-	outline: none;
-	transition: background-color 0.1s ease;
-}
-
-#line-slider input[type="range"]::-webkit-slider-thumb:hover {
-	background-color: #83abbe;
-	transition: background-color 0.1s ease;
-}
-
-#line-slider label, #line-slider span {
-	font: 600 11px "Montserrat";
-	box-sizing: border-box;
-	margin: 0px 6px;
-	align-self: center;
-	line-height: 15px;
-}
-
-.chartButtons {
-	box-sizing: border-box;	
-}
-
-.reset-line-btn {
-	font: 600 11px "Montserrat";
-	outline: none;
-	padding: 6px;
-	border: none;
-	color: #c40303;
-	background-color: transparent;
-	float: left;
-}
-
-.reset-line-btn:hover, .filter-buttons .toggleTOIButton:hover, .clear-chart-filters:hover {
-	color: #8a0000;
-	cursor: pointer
+@media screen and (min-width: 920px) {
+	#team-table {
+		width: 100%;
+	}
 }
 
 @media screen and (min-width: 1500px) {		

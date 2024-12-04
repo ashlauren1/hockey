@@ -628,7 +628,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <tr>
                     <th>Player</th>
                     <th>Team</th>
-                    <th>Pos.</th>
+                    <th>Pos</th>
                     <th data-tip="Games Played">GP</th>
                     <th data-tip="Goals">G</th>
                     <th data-tip="Assists">A</th>
@@ -652,6 +652,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     <th data-tip="Hits per Game">HIT/GP</th>
                     <th data-tip="Blocks per Game">BLK/GP</th>
                     <th data-tip="Time on Ice per Game">TOI/GP</th>
+                    <th data-tip="Faceoff Wins">FOW</th>
+                    <th data-tip="Faceoff Losses">FOL</th>
+                    <th data-tip="Faceoff %">FO%</th>
                 </tr>
             </thead>
             <tbody>
@@ -662,7 +665,7 @@ document.addEventListener("DOMContentLoaded", function () {
         team_id = row["TeamID"]
         player_id = row["PlayerID"]
         player_name = row['Player'].replace(" ", "&nbsp;")
-        position = row["Position"]
+        position = row["Pos"]
         
         # Add player row
         html_content += f"""
@@ -675,7 +678,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>{int(row['A'])}</td>
                 <td>{int(row['PTS'])}</td>
                 <td>{int(row['SOG'])}</td>
-                <td>{row['S%']:.2f}%</td>
+                <td>{row['SPCT']:.2f}</td>
                 <td>{int(row['HIT'])}</td>
                 <td>{int(row['BLK'])}</td>
                 <td>{row['TOI']:.2f}</td>
@@ -693,6 +696,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>{row['HIT_GP']:.2f}</td>
                 <td>{row['BLK_GP']:.2f}</td>
                 <td>{row['TOI_GP']:.2f}</td>
+                <td>{row['FOW']}</td>
+                <td>{row['FOL']}</td>
+                <td>{row['FO%']}</td>
             </tr>
         """
 
@@ -713,7 +719,7 @@ document.addEventListener("DOMContentLoaded", function () {
     print(f"Current leader pages created successfully")
 
 def create_leader_directory(leader_data, output_file_path):
-    int_columns = ["G", "A", "PTS", "SOG", "HIT", "BLK", "PIM", "EVG", "PPG", "SHG", "EVA", "PPA", "SHA"]
+    int_columns = ["G", "A", "PTS", "SOG", "HIT", "BLK", "PIM", "EVG", "PPG", "SHG", "EVA", "PPA", "SHA", "FOW", "FOL"]
     decimal_columns = [col for col in leader_data.columns if col not in int_columns + ["Player", "PlayerID", "TeamID", "Position"]]
 
     leader_data[int_columns] = leader_data[int_columns].fillna(0).astype(int)
@@ -729,6 +735,9 @@ def create_leader_directory(leader_data, output_file_path):
         "BLK": "Blocks",
         "TOI": "Time on Ice",
         "PIM": "Penalty Minutes",
+        "FOW": "Faceoff Wins",
+        "FOL": "Faceoff Losses",
+        "FO%": "Faceoff %",
         "EVG": "Even Strength Goals",
         "PPG": "Power Play Goals",
         "SHG": "Short-Handed Goals",
@@ -755,6 +764,14 @@ def create_leader_directory(leader_data, output_file_path):
                     tied_leaders = filtered_data[filtered_data[key] == max_value]
                 else:
                     continue
+            if key == "FO%":
+                filtered_data = leader_data[leader_data["FOW"] >= 30]
+                if not filtered_data.empty:
+                    max_value = filtered_data[key].max()
+                    tied_leaders = filtered_data[filtered_data[key] == max_value]
+                else:
+                    continue
+                
             else:
                 max_value = leader_data[key].max()
                 tied_leaders = leader_data[leader_data[key] == max_value]

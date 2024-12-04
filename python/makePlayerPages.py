@@ -18,7 +18,7 @@ roster_data = pd.read_csv(roster_csv)
 roster_data.sort_values(by=["Team", "Player"], inplace=True)
 
 # Load gamelogs data
-gamelogs_data = pd.read_csv(gamelogs_csv)
+gamelogs_data = pd.read_csv(gamelogs_csv).sort_values(by=["PlayerID", "Date"], ascending=[True, False])
 
 # Load leader data
 leader_data = pd.read_csv(leaders_csv)

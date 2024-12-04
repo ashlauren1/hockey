@@ -11,11 +11,11 @@ os.makedirs(output_dir_games, exist_ok=True)
 # **Load Data**
 # Load game index data
 game_index_csv = os.path.join(data_dir, "gameindex.csv")
-game_index_data = pd.read_csv(game_index_csv)
+game_index_data = pd.read_csv(game_index_csv).sort_values(by=["Date"], ascending=[False])
 
 # Load game logs data
 gamelogs_csv = os.path.join(data_dir, "gamelogs.csv")
-gamelogs_data = pd.read_csv(gamelogs_csv)
+gamelogs_data = pd.read_csv(gamelogs_csv).sort_values(by=["PlayerID", "Date"], ascending=[True, False])
 
 # **Part 1: Generate Game Directory (index.html)**
 def create_game_directory(game_data, output_file_path):

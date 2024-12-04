@@ -12,7 +12,7 @@ team_leaders_csv = os.path.join(data_dir, "leaderTeams.csv")
 os.makedirs(output_dir, exist_ok=True)
 
 # **Load Data Once**
-data = pd.read_csv(team_csv)
+data = pd.read_csv(team_csv).sort_values(by=["Date"], ascending=[False])
 team_leaders_data = pd.read_csv(team_leaders_csv)
 
 # **Part 1: Create Team Directory (index.html)**

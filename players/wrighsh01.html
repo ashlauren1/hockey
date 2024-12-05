@@ -222,6 +222,26 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("player-table");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // Get the index of the "Date" column (assumes it's the first column)
+    const dateColumnIndex = 1;
+
+    // Sort rows by date (newest to oldest)
+    rows.sort((a, b) => {
+        const dateA = new Date(a.cells[dateColumnIndex].textContent.trim());
+        const dateB = new Date(b.cells[dateColumnIndex].textContent.trim());
+        return dateB - dateA; // Descending order
+    });
+
+    // Append sorted rows back to the table body
+    rows.forEach(row => tbody.appendChild(row));
+});
+
 </script>
 </head>
 <body>
@@ -456,132 +476,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404090SEA.html" target="_blank">4/9/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/ARI.html" target="_blank">ARI</a></td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>15.85</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404050ANA.html" target="_blank">4/5/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/ANA.html" target="_blank">ANA</a></td>
-<td>2</td>
-<td>1</td>
-<td>3</td>
-<td>5</td>
-<td>0</td>
-<td>1</td>
-<td>16.02</td>
-<td>0</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404030LAK.html" target="_blank">4/3/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/LAK.html" target="_blank">LAK</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>16.03</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404110SEA.html" target="_blank">4/11/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/SJS.html" target="_blank">SJS</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>15.77</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404010SJS.html" target="_blank">4/1/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/SJS.html" target="_blank">SJS</a></td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>4</td>
-<td>0</td>
-<td>1</td>
-<td>15.23</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202212060SEA.html" target="_blank">12/6/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/MTL.html" target="_blank">MTL</a></td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>0</td>
-<td>1</td>
-<td>11.20</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202412030CAR.html" target="_blank">12/3/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
@@ -603,90 +497,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 </tr>
 <tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202311090COL.html" target="_blank">11/9/2023</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>8.57</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202411080SEA.html" target="_blank">11/8/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/VEG.html" target="_blank">VEG</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>9.60</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202411050COL.html" target="_blank">11/5/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>10.32</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202211050PIT.html" target="_blank">11/5/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>8.70</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411300SEA.html" target="_blank">11/30/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
@@ -699,48 +509,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>1</td>
 <td>0</td>
 <td>15.68</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202411030BOS.html" target="_blank">11/3/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/BOS.html" target="_blank">BOS</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>11.92</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202211030MIN.html" target="_blank">11/3/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/MIN.html" target="_blank">MIN</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>13.75</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -814,27 +582,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202411020OTT.html" target="_blank">11/2/2024</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>11.43</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411160SEA.html" target="_blank">11/16/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
 <td>vs</td>
@@ -876,27 +623,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 </tr>
 <tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202311130SEA.html" target="_blank">11/13/2023</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>10.90</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411120SEA.html" target="_blank">11/12/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
@@ -918,18 +644,18 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 </tr>
 <tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202311110SEA.html" target="_blank">11/11/2023</a></td>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411080SEA.html" target="_blank">11/8/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
 <td>vs</td>
-<td><a href="/hockey/teams/EDM.html" target="_blank">EDM</a></td>
+<td><a href="/hockey/teams/VEG.html" target="_blank">VEG</a></td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>0</td>
-<td>9.92</td>
+<td>1</td>
+<td>1</td>
+<td>9.60</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -940,17 +666,59 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202410080SEA.html" target="_blank">10/8/2024</a></td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411050COL.html" target="_blank">11/5/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
+<td>0</td>
+<td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
+<td>10.32</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411030BOS.html" target="_blank">11/3/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/BOS.html" target="_blank">BOS</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>11.92</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411020OTT.html" target="_blank">11/2/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 <td>1</td>
 <td>0</td>
-<td>14.37</td>
+<td>11.43</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -1044,27 +812,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 </tr>
 <tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202210230CHI.html" target="_blank">10/23/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/CHI.html" target="_blank">CHI</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>5.85</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202410220SEA.html" target="_blank">10/22/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
@@ -1077,27 +824,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 <td>1</td>
 <td>13.65</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202210210COL.html" target="_blank">10/21/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>8.70</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -1128,27 +854,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 </tr>
 <tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202210190SEA.html" target="_blank">10/19/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>6.60</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202410170SEA.html" target="_blank">10/17/2024</a></td>
 <td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
@@ -1166,27 +871,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2022-23</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202210170SEA.html" target="_blank">10/17/2022</a></td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/CAR.html" target="_blank">CAR</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>6.83</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
 <td>0</td>
 <td>0</td>
 </tr>
@@ -1245,6 +929,342 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 <td>0</td>
 <td>16.03</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202410080SEA.html" target="_blank">10/8/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>14.37</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404110SEA.html" target="_blank">4/11/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/SJS.html" target="_blank">SJS</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>15.77</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404090SEA.html" target="_blank">4/9/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/ARI.html" target="_blank">ARI</a></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>15.85</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404050ANA.html" target="_blank">4/5/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/ANA.html" target="_blank">ANA</a></td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>5</td>
+<td>0</td>
+<td>1</td>
+<td>16.02</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404030LAK.html" target="_blank">4/3/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/LAK.html" target="_blank">LAK</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>16.03</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404010SJS.html" target="_blank">4/1/2024</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/SJS.html" target="_blank">SJS</a></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+<td>15.23</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202311130SEA.html" target="_blank">11/13/2023</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>10.90</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202311110SEA.html" target="_blank">11/11/2023</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/EDM.html" target="_blank">EDM</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>9.92</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202311090COL.html" target="_blank">11/9/2023</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>8.57</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202212060SEA.html" target="_blank">12/6/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/MTL.html" target="_blank">MTL</a></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+<td>11.20</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202211050PIT.html" target="_blank">11/5/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>8.70</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202211030MIN.html" target="_blank">11/3/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/MIN.html" target="_blank">MIN</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>13.75</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202210230CHI.html" target="_blank">10/23/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/CHI.html" target="_blank">CHI</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>5.85</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202210210COL.html" target="_blank">10/21/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/COL.html" target="_blank">COL</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>8.70</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202210190SEA.html" target="_blank">10/19/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/STL.html" target="_blank">STL</a></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>6.60</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2022-23</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202210170SEA.html" target="_blank">10/17/2022</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/CAR.html" target="_blank">CAR</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>6.83</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>

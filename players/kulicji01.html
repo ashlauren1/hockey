@@ -222,6 +222,26 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("player-table");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // Get the index of the "Date" column (assumes it's the first column)
+    const dateColumnIndex = 1;
+
+    // Sort rows by date (newest to oldest)
+    rows.sort((a, b) => {
+        const dateA = new Date(a.cells[dateColumnIndex].textContent.trim());
+        const dateB = new Date(b.cells[dateColumnIndex].textContent.trim());
+        return dateB - dateA; // Descending order
+    });
+
+    // Append sorted rows back to the table body
+    rows.forEach(row => tbody.appendChild(row));
+});
+
 </script>
 </head>
 <body>
@@ -531,27 +551,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>0</td>
 </tr>
 <tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202311250NJD.html" target="_blank">11/25/2023</a></td>
-<td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>14.88</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
 <td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411230SJS.html" target="_blank">11/23/2024</a></td>
 <td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
@@ -616,27 +615,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202411020DET.html" target="_blank">11/2/2024</a></td>
-<td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>14.47</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2024-25</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202411160PHI.html" target="_blank">11/16/2024</a></td>
 <td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
 <td>@</td>
@@ -658,18 +636,18 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2024-25</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202410050NJD.html" target="_blank">10/5/2024</a></td>
+<td style="text-align:left"><a href="/hockey/boxscores/202411020DET.html" target="_blank">11/2/2024</a></td>
 <td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
 <td>@</td>
-<td><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
+<td><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
+<td>1</td>
 <td>0</td>
-<td>2</td>
 <td>0</td>
-<td>14.00</td>
-<td>2</td>
+<td>14.47</td>
+<td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -795,6 +773,48 @@ document.addEventListener("DOMContentLoaded", function () {
 <td>1</td>
 <td>0</td>
 <td>15.57</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2024-25</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202410050NJD.html" target="_blank">10/5/2024</a></td>
+<td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>14.00</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202311250NJD.html" target="_blank">11/25/2023</a></td>
+<td><a href="/hockey/teams/BUF.html" target="_blank">BUF</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>14.88</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>

@@ -222,6 +222,26 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("player-table");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // Get the index of the "Date" column (assumes it's the first column)
+    const dateColumnIndex = 1;
+
+    // Sort rows by date (newest to oldest)
+    rows.sort((a, b) => {
+        const dateA = new Date(a.cells[dateColumnIndex].textContent.trim());
+        const dateB = new Date(b.cells[dateColumnIndex].textContent.trim());
+        return dateB - dateA; // Descending order
+    });
+
+    // Append sorted rows back to the table body
+    rows.forEach(row => tbody.appendChild(row));
+});
+
 </script>
 </head>
 <body>
@@ -443,90 +463,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <tbody>
 <tr>
 <td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404090FLA.html" target="_blank">4/9/2024</a></td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/FLA.html" target="_blank">FLA</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>1</td>
-<td>7.55</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404070WSH.html" target="_blank">4/7/2024</a></td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>@</td>
-<td><a href="/hockey/teams/WSH.html" target="_blank">WSH</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>0</td>
-<td>9.23</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404060OTT.html" target="_blank">4/6/2024</a></td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>3</td>
-<td>0</td>
-<td>8.42</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202404040OTT.html" target="_blank">4/4/2024</a></td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/FLA.html" target="_blank">FLA</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>5.92</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202404160BOS.html" target="_blank">4/16/2024</a></td>
 <td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
 <td>@</td>
@@ -611,6 +547,111 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404090FLA.html" target="_blank">4/9/2024</a></td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/FLA.html" target="_blank">FLA</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>7.55</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404070WSH.html" target="_blank">4/7/2024</a></td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>@</td>
+<td><a href="/hockey/teams/WSH.html" target="_blank">WSH</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>9.23</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404060OTT.html" target="_blank">4/6/2024</a></td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/NJD.html" target="_blank">NJD</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+<td>0</td>
+<td>8.42</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202404040OTT.html" target="_blank">4/4/2024</a></td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/FLA.html" target="_blank">FLA</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>5.92</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
+<td style="text-align:left"><a href="/hockey/boxscores/202403120OTT.html" target="_blank">3/12/2024</a></td>
+<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
+<td>vs</td>
+<td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>9.25</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:left">2023-24</td>
 <td style="text-align:left"><a href="/hockey/boxscores/202403090SJS.html" target="_blank">3/9/2024</a></td>
 <td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
 <td>@</td>
@@ -653,38 +694,17 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202403120OTT.html" target="_blank">3/12/2024</a></td>
-<td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
-<td>vs</td>
-<td><a href="/hockey/teams/PIT.html" target="_blank">PIT</a></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>2</td>
-<td>0</td>
-<td>2</td>
-<td>9.25</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202312090DET.html" target="_blank">12/9/2023</a></td>
+<td style="text-align:left"><a href="/hockey/boxscores/202401040SEA.html" target="_blank">1/4/2024</a></td>
 <td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
 <td>@</td>
-<td><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
+<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
+<td>2</td>
 <td>0</td>
-<td>0</td>
-<td>6.92</td>
+<td>9.98</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -842,17 +862,17 @@ document.addEventListener("DOMContentLoaded", function () {
 </tr>
 <tr>
 <td style="text-align:left">2023-24</td>
-<td style="text-align:left"><a href="/hockey/boxscores/202401040SEA.html" target="_blank">1/4/2024</a></td>
+<td style="text-align:left"><a href="/hockey/boxscores/202312090DET.html" target="_blank">12/9/2023</a></td>
 <td><a href="/hockey/teams/OTT.html" target="_blank">OTT</a></td>
 <td>@</td>
-<td><a href="/hockey/teams/SEA.html" target="_blank">SEA</a></td>
+<td><a href="/hockey/teams/DET.html" target="_blank">DET</a></td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>2</td>
 <td>0</td>
-<td>9.98</td>
+<td>0</td>
+<td>6.92</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>

@@ -18,7 +18,7 @@ roster_data = pd.read_csv(roster_csv)
 roster_data.sort_values(by=["Team", "Player"], inplace=True)
 
 # Load gamelogs data
-gamelogs_data = pd.read_csv(gamelogs_csv).sort_values(by=["PlayerID", "Date"], ascending=[True, False])
+gamelogs_data = pd.read_csv(gamelogs_csv)
 
 # Load leader data
 leader_data = pd.read_csv(leaders_csv)
@@ -437,6 +437,26 @@ document.addEventListener("DOMContentLoaded", function () {{
         }};
     }});
 }});
+
+document.addEventListener("DOMContentLoaded", function () {{
+    const table = document.getElementById("player-table");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // Get the index of the "Date" column (assumes it's the first column)
+    const dateColumnIndex = 1;
+
+    // Sort rows by date (newest to oldest)
+    rows.sort((a, b) => {{
+        const dateA = new Date(a.cells[dateColumnIndex].textContent.trim());
+        const dateB = new Date(b.cells[dateColumnIndex].textContent.trim());
+        return dateB - dateA; // Descending order
+    }});
+
+    // Append sorted rows back to the table body
+    rows.forEach(row => tbody.appendChild(row));
+}});
+
 </script>
 </head>
 

@@ -111,6 +111,80 @@
 <div class="chartContainer">
 <div class="barChart-filters">
 <div class="barChartFilter">
+<label class="barChartFilterLabel" for="A_202412050MTL_0_5_teamFilter">Opponent:</label>
+<select class="barChartOptionFilter" id="A_202412050MTL_0_5_teamFilter" onchange="applyFilters('A', '202412050MTL', '0_5')">
+<option value="all">All</option>
+<option value="ARI">ARI</option>
+<option value="BOS">BOS</option>
+<option value="BUF">BUF</option>
+<option value="CBJ">CBJ</option>
+<option value="CGY">CGY</option>
+<option value="DET">DET</option>
+<option value="EDM">EDM</option>
+<option value="LAK">LAK</option>
+<option value="MIN">MIN</option>
+<option value="NJD">NJD</option>
+<option value="NYI">NYI</option>
+<option value="NYR">NYR</option>
+<option value="OTT">OTT</option>
+<option value="PHI">PHI</option>
+<option value="PIT">PIT</option>
+<option value="SEA">SEA</option>
+<option value="STL">STL</option>
+<option value="TOR">TOR</option>
+<option value="VEG">VEG</option>
+<option value="WSH">WSH</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label class="barChartFilterLabel" for="A_202412050MTL_0_5_homeAwayFilter">Home/Away:</label>
+<select class="barChartOptionFilter" id="A_202412050MTL_0_5_homeAwayFilter" onchange="applyFilters('A', '202412050MTL', '0_5')">
+<option value="all">All</option>
+<option value="home">Home</option>
+<option value="away">Away</option>
+</select>
+</div>
+<div class="barChartFilter">
+<label class="barChartFilterLabel" for="A_202412050MTL_0_5_startDate">Start Date:</label>
+<input class="barChartDateFilter" id="A_202412050MTL_0_5_startDate" onchange="applyFilters('A', '202412050MTL', '0_5')" type="date"/>
+</div>
+<div class="barChartFilter">
+<label class="barChartFilterLabel" for="A_202412050MTL_0_5_endDate">End Date:</label>
+<input class="barChartDateFilter" id="A_202412050MTL_0_5_endDate" onchange="applyFilters('A', '202412050MTL', '0_5')" type="date"/>
+</div>
+<button class="clear-chart-filters" onclick="clearFilters('A', '202412050MTL', '0_5')">Clear Filters</button>
+</div>
+<canvas class="barChart" id="A_202412050MTL_0_5_chart"></canvas>
+<div class="filter-buttons">
+<button class="last_n_games_btn" onclick="filterGames('A', '202412050MTL', '0_5', 5)">L5</button>
+<button class="last_n_games_btn" onclick="filterGames('A', '202412050MTL', '0_5', 10)">L10</button>
+<button class="last_n_games_btn" onclick="filterGames('A', '202412050MTL', '0_5', 20)">L20</button>
+<button class="last_n_games_btn" onclick="filterBySeason('A', '202412050MTL', '0_5', '2023-24')">2023-24</button>
+<button class="last_n_games_btn" onclick="filterBySeason('A', '202412050MTL', '0_5', '2024-25')">2024-25</button>
+<button class="last_n_games_btn" onclick="filterAll('A', '202412050MTL', '0_5')">All</button>
+</div>
+<div class="slider-container">
+<div id="line-slider">
+<label class="lineSliderLabel" for="A_202412050MTL_0_5_lineSlider">Change Line:</label>
+<input class="lineSliderInput" id="A_202412050MTL_0_5_lineSlider" max="30" min="0" oninput="updateLine('A', '202412050MTL', '0_5', this.value)" step="0.25" type="range" value="0.5"/>
+<span class="lineSliderSpan" id="A_202412050MTL_0_5_lineValue">0.5</span>
+</div>
+<div class="chartButtons">
+<button class="reset-line-btn" onclick="resetLine('A', '202412050MTL', '0_5')">Reset Line</button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>
+<script src="H2HChart.js"></script>
+<script>
+    const allData_A_202412050MTL_0_5 = [{'date': '2024-04-15', 'opponent': 'DET', 'location': 'away', 'stat': 1, 'season': '2023-24'}, {'date': '2024-04-16', 'opponent': 'DET', 'location': 'home', 'stat': 1, 'season': '2023-24'}, {'date': '2024-10-09', 'opponent': 'TOR', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-10', 'opponent': 'BOS', 'location': 'away', 'stat': 2, 'season': '2024-25'}, {'date': '2024-10-12', 'opponent': 'OTT', 'location': 'home', 'stat': 2, 'season': '2024-25'}, {'date': '2024-10-14', 'opponent': 'PIT', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-17', 'opponent': 'LAK', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-19', 'opponent': 'NYI', 'location': 'away', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-22', 'opponent': 'NYR', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-26', 'opponent': 'STL', 'location': 'home', 'stat': 1, 'season': '2024-25'}, {'date': '2024-10-27', 'opponent': 'PHI', 'location': 'away', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-29', 'opponent': 'SEA', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-10-31', 'opponent': 'WSH', 'location': 'away', 'stat': 2, 'season': '2024-25'}, {'date': '2024-11-02', 'opponent': 'PIT', 'location': 'away', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-05', 'opponent': 'CGY', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-07', 'opponent': 'NJD', 'location': 'away', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-09', 'opponent': 'TOR', 'location': 'away', 'stat': 1, 'season': '2024-25'}, {'date': '2024-11-11', 'opponent': 'BUF', 'location': 'away', 'stat': 2, 'season': '2024-25'}, {'date': '2024-11-14', 'opponent': 'MIN', 'location': 'away', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-16', 'opponent': 'CBJ', 'location': 'home', 'stat': 1, 'season': '2024-25'}, {'date': '2024-11-18', 'opponent': 'EDM', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-23', 'opponent': 'VEG', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-26', 'opponent': 'ARI', 'location': 'home', 'stat': 0, 'season': '2024-25'}, {'date': '2024-11-27', 'opponent': 'CBJ', 'location': 'away', 'stat': 1, 'season': '2024-25'}, {'date': '2024-11-30', 'opponent': 'NYR', 'location': 'away', 'stat': 1, 'season': '2024-25'}, {'date': '2024-12-01', 'opponent': 'BOS', 'location': 'away', 'stat': 2, 'season': '2024-25'}, {'date': '2024-12-03', 'opponent': 'NYI', 'location': 'home', 'stat': 1, 'season': '2024-25'}];
+    initializeChart("A", "202412050MTL", "0_5", allData_A_202412050MTL_0_5, 0.5);
+</script>
+
+<div class="chartContainer">
+<div class="barChart-filters">
+<div class="barChartFilter">
 <label class="barChartFilterLabel" for="PTS_202411300NYR_0_5_teamFilter">Opponent:</label>
 <select class="barChartOptionFilter" id="PTS_202411300NYR_0_5_teamFilter" onchange="applyFilters('PTS', '202411300NYR', '0_5')">
 <option value="all">All</option>

@@ -56,20 +56,17 @@ def extract_date_from_game_id(game_id):
 
 # Define the game IDs, home teams, and away teams
 games_info = {
-    "202412040TOR": ("TOR", "NSH"),
-    "202412040CHI": ("CHI", "BOS"),
-    "202412040ANA": ("ANA", "VEG"),
-    "202412040LAK": ("LAK", "DAL")
+    "202412050BUF": ("BUF", "WPG"),
+    "202412050MTL": ("MTL", "NSH"),
+    "202412050OTT": ("OTT", "DET"),
+    "202412050TBL": ("TBL", "SJS"),
+    "202412050PHI": ("PHI", "FLA"),
+    "202412050CAR": ("CAR", "COL"),
+    "202412050NYI": ("NYI", "SEA"),
+    "202412050CGY": ("CGY", "STL"),
+    "202412050EDM": ("EDM", "CBJ")
 }
-#    "202412050BUF": ("BUF", "WPG"),
-#    "202412050MTL": ("MTL", "NSH"),
-#    "202412050OTT": ("OTT", "DET"),
-#    "202412050TBL": ("TBL", "SJS"),
-#    "202412050PHI": ("PHI", "FLA"),
-#    "202412050CAR": ("CAR", "COL"),
-#    "202412050NYI": ("NYI", "SEA"),
-#    "202412050CGY": ("CGY", "STL"),
-#    "202412050EDM": ("EDM", "CBJ"),
+    
 #    "202412060TOR": ("TOR", "WSH"),
 #    "202412060NJD": ("NJD", "SEA"),
 #    "202412060NYR": ("NYR", "PIT"),
@@ -2129,7 +2126,7 @@ merged_df["Player"] = merged_df["PlayerID"].map(player_info).fillna(merged_df["P
 
 # Save the updated gamelogs
 final_gamelogs_path = os.path.join(data_path, "gamelogs.csv")
-merged_df.to_csv(final_gamelogs_path, mode='a', index=False, encoding="utf-8")
+merged_df.to_csv(final_gamelogs_path, mode='a', index=False, header=False, encoding="utf-8")
 print(f"Updated gamelogs saved to {final_gamelogs_path}")
 
 # Create gameIndex.csv
